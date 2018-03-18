@@ -75,6 +75,8 @@ body { background-color: #eaeaea; }
 .padding-bottom-md { padding-bottom: 25px; }
 .padding-bottom-lg { padding-bottom: 35px; }
 
+.above-top-content-fixed { z-index: 1000000; }
+
 body > #wrapper > #top-content-fixed
 {
 	z-index: 999999;

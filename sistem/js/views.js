@@ -76,7 +76,7 @@ class RegisterPopupFeed extends PopupFeed
 			"</div>" +
 			"<div class=\"input-group\">" +
 				"<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-envelope\"></i></span>" +
-				"<input id=\"register-email\" type=\"text\" class=\"form-control\" name=\"register-email\" placeholder=\"E-mail\">" +
+				"<input id=\"register-email\" type=\"email\" class=\"form-control\" name=\"register-email\" placeholder=\"E-mail\">" +
 			"</div>";
 	}
 	Footer()
@@ -110,3 +110,33 @@ class AlertPopupFeed extends PopupFeed
 		return this.content;
 	}
 }
+
+class View
+{
+	AsView()
+	{
+		return "";
+	}
+}
+
+var mainPopup;
+var alertPopup;
+
+var loginPopupFeed;
+var registerPopupFeed;
+var alertPopupFeed;
+
+$(document).ready(function()
+{
+	mainPopup = new Popup(Config.mainPopupId);
+	alertPopup = new AlertPopup(Config.alertPopupId);
+	
+	loginPopupFeed = new LoginPopupFeed("login");
+	loginPopupFeed.Subscribe(mainPopup);
+	
+	registerPopupFeed = new RegisterPopupFeed("register");
+	registerPopupFeed.Subscribe(mainPopup);
+	
+	alertPopupFeed = new AlertPopupFeed(Alert.New("success", "<b>Success!</b> The job is done.", false));
+	alertPopupFeed.Subscribe(alertPopup);
+});

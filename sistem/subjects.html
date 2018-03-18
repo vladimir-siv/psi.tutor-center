@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<meta name="author" content="Vladimir Sivčev">
+		<meta name="description" content="Custom description">
+		
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<!--<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>-->
+		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Indie+Flower">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rammetto+One">
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Cookie">
+		
+		<link rel="stylesheet" type="text/css" href="css/utility.css">
+		<link rel="stylesheet" type="text/css" href="css/addition.css">
+		<link rel="stylesheet" type="text/css" href="css/layout.css">
+		<link rel="stylesheet" type="text/css" href="css/stylization.css">
+		<script type="text/javascript" src="style-js/utility.style.js"></script>
+		<script type="text/javascript" src="style-js/fixed-dynamic.style.js"></script>
+		<script type="text/javascript" src="js/popups.js"></script>
+		<script type="text/javascript" src="js/config.js"></script>
+		<script type="text/javascript" src="js/views.js"></script>
+		<script type="text/javascript" src="js/subject-search.js"></script>
+		<script type="text/javascript" src="ajax/actions.ajax.js"></script>
+		
+		<link rel="icon" href="res/favicon.ico">
+		<title>Tutor Center</title>
+	</head>
+	<body class="fillup">
+		<div id="wrapper" class="border-boxed expanded fillup">
+			<div id="top-content-fixed" class="border-boxed expanded overflow-hidden p-fixed on-top">
+				<header id="header-fixed" class="border-boxed expanded overflow-hidden p-fixed top-trans-fast">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-right">
+								<a href="index.html"><img src="res/logo.png" class="img-circle" height="40px" alt="logo"></a>
+							</div>
+							<div class="col-lg-7 col-md-8 col-sm-6 col-xs-6 text-center"> </div>
+							<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 text-center">
+								<a class="btn btn-xs btn-link btn-link-light" onclick="registerPopupFeed.Toggle(0);"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+								<a class="btn btn-xs btn-link btn-link-light" onclick="loginPopupFeed.Toggle(0);"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+							</div>
+							<div class="col-lg-1 hidden-md hidden-sm hidden-xs"></div>
+						</div>
+					</div>
+				</header>
+			</div>
+			<header id="header-main" class="border-boxed expanded">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-right">
+							<a href="index.html"><img src="res/logo.png" class="img-circle" height="80px" alt="logo"></a>
+						</div>
+						<div class="col-lg-3 col-md-3 col-sm-2 hidden-xs text-center">
+						</div>
+						<div class="col-lg-2 col-md-2 col-sm-2 hidden-xs text-center">
+							<a href="index.html"><img src="res/heading.png" alt="heading"></a>
+						</div>
+						<div class="col-lg-5 col-md-5 col-sm-6 col-xs-10 text-center">
+							<div class="row" style="height: 40px; padding-top: 3px;">
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+								</div>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+									<a class="btn btn-md btn-link btn-link-light" onclick="registerPopupFeed.Toggle(0);"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+								</div>
+							</div>
+							<div class="row" style="height: 40px; padding-top: 3px;">
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+								</div>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+									<a class="btn btn-md btn-link btn-link-light" onclick="loginPopupFeed.Toggle(0);"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</header>
+			<nav id="navbar-main" class="navbar navbar-inverse">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="index.html">Tutor Center</a>
+					</div>
+					<ul class="nav navbar-nav">
+						<li><a href="index.html"><i class="glyphicon glyphicon-home"> Home</i></a></li>
+						<li class="active"><a href="subjects.html"><i class="glyphicon glyphicon-list-alt"> Subjects</i></a></li>
+						<li><a href="tutors.html"><i class="glyphicon glyphicon-education"> Tutors</i></a></li>
+						<li><a href="library.html"><i class="glyphicon glyphicon-briefcase"> Library</i></a></li>
+						<li><a href="about.html"><i class="glyphicon glyphicon-info-sign"> About</i></a></li>
+					</ul>
+				</div>
+			</nav>
+			<div id="content" class="container">
+				<div class="jumbotron no-padding-bottom font-rammetto-one text-center" style="background-color: inherit;">
+					<h1><span class="cursor-pointer text-primary" onclick="searchSubjectsPopupFeed.Toggle(0);">S</span>ubjects</h1>
+				</div>
+				<section id="section-main" class="border-boxed expanded no-margin no-padding">
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<a class="hover-text-decor-none" href="subject.html?id=Computer Science">
+								<article id="article-1" class="border-boxed expanded no-margin padding-sm solid-border border-xs border-gray edged no-border-bottom text-center" style="height: 100px;">
+									<img src="storage/subjects/Computer Science/icon.png" width="40" height="40"/><p name="id" class="font-times-new-roman font-sm">Computer Science</p>
+								</article>
+							</a>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<a class="hover-text-decor-none" href="subject.html?id=Electronics">
+								<article id="article-2" class="border-boxed expanded no-margin padding-sm solid-border border-xs border-gray edged no-border-bottom text-center" style="height: 100px;">
+									<img src="storage/subjects/Electronics/icon.png" width="40" height="40"/><p name="id" class="font-times-new-roman font-sm">Electronics</p>
+								</article>
+							</a>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<a class="hover-text-decor-none" href="subject.html?id=Mathematics">
+								<article id="article-3" class="border-boxed expanded no-margin padding-sm solid-border border-xs border-gray edged no-border-bottom text-center" style="height: 100px;">
+									<img src="storage/subjects/Mathematics/icon.png" width="40" height="40"/><p name="id" class="font-times-new-roman font-sm">Mathematics</p>
+								</article>
+							</a>
+						</div>
+					</div>
+				</section>
+				<section id="section-info" class="jumbotron border-boxed expanded no-margin no-padding padding-top-lg padding-bottom-lg solid-border border-xs border-gray super-edged no-border-bottom">
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<h2 class="font-times-new-roman">Our competition covers just a few academic fields.</h2>
+							<p class="font-times-new-roman">
+								Right now we handle a certain number of different academic fields that span a moderate number of individual subjects.
+								Of course we’re adding more all the time.
+								Take a look at our subjects and browse through them using our search function (click on the "S" on the beginning of the page)!
+								To clear the search filter, search again without any filter!<br/>
+								Tutor Center is the best place to get help with any subject that you need!<br/>
+							</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<h2 class="font-times-new-roman">Only experts, no one else!</h2>
+							<p class="font-times-new-roman">
+								Most of our tutors hold advanced degrees in their fields of study, not just master’s degrees in education.
+								When you’re on Tutor Center browsing through the subject listings, rest assured we have tutors who really know each subject!
+							</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<h2 class="font-times-new-roman">Missing something?</h2>
+							<p class="font-times-new-roman">
+								If you're searching for a subject and can't find it in our list, get in touch with us.
+								We’ll find the right tutor for it and add it to our list. We'll take care of you!
+							</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<h2 class="font-times-new-roman">Need help?</h2>
+							<p class="font-times-new-roman">
+								You can send us an email (dekanat@etf.bg.ac.rs) or get in touch with us by calling at +381 11/32-26-992.
+							</p>
+						</div>
+					</div>
+				</section>
+			</div>
+			<footer id="footer-main" class="border-boxed expanded">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+							<div class="row">
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-2"></div>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-8">
+									<p class="font-cookie font-lg text-bright"><i>Tutor<span class="text-info">Center</span></i><p>
+									<p class="font-times-new-roman font-xs text-bright"><b><a class="hover-text-decor-none text-bright" href="index.html">Home Page</a></b> - <b><a class="hover-text-decor-none text-bright" href="#">Blog</a></b></p>
+									<p class="font-times-new-roman font-xs text-bright">ETF © 2018</p>
+								</div>
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-2"></div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+							<div class="row margin-top-md">
+								<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right">
+									<i class="fa fa-map-marker icon-square-md"></i>
+								</div>
+								<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 text-left">
+									<p class="no-margin font-times-new-roman font-xs text-bright">
+										Bulevar kralja Aleksandra 73
+									</p>
+									<p class="no-margin font-times-new-roman font-xs text-bright">
+										<b>Belgrade, Republic of Serbia</b>
+									</p>
+								</div>
+							</div>
+							<div class="row margin-top-md">
+								<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right">
+									<i class="fa fa-phone icon-square-md"></i>
+								</div>
+								<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 text-left">
+									<p class="font-times-new-roman font-sm text-bright">
+										<b>+381 11/32-26-992</b>
+									</p>
+								</div>
+							</div>
+							<div class="row margin-top-md">
+								<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right">
+									<i class="fa fa-envelope icon-square-md"></i>
+								</div>
+								<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 text-left">
+									<p class="font-times-new-roman font-sm text-bright">
+										<b><a class="hover-text-decor-none text-bright" href="mailto:#">dekanat@etf.bg.ac.rs</a></b>
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+							<div class="row">
+								<div class="col-lg-3 col-md-2 col-sm-3 col-xs-2"></div>
+								<div class="col-lg-6 col-md-8 col-sm-6 col-xs-8">
+									<div class="row margin-top-xs">
+										<p class="font-times-new-roman font-sm text-bright">Tutor Center</p>
+									</div>
+									<div class="row margin-top-xs">
+										<p class="font-times-new-roman font-xs text-bright">
+											Student project in Principles of Software Engineering<br/>
+											Designed by Plan B<br/>
+											Developed by Plan B
+										</p>
+									</div>
+									<div class="row margin-top-xs">
+										<a href="#"><i class="fa fa-facebook icon-oval-md"></i></a>
+										<a href="#"><i class="fa fa-twitter icon-oval-md"></i></a>
+										<a href="#"><i class="fa fa-linkedin icon-oval-md"></i></a>
+										<a href="#"><i class="fa fa-github icon-oval-md"></i></a>
+									</div>
+								</div>
+								<div class="col-lg-3 col-md-2 col-sm-3 col-xs-2"></div>
+							</div>
+						</div>
+					</div>
+					<div class="row hidden-lg hidden-md" style="height: 10px;"></div>
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>

@@ -39,7 +39,7 @@ class Popup
 	ToString()
 	{
 		return "" +
-			"<div id=\"" + this.id + "\" class=\"modal fade\" role=\"dialog\">" +
+			"<div id=\"" + this.id + "\" class=\"modal fade above-top-content-fixed\" role=\"dialog\">" +
 				"<div class=\"modal-dialog\">" +
 					"<div class=\"modal-content\">" +
 						"<div class=\"modal-header\"></div>" +
@@ -67,7 +67,7 @@ class AlertPopup extends Popup
 	ToString()
 	{
 		return "" +
-			"<div id=\"" + this.id + "\" class=\"modal fade\" role=\"dialog\">" +
+			"<div id=\"" + this.id + "\" class=\"modal fade above-top-content-fixed\" role=\"dialog\">" +
 				"<div class=\"modal-dialog\"></div>" +
 			"</div>";
 	}
@@ -123,7 +123,7 @@ class Alert
 		{
 			return "" +
 				"<div class=\"alert alert-" + type + " alert-dismissible fade in\">" +
-					"<a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" +
+					"<a href=\"#\" class=\"close\" data-dismiss=\"modal\" aria-label=\"close\">&times;</a>" +
 					content +
 				"</div>";
 		}
