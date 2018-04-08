@@ -8,6 +8,13 @@ Pinovano:
 		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTmjv_17LFv0zZRK8TKPEY8Pghk_x2h0I0&callback=initMap" type="text/javascript"></script>
 
 Verzije:
+	-"DB Model"
+		1. Dodat model baze podataka
+		2. Dokumentovan model baze podataka
+		3. Dodat MySQL Export (samo prazne tabele)
+		4. Dokumentacija transakcija promenjena (PZ, SSU Zakljuèavanje i Transakcije)
+		5. Folder "sistem" preimenovan u "prototip"
+		6. Kreiran folder "sistem"
 	-"Project Base"
 		1. Dodata "about.html" stranica, kao i google.maps navigacija na njoj
 		2. Dodata "subjects.html" stranica, kao i funkcionalnost pretrage samo kategorija
