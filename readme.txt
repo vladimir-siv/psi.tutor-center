@@ -8,6 +8,12 @@ Pinovano:
 		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTmjv_17LFv0zZRK8TKPEY8Pghk_x2h0I0&callback=initMap" type="text/javascript"></script>
 
 Verzije:
+	-"FR"
+		1. Folder "sistem" preimenovan u "public_html"
+		2. Kreiran folder "tmp"
+		3. Kreirana stranica public_html/index.php (prazna)
+		4. Uploadovan CodeIgniter framework (upakovan) u tmp folder
+		5. Uraðen FR (arhiviran u okviru foldera dokumentacija)
 	-"DB Model"
 		1. Dodat model baze podataka
 		2. Dokumentovan model baze podataka
