@@ -137,6 +137,6 @@ $(document).ready(function()
 	registerPopupFeed = new RegisterPopupFeed("register");
 	registerPopupFeed.Subscribe(mainPopup);
 	
-	alertPopupFeed = new AlertPopupFeed(Alert.New("success", "<b>Success!</b> The job is done.", false));
+	alertPopupFeed = new AlertPopupFeed(Alert.New("success", "<b>Success!</b> The job is done.", true, "modal"));
 	alertPopupFeed.Subscribe(alertPopup);
 });

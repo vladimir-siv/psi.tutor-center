@@ -23,6 +23,15 @@ body { background-color: #eaeaea; }
 .expanded { width: 100%; }
 .fillup { height: 100%; }
 
+.valign-baseline { vertical-align: baseline; }
+.valign-sub { vertical-align: sub; }
+.valign-super { vertical-align: super; }
+.valign-top { vertical-align: top; }
+.valign-text-top { vertical-align: text-top; }
+.valign-middle { vertical-align: middle; }
+.valign-bottom { vertical-align: bottom; }
+.valign-text-bottom { vertical-align: text-bottom; }
+
 .no-margin { margin: 0px; }
 .margin-xs { margin: 5px; }
 .margin-sm { margin: 15px; }

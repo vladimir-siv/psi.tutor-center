@@ -8,6 +8,10 @@ Pinovano:
 		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTmjv_17LFv0zZRK8TKPEY8Pghk_x2h0I0&callback=initMap" type="text/javascript"></script>
 
 Verzije:
+	-"Prototype"
+		1. Prototip uraðen do kraja
+		2. Iz tmp foldera izbrisan CodeIgniter 3.0.0
+		3. Raspakovan CodeIgniter 3.1.8 u public_html i podešen
 	-"FR"
 		1. Folder "sistem" preimenovan u "public_html"
 		2. Kreiran folder "tmp"

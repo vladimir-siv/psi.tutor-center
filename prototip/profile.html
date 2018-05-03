@@ -1,0 +1,277 @@
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<meta name="author" content="Vladimir Sivčev">
+		<meta name="description" content="Custom description">
+		
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<!--<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>-->
+		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Indie+Flower">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rammetto+One">
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Cookie">
+		
+		<link rel="stylesheet" type="text/css" href="css/utility.css">
+		<link rel="stylesheet" type="text/css" href="css/addition.css">
+		<link rel="stylesheet" type="text/css" href="css/layout.css">
+		<link rel="stylesheet" type="text/css" href="css/stylization.css">
+		<script type="text/javascript" src="style-js/utility.style.js"></script>
+		<script type="text/javascript" src="style-js/fixed-dynamic.style.js"></script>
+		<script type="text/javascript" src="js/popups.js"></script>
+		<script type="text/javascript" src="js/config.js"></script>
+		<script type="text/javascript" src="js/views.js"></script>
+		<script type="text/javascript" src="js/subject-search.js"></script>
+		<script type="text/javascript" src="ajax/actions.ajax.js"></script>
+		
+		<link rel="icon" href="res/favicon.ico">
+		<title>Tutor Center</title>
+	</head>
+	<body class="fillup">
+		<div id="wrapper" class="border-boxed expanded fillup">
+			<div id="top-content-fixed" class="border-boxed expanded p-fixed on-top">
+				<header id="header-fixed" class="border-boxed expanded p-fixed top-trans-fast">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-right">
+								<a href="index.html"><img src="res/logo.png" class="img-circle" height="40px" alt="logo"></a>
+							</div>
+							<div class="col-lg-7 col-md-8 col-sm-6 col-xs-6 text-center"> </div>
+							<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 text-center">
+								<a class="btn btn-xs btn-link btn-link-light" onclick="registerPopupFeed.Toggle(0);"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+								<a class="btn btn-xs btn-link btn-link-light" onclick="loginPopupFeed.Toggle(0);"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+							</div>
+							<div class="col-lg-1 hidden-md hidden-sm hidden-xs"></div>
+						</div>
+					</div>
+				</header>
+			</div>
+			<header id="header-main" class="border-boxed expanded">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-right">
+							<a href="index.html"><img src="res/logo.png" class="img-circle" height="80px" alt="logo"></a>
+						</div>
+						<div class="col-lg-3 col-md-3 col-sm-2 hidden-xs text-center">
+						</div>
+						<div class="col-lg-2 col-md-2 col-sm-2 hidden-xs text-center">
+							<a href="index.html"><img src="res/heading.png" alt="heading"></a>
+						</div>
+						<div class="col-lg-5 col-md-5 col-sm-6 col-xs-10 text-center">
+							<div class="row" style="height: 40px; padding-top: 3px;">
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+								</div>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+									<a class="btn btn-md btn-link btn-link-light" onclick="registerPopupFeed.Toggle(0);"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+								</div>
+							</div>
+							<div class="row" style="height: 40px; padding-top: 3px;">
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+								</div>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+									<a class="btn btn-md btn-link btn-link-light" onclick="loginPopupFeed.Toggle(0);"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</header>
+			<nav id="navbar-main" class="navbar navbar-inverse">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="index.html">Tutor Center</a>
+					</div>
+					<ul class="nav navbar-nav">
+						<li><a href="index.html"><i class="glyphicon glyphicon-home"> Home</i></a></li>
+						<li class="subjects.html"><a href="subjects.html"><i class="glyphicon glyphicon-list-alt"> Subjects</i></a></li>
+						<li><a href="active"><i class="glyphicon glyphicon-education"> Tutors</i></a></li>
+						<li><a href="library.html"><i class="glyphicon glyphicon-briefcase"> Library</i></a></li>
+						<li><a href="about.html"><i class="glyphicon glyphicon-info-sign"> About</i></a></li>
+					</ul>
+				</div>
+			</nav>
+			<div id="content" class="container">
+				<div class="jumbotron no-padding-bottom text-center text-secondary" style = "background-color:inherit">
+					<img class="rounded-oval" src="storage/users/miodrag-milošević/avatar.png" width="120" height="120"/>
+					<p class="font-times-new-roman" style = "font-size : 50px">Miodrag Milosevic</p>
+				</div>
+				<div class = "row">
+				   <div class = "col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				       <div class = "font-md text-center font-times-new-roman">
+					   <h2>Online Tutoring Subjects</h2>
+						    <a href = "subject.html?id=Computer Science" class = "btn rounded-md btn-info font-rammetto-one">Computer Science</a>
+						    <a href = "subject.html?id=Electronics" class = "btn rounded-md btn-info font-rammetto-one">Electronics</a>
+						    <a href = "subject.html?id=Mathematics" class = "btn rounded-md btn-info font-rammetto-one">Mathematics</a>
+						    <h2>About tutor:</h2>
+					   </div>
+                       <div class = "text-justify font-times-new-roman">
+					   <p id = "aboutTutor">Driven by an implacable urge to learn, explore, communicate, and share knowledge with others, 
+					   duova offers a unique background and perspective as a tutor. He spent most of his childhood years growing up in Texas, 
+					   lived abroad for a few years in France, completed high school in New Hampshire, and most recently graduated with undergraduate
+					   and graduate degrees from MIT. duova has been playing an active role as an educator and tutor for the past several years,
+					   administering undergraduate and high school-level courses at MIT and tutoring individual students on (primarily)
+					   quantitative subjects: especially math, physics, and computer science. Professionally he works in the high tech
+					   industry as an integrated circuit design engineer.</p>
+					   <center><button class = "btn rounded-md btn-info font-rammetto-one" onclick = "btnClickAboutTutor();">Change</button></center>
+					   </div>					   
+				   </div>
+				   <div class = "col-lg-6 col-md-6 col-sm-12 col-xs-12 font-times-new-roman font-md text-center">
+						   <h2>Tutor Details:</h2>
+						   <table class = "table table-hover text-center font-times-new-roman " width = "100%">
+						      <tr>
+							    <td>FirstName: </td>
+								<td><b>Miodrag</b></td>
+							  </tr>
+							  <tr>
+							    <td>LastName:</td>
+								<td><b>Milosevic</b></td>
+							  </tr>
+							  <tr>
+							    <td>Email:</td>
+								<td><b>miodragmilosevic96@gmail.com</b></td>
+							  </tr>
+							  <tr>
+							    <td>BirthDate:</td>
+								<td><b>13.12.1996</b></td>
+							  </tr>
+							  <tr>
+							    <td>Completed:</td>
+								<td><b>3000 requests</b></td>
+							  </tr>
+							  <tr>
+							    <td>Degree:</td>
+								<td>
+								   <span class="glyphicon glyphicon-star text-warning"></span>
+								   <span class="glyphicon glyphicon-star text-warning"></span>
+								   <span class="glyphicon glyphicon-star text-warning"></span>
+								   <span class="glyphicon glyphicon-star text-warning"></span>
+								   <span class="glyphicon glyphicon-star text-warning"></span>								
+								</td>
+							  </tr>
+						   </table>
+						   <center><button class = "btn rounded-md btn-info font-rammetto-one" onclick = "btnClickTutorDatails();">Change</button></center>
+				   </div>					   
+				</div>
+				<div id = "tutor-review" class = "row">
+				   <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				      <h2>Tutor-review:</h2>
+					  <table class = "table table-bordered table-striped table-dark">
+					     <tr>
+						    <td style = "width:15%">Degree:<br/>
+								<span class="glyphicon glyphicon-star text-warning"></span>
+								<span class="glyphicon glyphicon-star text-warning"></span>
+								<span class="glyphicon glyphicon-star text-warning"></span>
+								<span class="glyphicon glyphicon-star text-warning"></span>
+								<span class="glyphicon glyphicon-star text-warning"></span>
+							</td>
+							<td style = "width: 85%">Comment: I was a little skeptical about this, but everything went smoothly. I would highly recommend this service</td>
+						 </tr>
+						 <tr>
+						    <td style = "width:15%">Degree:<br/>
+								<span class="glyphicon glyphicon-star text-warning"></span>
+								<span class="glyphicon glyphicon-star text-warning"></span>
+								<span class="glyphicon glyphicon-star text-warning"></span>
+								<span class="glyphicon glyphicon-star text-warning"></span>
+								<span class="glyphicon glyphicon-star text-warning"></span>
+							</td>
+							<td style = "width: 85%">Comment: I was a little skeptical about this, but everything went smoothly. I would highly recommend this service</td>
+						 </tr>
+						 <tr>
+						    <td style = "width:15%">Degree:<br/>
+								<span class="glyphicon glyphicon-star text-warning"></span>
+								<span class="glyphicon glyphicon-star text-warning"></span>
+								<span class="glyphicon glyphicon-star text-warning"></span>
+								<span class="glyphicon glyphicon-star text-warning"></span>
+								<span class="glyphicon glyphicon-star text-warning"></span>
+							</td>
+							<td style = "width: 85%">Comment: I was a little skeptical about this, but everything went smoothly. I would highly recommend this service</td>
+						 </tr>
+					  </table>
+				   </div>
+				</div>
+			</div>
+			<footer id="footer-main" class="border-boxed expanded">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+							<div class="row">
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-2"></div>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-8">
+									<p class="font-cookie font-lg text-bright"><i>Tutor<span class="text-info">Center</span></i><p>
+									<p class="font-times-new-roman font-xs text-bright"><b><a class="hover-text-decor-none text-bright" href="index.html">Home Page</a></b> - <b><a class="hover-text-decor-none text-bright" href="#">Blog</a></b></p>
+									<p class="font-times-new-roman font-xs text-bright">ETF © 2018</p>
+								</div>
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-2"></div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+							<div class="row margin-top-md">
+								<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right">
+									<i class="fa fa-map-marker icon-square-md"></i>
+								</div>
+								<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 text-left">
+									<p class="no-margin font-times-new-roman font-xs text-bright">
+										Bulevar kralja Aleksandra 73
+									</p>
+									<p class="no-margin font-times-new-roman font-xs text-bright">
+										<b>Belgrade, Republic of Serbia</b>
+									</p>
+								</div>
+							</div>
+							<div class="row margin-top-md">
+								<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right">
+									<i class="fa fa-phone icon-square-md"></i>
+								</div>
+								<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 text-left">
+									<p class="font-times-new-roman font-sm text-bright">
+										<b>+381 11/32-26-992</b>
+									</p>
+								</div>
+							</div>
+							<div class="row margin-top-md">
+								<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right">
+									<i class="fa fa-envelope icon-square-md"></i>
+								</div>
+								<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 text-left">
+									<p class="font-times-new-roman font-sm text-bright">
+										<b><a class="hover-text-decor-none text-bright" href="mailto:#">dekanat@etf.bg.ac.rs</a></b>
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+							<div class="row">
+								<div class="col-lg-3 col-md-2 col-sm-3 col-xs-2"></div>
+								<div class="col-lg-6 col-md-8 col-sm-6 col-xs-8">
+									<div class="row margin-top-xs">
+										<p class="font-times-new-roman font-sm text-bright">Tutor Center</p>
+									</div>
+									<div class="row margin-top-xs">
+										<p class="font-times-new-roman font-xs text-bright">
+											Student project in Principles of Software Engineering<br/>
+											Designed by Plan B<br/>
+											Developed by Plan B
+										</p>
+									</div>
+									<div class="row margin-top-xs">
+										<a href="#"><i class="fa fa-facebook icon-oval-md"></i></a>
+										<a href="#"><i class="fa fa-twitter icon-oval-md"></i></a>
+										<a href="#"><i class="fa fa-linkedin icon-oval-md"></i></a>
+										<a href="#"><i class="fa fa-github icon-oval-md"></i></a>
+									</div>
+								</div>
+								<div class="col-lg-3 col-md-2 col-sm-3 col-xs-2"></div>
+							</div>
+						</div>
+					</div>
+					<div class="row hidden-lg hidden-md" style="height: 10px;"></div>
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>

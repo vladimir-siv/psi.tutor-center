@@ -35,8 +35,8 @@
 	</head>
 	<body class="fillup">
 		<div id="wrapper" class="border-boxed expanded fillup">
-			<div id="top-content-fixed" class="border-boxed expanded overflow-hidden p-fixed on-top">
-				<header id="header-fixed" class="border-boxed expanded overflow-hidden p-fixed top-trans-fast">
+			<div id="top-content-fixed" class="border-boxed expanded p-fixed on-top">
+				<header id="header-fixed" class="border-boxed expanded p-fixed top-trans-fast">
 					<div class="container-fluid">
 						<div class="row">
 							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-right">
@@ -101,7 +101,7 @@
 					<h1><span class="text-primary">L</span>ibrary</h1>
 				</div>
 				<section id="section-main" class="border-boxed expanded no-margin no-padding margin-bottom-md">
-					<article id="article-1">
+					<article id="search-filters">
 						<div class="row">
 							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<div class="input-group">
@@ -118,7 +118,13 @@
 						</div>
 						<div class="row">
 							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<button type="button" class="btn btn-primary btn-sm btn-block" onclick="searchdb('subject-section:replace', [$('#section-main #article-1 #search-subject')[0].value, $('#section-main #article-1 #search-section')[0].value]);">Search</button>
+								<button type="button" class="btn btn-primary btn-sm btn-block" onclick="callbackParameters = [$('#section-main #search-filters #search-sections-result-display')[0], new LinkSectionSearchResult()]; searchdb('subject-section:replace', [$('#section-main #search-filters #search-subject')[0].value, $('#section-main #search-filters #search-section')[0].value]);">Search</button>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<div id="search-sections-result-display" class="border-boxed expanded padding-xs padding-top-md" style="line-height: 200%;">
+								</div>
 							</div>
 						</div>
 					</article>

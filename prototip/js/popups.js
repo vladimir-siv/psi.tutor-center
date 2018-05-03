@@ -117,13 +117,13 @@ class PopupFeed
 
 class Alert
 {
-	static New(type, content, dismissable = true)
+	static New(type, content, dismissable = true, dismiss="alert")
 	{
 		if (dismissable)
 		{
 			return "" +
 				"<div class=\"alert alert-" + type + " alert-dismissible fade in\">" +
-					"<a href=\"#\" class=\"close\" data-dismiss=\"modal\" aria-label=\"close\">&times;</a>" +
+					"<a href=\"#\" class=\"close\" data-dismiss=\"" + dismiss + "\" aria-label=\"close\">&times;</a>" +
 					content +
 				"</div>";
 		}
@@ -136,3 +136,8 @@ class Alert
 		}
 	}
 }
+
+$(document).ready(function()
+{
+	$('[data-toggle="popover"]').popover();
+});
