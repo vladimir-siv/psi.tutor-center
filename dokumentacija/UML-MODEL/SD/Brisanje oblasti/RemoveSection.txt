@@ -1,0 +1,49 @@
+@startuml
+
+title [SD] Remove Section
+hide footbox
+
+actor Client
+participant "[section]" as Cpage <<client page>>
+participant SectionDialog <<dialog>>
+participant "[Spage]" as Spage<<server page>>
+database Database <<database>>
+
+autonumber "<i>#</i>:"
+
+Client ->> Cpage: sectionButton.click()
+note right : Open page\nof this\nsection
+
+activate Cpage
+
+Cpage -> Client : <<await click on remove>>
+
+Client --> Cpage : deleteSection()
+
+Cpage -> SectionDialog : openSectionDialog()
+activate SectionDialog
+
+SectionDialog -> Client : <<await click confirm>>
+
+alt confirm
+    Client --> Cpage : confirm
+    Cpage --> SectionDialog : close()
+
+    Cpage -> Spage : removeSection()
+    activate Spage
+    Spage ->> Database : removeSection()
+    loop foreach Tutor in Section
+        Spage ->> Database : removeTutorFromSection()
+    end
+    Spage --> Cpage : removed
+    Cpage --> Client : ok
+    deactivate Spage
+else !confirm
+   Client --> Cpage : reject
+   Cpage ->> SectionDialog : close()
+   deactivate SectionDialog
+   note right : Use case\nback to step 2
+   deactivate Cpage
+end
+
+@enduml

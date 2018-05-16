@@ -1,0 +1,50 @@
+@startuml
+
+title [SD] Komunikacija na postu
+hide footbox
+
+actor User
+participant post.html <<client page>>
+participant Utility.php <<server page>>
+database Database <<database>>
+collections PostViewers
+collections Repliers
+
+autonumber "<i>#</i>:"
+
+User ->> post.html: reply(message)
+activate post.html
+post.html ->> Utility.php: <<ajax>> reply(data{message})
+deactivate post.html
+
+activate Utility.php
+Utility.php -> Utility.php: validate(data)
+activate Utility.php
+deactivate Utility.php
+
+opt dataIsValid
+
+    Utility.php -> Database: <<insert>> reply
+    activate Database
+    Database -->> Utility.php: success1
+    deactivate Database
+
+    Utility.php ->> PostViewers: <<push>> reply
+
+    Utility.php -> Database: <<insert>> post repliers\nnotification
+    activate Database
+    Database -->> Utility.php: success2
+    deactivate Database
+
+    Utility.php ->> Repliers: <<push>> notification
+
+end
+
+Utility.php ->> post.html: isSuccessful
+deactivate Utility.php
+
+activate post.html
+post.html ->> User: <<display>> isSuccessful
+deactivate post.html
+
+@enduml

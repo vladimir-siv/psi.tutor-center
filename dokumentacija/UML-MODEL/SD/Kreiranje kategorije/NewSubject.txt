@@ -1,0 +1,36 @@
+@startuml
+
+title [SD] New Subject
+hide footbox
+
+actor Client
+participant "[Cpage]" as Cpage <<client page>>
+participant CreateSubjectDialog <<dialog>>
+participant "[Spage]" as Spage<<server page>>
+database Database <<database>>
+
+autonumber "<i>#</i>:"
+
+Client ->> Cpage : page.open()
+activate Cpage
+note right : Button to add new subject\nis on every page in header
+Cpage ->> CreateSubjectDialog : createSubject()
+activate CreateSubjectDialog
+CreateSubjectDialog-> Client : <<await input>>
+Client --> CreateSubjectDialog: confirm
+
+CreateSubjectDialog->> Spage : <<ajax>>input
+activate Spage
+Spage -> Database : isInBaseThisSubject()
+activate Database
+Database --> Spage :  inBase
+deactivate Database
+break inBase
+  Spage -->> CreateSubjectDialog: error
+  note right : End of SSU
+end
+Spage -->> Cpage : ok
+Cpage -->> Client : ok
+deactivate Cpage
+deactivate CreateSubjectDialog
+@enduml

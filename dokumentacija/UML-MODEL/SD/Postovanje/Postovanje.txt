@@ -1,0 +1,50 @@
+@startuml
+
+title [SD] Postovanje
+hide footbox
+
+actor User
+participant "create-post.html" as Cpage <<client page>>
+participant "post.html" as Cpage2 <<client page>>
+participant "Utility.php" as Spage <<server page>>
+database Database <<database>>
+collections SectionSubscribers
+
+autonumber "<i>#</i>:"
+
+activate Cpage
+Cpage-> User: <<await input>>
+User-->> Cpage: <<input data>>\n(title, subject)
+ref over User, Cpage, Spage, Database : PretragaOblastiSD
+User-->> Cpage: <<input data>>\n(section[], type, description)
+opt type.isWork()
+User-->> Cpage: <<input data>>(document[])
+end
+User->>Cpage: postButton.click()
+Cpage->> Spage: <<ajax>> createPost\n(title, subject, section[], type,\n description, document[])
+activate Spage
+Spage-> Spage:  validate\n(title, subject, section[], type,\n description, document[])
+opt data.isValid()
+Spage-> Database:  <<insert>> post
+activate Database
+Database-->> Spage: success
+opt success
+loop foreach(section in section[])
+Spage->>SectionSubscribers:<<push>>notification
+end
+end
+deactivate Database
+end
+Spage->> Cpage: postCreated
+deactivate Spage
+alt postCreated
+    Cpage ->> User: <<display>> success
+    Cpage ->> Cpage2: <<redirect>>
+    destroy Cpage
+else
+    Cpage ->> User: <<display>> error
+    note right: Use case\nback to step 2
+end
+
+
+@enduml

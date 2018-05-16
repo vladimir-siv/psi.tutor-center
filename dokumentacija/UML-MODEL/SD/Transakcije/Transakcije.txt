@@ -1,0 +1,127 @@
+@startuml
+
+title [SD] Transakcije
+hide footbox
+
+actor User
+actor Tutor
+participant post.html <<client page>>
+participant Utility.php <<server page>>
+database Database <<database>>
+
+autonumber "<i>#</i>:"
+
+User ->> post.html: submitTokens(amount)
+activate post.html
+post.html ->> Utility.php: submitTokens(post, amount)
+deactivate post.html
+
+activate Utility.php
+Utility.php -> Utility.php: validate(data)
+activate Utility.php
+deactivate Utility.php
+
+Utility.php -> Database: <<select>> user tokens
+activate Database
+Database -->> Utility.php: tokens
+deactivate Database
+
+break invalidData
+    Utility.php ->> post.html: <<send>> error
+    activate post.html
+    post.html ->> User: <<display>> error
+    deactivate post.html
+end
+
+Utility.php -> Database: <<update>>\nuser tokens & post tokens
+activate Database
+Database -->> Utility.php: success
+deactivate Database
+
+Utility.php ->> post.html: notifyTutor
+deactivate Utility.php
+
+activate post.html
+post.html ->> Tutor: <<display>> notification
+deactivate post.html
+
+...
+
+break
+    alt
+        User ->> post.html: decline()
+        activate post.html
+    else
+        Tutor ->> post.html: decline()
+    end
+    
+    post.html ->> Utility.php: decline(post)
+    deactivate post.html
+
+    activate Utility.php
+    Utility.php -> Database: update post & user tokens
+    activate Database
+    Database -->> Utility.php: success
+    deactivate Database
+    deactivate Utility.php
+end
+
+Tutor ->> post.html: accept
+activate post.html
+post.html ->> Utility.php: accept(post)
+deactivate post.html
+
+activate Utility.php
+Utility.php -> Database: <<update>> post
+activate Database
+Database -->> Utility.php: success
+deactivate Database
+
+Utility.php ->> post.html: notifyUser
+deactivate Utility.php
+activate post.html
+post.html ->> User: <<display>> notification
+deactivate post.html
+
+...
+
+break
+    alt
+        User ->> post.html: decline()
+        activate post.html
+    else
+        Tutor ->> post.html: decline()
+    end
+    
+    post.html ->> Utility.php: decline(post)
+    deactivate post.html
+
+    activate Utility.php
+    Utility.php -> Database: update post & user tokens
+    activate Database
+    Database -->> Utility.php: success
+    deactivate Database
+    deactivate Utility.php
+end
+
+Tutor ->> post.html: upload(result)
+activate post.html
+post.html ->> Utility.php: upload(post, result)
+deactivate post.html
+
+activate Utility.php
+
+Utility.php -> Database: <<update>> post & tutor tokens
+activate Database
+Database -->> Utility.php: success
+deactivate Database
+
+Utility.php ->> post.html: notifyBoth
+deactivate Utility.php
+
+activate post.html
+post.html ->> Tutor: <<display>> notification
+post.html ->> User: <<display>> notification
+deactivate post.html
+
+@enduml

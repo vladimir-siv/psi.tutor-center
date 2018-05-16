@@ -1,0 +1,35 @@
+@startuml
+
+title [SD] Prijava pracenja
+hide footbox
+
+actor Tutor
+participant "section.html" as Cpage <<client page>>
+participant "Tutor.php" as Spage <<server page>>
+database Database <<database>>
+
+autonumber "<i>#</i>:"
+
+ref over Tutor, Cpage, Spage, Database : PretragaOblastiSD
+activate Cpage
+Cpage-> Tutor: <<await event>>
+
+
+alt subscribeButton.enabled
+Tutor->> Cpage: subscribeButton.click()
+Cpage->> Spage: <<ajax>> subscribe()
+activate Spage
+Spage-> Spage:  validate()
+Spage-> Database:  <<insert>>section_subscription
+activate Database
+Database-->> Spage: success
+deactivate Database
+Spage->> Cpage: outcome
+deactivate Spage
+Cpage ->> Tutor: <<display>> outcome
+    Cpage -> Cpage: refresh()
+else 
+    note right of Tutor: Desired action is not enabled, use case finished
+end
+ 
+@enduml

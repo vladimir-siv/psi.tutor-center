@@ -8,6 +8,8 @@ Pinovano:
 		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTmjv_17LFv0zZRK8TKPEY8Pghk_x2h0I0&callback=initMap" type="text/javascript"></script>
 
 Verzije:
+	-"UML"
+		1. Dodat UML model aplikacije
 	-"Prototype"
 		1. Prototip uraðen do kraja
 		2. Iz tmp foldera izbrisan CodeIgniter 3.0.0

@@ -1,0 +1,53 @@
+@startuml
+
+title [SD] Registracija
+hide footbox
+
+actor Guest
+participant "[Cpage]" as Cpage <<client page>>
+participant RegisterDialog <<dialog>>
+participant "Utility.php" as Spage <<server page>>
+database Database <<database>>
+
+autonumber "<i>#</i>:"
+
+Guest->> Cpage: registerButton.click()
+activate Cpage
+Cpage -> RegisterDialog : show()
+
+activate RegisterDialog 
+RegisterDialog -> Guest: <<await input>>
+
+break canceled
+    Guest->> RegisterDialog: close()
+    note right: Use case finished
+end
+
+Guest-->> RegisterDialog: <<input data>>\n(name, surname,\n username, password,\n email)
+
+RegisterDialog ->> Spage: <<ajax>> register\n(name, surname,\n username, password,\n email)
+deactivate RegisterDialog 
+
+activate Spage
+Spage-> Spage:  validate\n(data)
+opt data.isValid()
+Spage -> Database: <<insert>>actor
+activate Database
+Database -->> Spage: success
+deactivate Database
+end
+Spage ->> Cpage: registrationAccepted
+deactivate Spage
+
+alt registrationAccepted
+    Cpage ->> RegisterDialog: <<display>> success
+    activate RegisterDialog 
+    Cpage -> Cpage: refresh()
+    destroy RegisterDialog 
+else
+    Cpage ->> RegisterDialog: <<display>> error
+    activate RegisterDialog 
+    note right: Use case\nback to step 3
+end
+
+@enduml

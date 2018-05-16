@@ -1,0 +1,68 @@
+@startuml
+
+title [SD] Banovanje korisnika
+hide footbox
+
+actor Administrator
+participant "profile.html" as Cpage <<client page>>
+participant BanDialog<<dialog>>
+participant "Utility.php" as Spage <<server page>>
+database Database <<database>>
+
+autonumber "<i>#</i>:"
+
+alt banButton.enabled
+Administrator->> Cpage: banButton.click()
+activate Cpage
+Cpage -> BanDialog: show()
+
+activate BanDialog
+BanDialog-> Administrator: <<await input>>
+
+break canceled
+    Administrator->> BanDialog: close()
+note right: Use case finished
+end
+alt desiredActionBan
+Administrator-->> BanDialog: <<input data>>\n(banTime)
+Administrator-->> BanDialog: confirmButton.click()
+BanDialog->> Spage: <<ajax>> banUser\n(banTime)
+deactivate BanDialog
+
+activate Spage
+Spage-> Spage:  validate(banTime)
+Spage -> Database: <<update>>actor
+activate Database
+Database -->> Spage: success
+deactivate Database
+
+Spage ->> Cpage: outcome
+deactivate Spage
+
+else desiredActionUnban
+Administrator-->> BanDialog: confirmButton.click()
+BanDialog->> Spage: <<ajax>> unbanUser()
+deactivate BanDialog
+
+activate Spage
+Spage-> Spage:  validate()
+opt data.isValid()
+Spage -> Database: <<update>>actor
+activate Database
+Database -->> Spage: success
+deactivate Database
+end
+Spage ->> Cpage: outcome
+deactivate Spage
+
+end
+alt outcome
+    Cpage ->> Administrator: <<display>> success
+    Cpage -> Cpage: refresh()
+else
+    Cpage ->> Administrator: <<display>> error
+end
+else
+note right of Administrator: User already banned/not banned. Use case finished
+end
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+
+title [SD] Pretraga oblasti
+hide footbox
+
+actor Guest
+participant "library.html" as Cpage <<client page>>
+participant "Guest.php" as Spage <<server page>>
+database Database <<database>>
+
+autonumber "<i>#</i>:"
+
+activate Cpage
+Cpage-> Guest: <<await input>>
+Guest-->> Cpage: <<input data>>\n(section_name, section_categories)
+Guest->> Cpage: searchButton.click()
+Cpage->> Spage: <<ajax>> searchSections\n(section_name, section_categories)
+activate Spage
+Spage-> Database: <<select>>section
+activate Database
+Database-->> Spage: section[]
+deactivate Database
+Spage->> Cpage: section[]
+deactivate Spage
+Cpage-> Cpage: refresh()
+
+@enduml

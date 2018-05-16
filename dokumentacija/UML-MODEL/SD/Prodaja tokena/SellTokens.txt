@@ -1,0 +1,37 @@
+@startuml
+
+title [SD] Sell Tokens
+hide footbox
+
+actor Client
+participant "[Header]" as Cpage <<client page>>
+participant SellTokensDialog <<dialog>>
+participant "[Spage]" as Spage<<server page>>
+database Database <<database>>
+
+Client ->> Cpage : page.open()
+activate Cpage
+note right : Button\nto add \nnew subject\nis on every\npage in \nheader
+Cpage ->> SellTokensDialog: sellTokens()
+activate SellTokensDialog
+SellTokensDialog-> Client : <<await input>>
+Client --> SellTokensDialog: confirm
+SellTokensDialog-> SellTokensDialog: corectParameters() : correct
+
+alt correct
+   SellTokensDialog->> Spage : <<ajax>> input
+   activate Spage
+   Spage -> Database : removeTokens()
+   activate Database
+   Database --> Spage : success
+   deactivate Database
+   Spage --> Cpage : success
+   Cpage --> Client : success
+   deactivate Spage
+else !correct
+   SellTokensDialog-->> Cpage : error
+   Cpage -->> Client : error
+   deactivate Cpage
+   deactivate SellTokensDialog
+end
+@enduml

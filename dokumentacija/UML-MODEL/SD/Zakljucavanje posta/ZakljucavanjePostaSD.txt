@@ -1,0 +1,47 @@
+@startuml
+
+title [SD] Zakljucavanje posta
+hide footbox
+
+actor Tutor
+participant "post.html" as Cpage <<client page>>
+participant "Utility.php" as Spage <<server page>>
+database Database <<database>>
+actor User
+
+autonumber "<i>#</i>:"
+
+alt postUnlocked
+Tutor->> Cpage: lockButton.click()
+activate Cpage
+
+Cpage->> Spage: <<ajax>> lockPost()
+
+activate Spage
+Spage-> Spage:  validate\n(data)
+opt data.isValid()
+Spage -> Database: <<update>> post
+activate Database
+Database -->> Spage: success
+deactivate Database
+opt success
+Spage->> User: <<push>>notification
+end
+end
+Spage ->> Cpage: postLocked
+deactivate Spage
+
+alt postLocked
+    Cpage ->> Tutor: <<display>> success
+Cpage -> Cpage: refresh()
+else
+    Cpage ->> Tutor: <<display>> error
+    note right: Use case finished
+end
+
+else !postUnlocked
+    Cpage ->> Tutor: <<display>> error
+    note right of Cpage: Use case finished
+end
+
+@enduml

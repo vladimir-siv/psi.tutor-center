@@ -1,0 +1,54 @@
+@startuml
+
+title [SD] Log in
+hide footbox
+
+actor Client
+participant "[Cpage]" as Cpage <<client page>>
+participant LoginDialog <<dialog>>
+participant "[Spage]" as Spage <<server page>>
+database Database <<database>>
+
+autonumber "<i>#</i>:"
+
+Client ->> Cpage: loginButton.click()
+activate Cpage
+Cpage -> LoginDialog: show()
+
+activate LoginDialog
+LoginDialog -> Client: <<await input>>
+
+break canceled
+    Client ->> LoginDialog: close()
+end
+
+Client -->> LoginDialog: <<input data>>\n(username, password)
+
+LoginDialog ->> Spage: <<ajax>> login\n(username, password)
+deactivate LoginDialog
+
+activate Spage
+Spage -> Database: authorize\n(username,\npassword)
+activate Database
+Database -->> Spage: authorizationAccepted
+deactivate Database
+
+opt authorizationAccepted
+    Spage -> Spage: <<session>> set
+end
+
+Spage ->> Cpage: authorizationAccepted
+deactivate Spage
+
+alt authorizationAccepted
+    Cpage ->> LoginDialog: <<display>> success
+    activate LoginDialog
+    Cpage -> Cpage: refresh()
+    destroy LoginDialog
+else
+    Cpage ->> LoginDialog: <<display>> error
+    activate LoginDialog
+    note right: Use case\nback to step 3
+end
+
+@enduml

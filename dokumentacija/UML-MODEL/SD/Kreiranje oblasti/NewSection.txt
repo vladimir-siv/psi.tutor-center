@@ -1,0 +1,44 @@
+@startuml
+
+title [SD] New Section
+hide footbox
+
+actor Client
+participant "[Header]" as Cpage <<client page>>
+participant CreateSectionDialog <<dialog>>
+participant "[Spage]" as Spage<<server page>>
+database Database <<database>>
+
+autonumber "<i>#</i>:"
+
+Client ->> Cpage : page.open()
+activate Cpage
+note right : Button to add\nnew subject\nis on every page\nin header
+Cpage ->> CreateSectionDialog: creteSection()
+activate CreateSectionDialog
+CreateSectionDialog-> Client : <<await input>>
+Client --> CreateSectionDialog: confirm
+
+CreateSectionDialog->> Spage : <<ajax>>input
+activate Spage
+Spage -> Database : isInBaseThisCategory()
+activate Database
+Database --> Spage :  inBase
+break inBase
+  Spage -->> CreateSectionDialog: error
+  note right : End of SSU
+end
+
+Spage -> Database : isCategoryInSection()
+Database --> Spage : inSection
+deactivate Database
+break inSection
+   Spage -->> CreateSectionDialog: error
+   note right : End of SSU
+end
+deactivate CreateSectionDialog
+Spage -->> Cpage : ok
+deactivate Spage
+Cpage -->> Client : ok
+deactivate Cpage
+@enduml

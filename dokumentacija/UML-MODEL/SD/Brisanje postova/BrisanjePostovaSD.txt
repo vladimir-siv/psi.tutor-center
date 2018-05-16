@@ -1,0 +1,40 @@
+@startuml
+
+title [SD] Brisanje postova
+hide footbox
+
+actor User
+participant "post.html" as Cpage <<client page>>
+participant "Utility.php" as Spage <<server page>>
+database Database <<database>>
+
+autonumber "<i>#</i>:"
+
+activate Cpage
+Cpage-> User: <<await event>>
+alt deleteButton.enabled()
+User->> Cpage: deleteButton.click()
+Cpage->> Spage: <<ajax>> deletePost()
+activate Spage
+Spage->Spage:validate()
+opt data.isValid()
+Spage-> Database:  <<update>>post
+activate Database
+Database-->> Spage: success1
+deactivate Database
+loop foreach reply
+Spage-> Database:  <<update>>reply
+activate Database
+Database-->> Spage: success2
+deactivate Database
+end
+end
+Spage->> Cpage: outcome
+deactivate Spage
+Cpage ->> User: <<display>> outcome
+Cpage -> Cpage: refresh()
+else 
+note right of User: Use case finished
+end
+ 
+@enduml

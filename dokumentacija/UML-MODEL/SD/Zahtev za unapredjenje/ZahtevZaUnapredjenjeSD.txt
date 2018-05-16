@@ -1,0 +1,46 @@
+@startuml
+title [SD] Zahtev za unapredjenje
+hide footbox
+
+actor User
+participant "req-promotion.html" as Cpage <<client page>>
+participant "profile.html" as Cpage2 <<client page>>
+participant "User.php" as Spage <<server page>>
+database Database <<database>>
+
+autonumber "<i>#</i>:"
+
+alt promoteButton.enabled
+activate Cpage
+
+Cpage-> User: <<await input>>
+User-->> Cpage: <<input data>>\n(position, message)
+opt documentsNeeded
+User-->> Cpage: <<input data>>\n(document[])
+end
+User-->> Cpage: sendButton.click()
+Cpage->> Spage: <<ajax>> requestPromotion\n(position, message, documents[])
+
+activate Spage
+Spage-> Spage:  validate\n(data)
+opt data.isValid()
+Spage -> Database: <<insert>>promo-req
+activate Database
+Database -->> Spage: success
+deactivate Database
+end
+
+Spage ->> Cpage: outcome
+deactivate Spage
+
+alt requestAccepted
+    Cpage ->> User: <<display>> success
+    Cpage ->> Cpage2: <<redirect>>
+else
+    Cpage ->> User: <<display>> error
+    note right: Use case finished
+end
+else
+note right of User: User already acquired highest rank. Use case finished
+end
+@enduml

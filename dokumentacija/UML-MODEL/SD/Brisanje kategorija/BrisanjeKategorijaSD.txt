@@ -1,0 +1,52 @@
+@startuml
+
+title [SD] Brisanje kategorija
+hide footbox
+
+actor Administrator
+participant "subject.html" as Cpage <<client page>>
+participant "Utility.php" as Spage <<server page>>
+database Database <<database>>
+
+autonumber "<i>#</i>:"
+
+activate Cpage
+Cpage-> Administrator: <<await event>>
+alt deleteButton.enabled()
+Administrator->> Cpage: deleteButton.click()
+Cpage->> Spage: <<ajax>> deleteSubject()
+activate Spage
+Spage->Spage:validate()
+opt data.isValid()
+Spage-> Database:  <<update>>subject
+activate Database
+Database-->> Spage: success1
+deactivate Database
+loop foreach section
+Spage-> Database:  <<update>>section
+activate Database
+Database-->> Spage: success2
+deactivate Database
+end
+loop foreach post
+Spage-> Database:  <<update>>post
+activate Database
+Database-->> Spage: success3
+deactivate Database
+end
+loop foreach reply
+Spage-> Database:  <<update>>reply
+activate Database
+Database-->> Spage: success4
+deactivate Database
+end
+end
+Spage->> Cpage: outcome
+deactivate Spage
+Cpage ->> Administrator: <<display>> outcome
+Cpage -> Cpage: refresh()
+else 
+note right of Administrator: Use case finished
+end
+ 
+@enduml

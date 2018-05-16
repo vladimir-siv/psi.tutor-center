@@ -1,0 +1,49 @@
+@startuml
+
+title [SD] Unapredjivanje
+hide footbox
+
+actor Administrator
+participant "view-promotion.html" as Cpage <<client page>>
+participant "promotions.html" as Cpage2 <<client page>>
+participant "Admin.php" as Spage <<server page>>
+database Database <<database>>
+actor User
+
+autonumber "<i>#</i>:"
+
+activate Cpage
+Cpage-> Administrator: <<await input>>
+Administrator->>Cpage: button.click()
+Cpage->> Spage: <<ajax>> confirmPromotion\n(promoreq, decision)
+note right: Decision based on button clicked
+activate Spage
+Spage-> Spage:  validate\n(promoreq, decision)
+opt data.isValid()
+Spage-> Database:  <<update>> promoreq
+activate Database
+Database-->> Spage: success1
+deactivate Database
+opt decision.positive()
+Spage-> Database:  <<update>> actor_rank
+activate Database
+Database-->> Spage: success2
+deactivate Database
+end
+opt (success1 && !decision.positive()) || (success1 && decision.positive() && success2)
+Spage->>User:<<push>>notification
+end
+end
+Spage->> Cpage: promoReqOutcome
+deactivate Spage
+alt promoReqOutcome
+    Cpage ->> Administrator: <<display>> success
+    Cpage ->> Cpage2: <<redirect>>
+    destroy Cpage
+else
+    Cpage ->> Administrator: <<display>> error
+    note right: Use case\nback to step 2
+end
+
+
+@enduml

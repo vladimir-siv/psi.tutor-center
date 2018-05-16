@@ -1,0 +1,37 @@
+@startuml
+
+title [SD] Profile
+hide footbox
+
+actor Client
+participant "[profile]" as Cpage <<client page>>
+participant Profile <<dialog>>
+participant "[Spage]" as Spage<<server page>>
+database Database <<database>>
+
+autonumber "<i>#</i>:"
+
+Client ->> Cpage : page.open()
+activate Cpage
+Cpage ->> Profile : changeTutorDatails()
+activate Profile
+Profile -> Client : <<await input>>
+break cancel
+Client --> Profile
+note right : End of SSU
+end
+Client --> Profile : confirm
+Profile -> Profile : checkNewAndOldPass() : correct
+break !correct
+Profile -> Client : error
+end
+deactivate  Profile
+Profile ->> Spage : <<ajax>>input
+activate Spage
+Spage ->> Database : changeInput()
+deactivate Spage
+Spage -->> Cpage : ok
+Cpage -->> Client
+deactivate Cpage
+
+@enduml
