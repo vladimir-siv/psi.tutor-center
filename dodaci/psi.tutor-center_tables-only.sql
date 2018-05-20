@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.8.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 08, 2018 at 04:04 PM
--- Server version: 10.1.30-MariaDB
--- PHP Version: 7.2.1
+-- Generation Time: May 20, 2018 at 05:54 PM
+-- Server version: 10.1.31-MariaDB
+-- PHP Version: 7.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -29,7 +29,7 @@ USE `psi.tutor-center`;
 --
 -- Table structure for table `action`
 --
--- Creation: Apr 08, 2018 at 02:00 PM
+-- Creation: May 20, 2018 at 03:52 PM
 --
 
 DROP TABLE IF EXISTS `action`;
@@ -42,12 +42,17 @@ CREATE TABLE `action` (
 -- RELATIONSHIPS FOR TABLE `action`:
 --
 
+--
+-- Truncate table before insert `action`
+--
+
+TRUNCATE TABLE `action`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `actor`
 --
--- Creation: Apr 08, 2018 at 02:00 PM
+-- Creation: May 20, 2018 at 03:52 PM
 --
 
 DROP TABLE IF EXISTS `actor`;
@@ -60,7 +65,7 @@ CREATE TABLE `actor` (
   `Password` varchar(64) NOT NULL,
   `BirthDate` date NOT NULL,
   `Tokens` decimal(10,0) NOT NULL DEFAULT '0',
-  `Banned` bit(1) NOT NULL DEFAULT b'0',
+  `Banned` tinyint(1) NOT NULL DEFAULT '0',
   `ActorRank` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -70,12 +75,17 @@ CREATE TABLE `actor` (
 --       `actorrank` -> `ID`
 --
 
+--
+-- Truncate table before insert `actor`
+--
+
+TRUNCATE TABLE `actor`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `actorrank`
 --
--- Creation: Apr 08, 2018 at 02:00 PM
+-- Creation: May 20, 2018 at 03:52 PM
 --
 
 DROP TABLE IF EXISTS `actorrank`;
@@ -89,12 +99,17 @@ CREATE TABLE `actorrank` (
 -- RELATIONSHIPS FOR TABLE `actorrank`:
 --
 
+--
+-- Truncate table before insert `actorrank`
+--
+
+TRUNCATE TABLE `actorrank`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `actorreview`
 --
--- Creation: Apr 08, 2018 at 02:00 PM
+-- Creation: May 20, 2018 at 03:52 PM
 --
 
 DROP TABLE IF EXISTS `actorreview`;
@@ -114,19 +129,24 @@ CREATE TABLE `actorreview` (
 --       `actor` -> `ID`
 --
 
+--
+-- Truncate table before insert `actorreview`
+--
+
+TRUNCATE TABLE `actorreview`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `notification`
 --
--- Creation: Apr 08, 2018 at 02:00 PM
+-- Creation: May 20, 2018 at 03:52 PM
 --
 
 DROP TABLE IF EXISTS `notification`;
 CREATE TABLE `notification` (
   `ID` int(11) NOT NULL,
   `Actor` int(11) NOT NULL,
-  `Seen` bit(1) NOT NULL DEFAULT b'0',
+  `Seen` tinyint(1) NOT NULL DEFAULT '0',
   `Title` varchar(64) NOT NULL,
   `Content` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -137,12 +157,17 @@ CREATE TABLE `notification` (
 --       `actor` -> `ID`
 --
 
+--
+-- Truncate table before insert `notification`
+--
+
+TRUNCATE TABLE `notification`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `post`
 --
--- Creation: Apr 08, 2018 at 02:00 PM
+-- Creation: May 20, 2018 at 03:52 PM
 --
 
 DROP TABLE IF EXISTS `post`;
@@ -151,8 +176,8 @@ CREATE TABLE `post` (
   `Title` varchar(64) NOT NULL,
   `PostedOn` date NOT NULL,
   `OriginalPoster` int(11) NOT NULL,
-  `Active` bit(1) NOT NULL DEFAULT b'1',
-  `Deleted` bit(1) NOT NULL DEFAULT b'0'
+  `Active` tinyint(1) NOT NULL DEFAULT '1',
+  `Deleted` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -161,12 +186,17 @@ CREATE TABLE `post` (
 --       `actor` -> `ID`
 --
 
+--
+-- Truncate table before insert `post`
+--
+
+TRUNCATE TABLE `post`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `postsections`
 --
--- Creation: Apr 08, 2018 at 02:00 PM
+-- Creation: May 20, 2018 at 03:52 PM
 --
 
 DROP TABLE IF EXISTS `postsections`;
@@ -183,12 +213,17 @@ CREATE TABLE `postsections` (
 --       `section` -> `ID`
 --
 
+--
+-- Truncate table before insert `postsections`
+--
+
+TRUNCATE TABLE `postsections`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `privileges`
 --
--- Creation: Apr 08, 2018 at 02:00 PM
+-- Creation: May 20, 2018 at 03:52 PM
 --
 
 DROP TABLE IF EXISTS `privileges`;
@@ -205,12 +240,17 @@ CREATE TABLE `privileges` (
 --       `action` -> `ID`
 --
 
+--
+-- Truncate table before insert `privileges`
+--
+
+TRUNCATE TABLE `privileges`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `promotionrequests`
 --
--- Creation: Apr 08, 2018 at 02:00 PM
+-- Creation: May 20, 2018 at 03:52 PM
 --
 
 DROP TABLE IF EXISTS `promotionrequests`;
@@ -219,7 +259,7 @@ CREATE TABLE `promotionrequests` (
   `Title` varchar(64) NOT NULL,
   `Description` varchar(64) NOT NULL,
   `SubmittedOn` date NOT NULL,
-  `Accepted` bit(1) DEFAULT NULL,
+  `Accepted` tinyint(1) DEFAULT NULL,
   `Actor` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -229,12 +269,17 @@ CREATE TABLE `promotionrequests` (
 --       `actor` -> `ID`
 --
 
+--
+-- Truncate table before insert `promotionrequests`
+--
+
+TRUNCATE TABLE `promotionrequests`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `qapost`
 --
--- Creation: Apr 08, 2018 at 02:00 PM
+-- Creation: May 20, 2018 at 03:52 PM
 --
 
 DROP TABLE IF EXISTS `qapost`;
@@ -252,12 +297,17 @@ CREATE TABLE `qapost` (
 --       `reply` -> `ID`
 --
 
+--
+-- Truncate table before insert `qapost`
+--
+
+TRUNCATE TABLE `qapost`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `reply`
 --
--- Creation: Apr 08, 2018 at 02:00 PM
+-- Creation: May 20, 2018 at 03:52 PM
 --
 
 DROP TABLE IF EXISTS `reply`;
@@ -267,7 +317,7 @@ CREATE TABLE `reply` (
   `PostedOn` date NOT NULL,
   `Post` int(11) NOT NULL,
   `Actor` int(11) NOT NULL,
-  `Deleted` bit(1) NOT NULL DEFAULT b'0'
+  `Deleted` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -278,12 +328,17 @@ CREATE TABLE `reply` (
 --       `actor` -> `ID`
 --
 
+--
+-- Truncate table before insert `reply`
+--
+
+TRUNCATE TABLE `reply`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `section`
 --
--- Creation: Apr 08, 2018 at 02:00 PM
+-- Creation: May 20, 2018 at 03:52 PM
 --
 
 DROP TABLE IF EXISTS `section`;
@@ -292,7 +347,7 @@ CREATE TABLE `section` (
   `Name` varchar(64) NOT NULL,
   `Description` varchar(64) DEFAULT NULL,
   `Subject` int(11) NOT NULL,
-  `Deleted` bit(1) NOT NULL DEFAULT b'0'
+  `Deleted` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -301,12 +356,17 @@ CREATE TABLE `section` (
 --       `subject` -> `ID`
 --
 
+--
+-- Truncate table before insert `section`
+--
+
+TRUNCATE TABLE `section`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `sectionsubscriptions`
 --
--- Creation: Apr 08, 2018 at 02:00 PM
+-- Creation: May 20, 2018 at 03:52 PM
 --
 
 DROP TABLE IF EXISTS `sectionsubscriptions`;
@@ -323,12 +383,17 @@ CREATE TABLE `sectionsubscriptions` (
 --       `section` -> `ID`
 --
 
+--
+-- Truncate table before insert `sectionsubscriptions`
+--
+
+TRUNCATE TABLE `sectionsubscriptions`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `subject`
 --
--- Creation: Apr 08, 2018 at 02:00 PM
+-- Creation: May 20, 2018 at 03:52 PM
 --
 
 DROP TABLE IF EXISTS `subject`;
@@ -336,19 +401,24 @@ CREATE TABLE `subject` (
   `ID` int(11) NOT NULL,
   `Name` varchar(64) NOT NULL,
   `Description` varchar(64) DEFAULT NULL,
-  `Deleted` bit(1) NOT NULL DEFAULT b'0'
+  `Deleted` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- RELATIONSHIPS FOR TABLE `subject`:
 --
 
+--
+-- Truncate table before insert `subject`
+--
+
+TRUNCATE TABLE `subject`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `workpost`
 --
--- Creation: Apr 08, 2018 at 02:00 PM
+-- Creation: May 20, 2018 at 03:52 PM
 --
 
 DROP TABLE IF EXISTS `workpost`;
@@ -357,7 +427,7 @@ CREATE TABLE `workpost` (
   `Description` varchar(64) NOT NULL,
   `Worker` int(11) DEFAULT NULL,
   `ComittedTokens` decimal(10,0) DEFAULT NULL,
-  `WorkerAccepted` bit(1) NOT NULL DEFAULT b'0'
+  `WorkerAccepted` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -368,6 +438,11 @@ CREATE TABLE `workpost` (
 --       `actor` -> `ID`
 --
 
+--
+-- Truncate table before insert `workpost`
+--
+
+TRUNCATE TABLE `workpost`;
 --
 -- Indexes for dumped tables
 --
