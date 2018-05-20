@@ -1,14 +1,16 @@
 <?php
 
+
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActorRank
+ * Actorrank
  *
  * @ORM\Table(name="actorrank")
  * @ORM\Entity
  */
-class ActorRank
+class Actorrank
 {
     /**
      * @var integer
@@ -58,7 +60,7 @@ class ActorRank
 	
 	public static function New($name, $rank)
 	{
-		$instance = new ActorRank();
+		$instance = new Actorrank();
 		$instance->name = $name;
 		$instance->rank = $rank;
 		return $instance;
@@ -79,7 +81,7 @@ class ActorRank
      *
      * @param string $name
      *
-     * @return ActorRank
+     * @return Actorrank
      */
     public function setName($name)
     {
@@ -103,7 +105,7 @@ class ActorRank
      *
      * @param integer $rank
      *
-     * @return ActorRank
+     * @return Actorrank
      */
     public function setRank($rank)
     {
@@ -127,7 +129,7 @@ class ActorRank
      *
      * @param \Action $action
      *
-     * @return ActorRank
+     * @return Actorrank
      */
     public function addAction(\Action $action)
     {

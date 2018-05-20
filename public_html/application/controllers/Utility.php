@@ -1,11 +1,21 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 	
-	class Home extends CI_Controller
+	class Utility extends CI_Controller
 	{
 		public function index()
 		{
 			echo "Home";
+		}
+		
+		public function test()
+		{
+			$this->load->library('doctrine');
+			require_once 'application/models/Actorrank.php';
+			$em = $this->doctrine->em;
+			$rank = Actorrank::New('Guest', 1);
+			$em->persist($rank);
+			$em->flush();
 		}
 		
 		public function generate()
