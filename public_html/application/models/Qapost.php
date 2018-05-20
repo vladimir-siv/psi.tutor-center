@@ -1,32 +1,28 @@
 <?php
 
-
-
-use Doctrine\ORM\Mapping as ORM;
-
 /**
- * Qapost
+ * QAPost
  *
- * @ORM\Table(name="qapost", indexes={@ORM\Index(name="AcceptedAnswer", columns={"AcceptedAnswer"})})
- * @ORM\Entity
+ * @Table(name="qapost", indexes={@Index(name="AcceptedAnswer", columns={"AcceptedAnswer"})})
+ * @Entity
  */
-class Qapost
+class QAPost
 {
     /**
      * @var string
      *
-     * @ORM\Column(name="Description", type="string", length=64, nullable=false)
+     * @Column(name="Description", type="string", length=64, nullable=false)
      */
     private $description;
 
     /**
      * @var \Post
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="Post")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ID", referencedColumnName="ID")
+     * @Id
+     * @GeneratedValue(strategy="NONE")
+     * @OneToOne(targetEntity="Post")
+     * @JoinColumns({
+     *   @JoinColumn(name="ID", referencedColumnName="ID")
      * })
      */
     private $id;
@@ -34,9 +30,9 @@ class Qapost
     /**
      * @var \Reply
      *
-     * @ORM\ManyToOne(targetEntity="Reply")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="AcceptedAnswer", referencedColumnName="ID")
+     * @ManyToOne(targetEntity="Reply")
+     * @JoinColumns({
+     *   @JoinColumn(name="AcceptedAnswer", referencedColumnName="ID")
      * })
      */
     private $acceptedanswer;
@@ -47,7 +43,7 @@ class Qapost
      *
      * @param string $description
      *
-     * @return Qapost
+     * @return QAPost
      */
     public function setDescription($description)
     {
@@ -71,7 +67,7 @@ class Qapost
      *
      * @param \Post $id
      *
-     * @return Qapost
+     * @return QAPost
      */
     public function setId(\Post $id)
     {
@@ -95,7 +91,7 @@ class Qapost
      *
      * @param \Reply $acceptedanswer
      *
-     * @return Qapost
+     * @return QAPost
      */
     public function setAcceptedanswer(\Reply $acceptedanswer = null)
     {

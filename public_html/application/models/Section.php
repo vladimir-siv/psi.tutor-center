@@ -1,53 +1,49 @@
 <?php
 
-
-
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Section
  *
- * @ORM\Table(name="section", indexes={@ORM\Index(name="Subject", columns={"Subject"})})
- * @ORM\Entity
+ * @Table(name="section", indexes={@Index(name="Subject", columns={"Subject"})})
+ * @Entity
  */
 class Section
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="ID", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Column(name="ID", type="integer", nullable=false)
+     * @Id
+     * @GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Name", type="string", length=64, nullable=false)
+     * @Column(name="Name", type="string", length=64, nullable=false)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Description", type="string", length=64, nullable=true)
+     * @Column(name="Description", type="string", length=64, nullable=true)
      */
     private $description;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="Deleted", type="boolean", nullable=false)
+     * @Column(name="Deleted", type="boolean", nullable=false)
      */
     private $deleted = '0';
 
     /**
      * @var \Subject
      *
-     * @ORM\ManyToOne(targetEntity="Subject")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Subject", referencedColumnName="ID")
+     * @ManyToOne(targetEntity="Subject")
+     * @JoinColumns({
+     *   @JoinColumn(name="Subject", referencedColumnName="ID")
      * })
      */
     private $subject;
@@ -55,14 +51,14 @@ class Section
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Post", mappedBy="section")
+     * @ManyToMany(targetEntity="Post", mappedBy="section")
      */
     private $post;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Actor", mappedBy="section")
+     * @ManyToMany(targetEntity="Actor", mappedBy="section")
      */
     private $actor;
 

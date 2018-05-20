@@ -1,60 +1,56 @@
 <?php
 
-
-
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Post
  *
- * @ORM\Table(name="post", indexes={@ORM\Index(name="OriginalPoster", columns={"OriginalPoster"})})
- * @ORM\Entity
+ * @Table(name="post", indexes={@Index(name="OriginalPoster", columns={"OriginalPoster"})})
+ * @Entity
  */
 class Post
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="ID", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Column(name="ID", type="integer", nullable=false)
+     * @Id
+     * @GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Title", type="string", length=64, nullable=false)
+     * @Column(name="Title", type="string", length=64, nullable=false)
      */
     private $title;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="PostedOn", type="date", nullable=false)
+     * @Column(name="PostedOn", type="date", nullable=false)
      */
     private $postedon;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="Active", type="boolean", nullable=false)
+     * @Column(name="Active", type="boolean", nullable=false)
      */
     private $active = '1';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="Deleted", type="boolean", nullable=false)
+     * @Column(name="Deleted", type="boolean", nullable=false)
      */
     private $deleted = '0';
 
     /**
      * @var \Actor
      *
-     * @ORM\ManyToOne(targetEntity="Actor")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="OriginalPoster", referencedColumnName="ID")
+     * @ManyToOne(targetEntity="Actor")
+     * @JoinColumns({
+     *   @JoinColumn(name="OriginalPoster", referencedColumnName="ID")
      * })
      */
     private $originalposter;
@@ -62,13 +58,13 @@ class Post
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Section", inversedBy="post")
-     * @ORM\JoinTable(name="postsections",
+     * @ManyToMany(targetEntity="Section", inversedBy="post")
+     * @JoinTable(name="postsections",
      *   joinColumns={
-     *     @ORM\JoinColumn(name="Post", referencedColumnName="ID")
+     *     @JoinColumn(name="Post", referencedColumnName="ID")
      *   },
      *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="Section", referencedColumnName="ID")
+     *     @JoinColumn(name="Section", referencedColumnName="ID")
      *   }
      * )
      */

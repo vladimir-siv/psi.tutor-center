@@ -1,53 +1,49 @@
 <?php
 
-
-
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Reply
  *
- * @ORM\Table(name="reply", indexes={@ORM\Index(name="Post", columns={"Post"}), @ORM\Index(name="Actor", columns={"Actor"})})
- * @ORM\Entity
+ * @Table(name="reply", indexes={@Index(name="Post", columns={"Post"}), @Index(name="Actor", columns={"Actor"})})
+ * @Entity
  */
 class Reply
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="ID", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Column(name="ID", type="integer", nullable=false)
+     * @Id
+     * @GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Message", type="string", length=64, nullable=false)
+     * @Column(name="Message", type="string", length=64, nullable=false)
      */
     private $message;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="PostedOn", type="date", nullable=false)
+     * @Column(name="PostedOn", type="date", nullable=false)
      */
     private $postedon;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="Deleted", type="boolean", nullable=false)
+     * @Column(name="Deleted", type="boolean", nullable=false)
      */
     private $deleted = '0';
 
     /**
      * @var \Post
      *
-     * @ORM\ManyToOne(targetEntity="Post")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Post", referencedColumnName="ID")
+     * @ManyToOne(targetEntity="Post")
+     * @JoinColumns({
+     *   @JoinColumn(name="Post", referencedColumnName="ID")
      * })
      */
     private $post;
@@ -55,9 +51,9 @@ class Reply
     /**
      * @var \Actor
      *
-     * @ORM\ManyToOne(targetEntity="Actor")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Actor", referencedColumnName="ID")
+     * @ManyToOne(targetEntity="Actor")
+     * @JoinColumns({
+     *   @JoinColumn(name="Actor", referencedColumnName="ID")
      * })
      */
     private $actor;

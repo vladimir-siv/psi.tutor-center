@@ -1,44 +1,40 @@
 <?php
 
-
-
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Subject
  *
- * @ORM\Table(name="subject")
- * @ORM\Entity
+ * @Table(name="subject")
+ * @Entity
  */
 class Subject
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="ID", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Column(name="ID", type="integer", nullable=false)
+     * @Id
+     * @GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Name", type="string", length=64, nullable=false)
+     * @Column(name="Name", type="string", length=64, nullable=false)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Description", type="string", length=64, nullable=true)
+     * @Column(name="Description", type="string", length=64, nullable=true)
      */
     private $description;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="Deleted", type="boolean", nullable=false)
+     * @Column(name="Deleted", type="boolean", nullable=false)
      */
     private $deleted = '0';
 

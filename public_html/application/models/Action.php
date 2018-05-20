@@ -1,37 +1,33 @@
 <?php
 
-
-
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Action
  *
- * @ORM\Table(name="action", uniqueConstraints={@ORM\UniqueConstraint(name="Name", columns={"Name"})})
- * @ORM\Entity
+ * @Table(name="action", uniqueConstraints={@UniqueConstraint(name="Name", columns={"Name"})})
+ * @Entity
  */
 class Action
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="ID", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Column(name="ID", type="integer", nullable=false)
+     * @Id
+     * @GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Name", type="string", length=64, nullable=false)
+     * @Column(name="Name", type="string", length=64, nullable=false)
      */
     private $name;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Actorrank", mappedBy="action")
+     * @ManyToMany(targetEntity="Actorrank", mappedBy="action")
      */
     private $actorrank;
 

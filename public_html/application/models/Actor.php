@@ -1,88 +1,84 @@
 <?php
 
-
-
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Actor
  *
- * @ORM\Table(name="actor", uniqueConstraints={@ORM\UniqueConstraint(name="Email", columns={"Email"}), @ORM\UniqueConstraint(name="Username", columns={"Username"})}, indexes={@ORM\Index(name="ActorRank", columns={"ActorRank"})})
- * @ORM\Entity
+ * @Table(name="actor", uniqueConstraints={@UniqueConstraint(name="Email", columns={"Email"}), @UniqueConstraint(name="Username", columns={"Username"})}, indexes={@Index(name="ActorRank", columns={"ActorRank"})})
+ * @Entity
  */
 class Actor
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="ID", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Column(name="ID", type="integer", nullable=false)
+     * @Id
+     * @GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="FirstName", type="string", length=64, nullable=false)
+     * @Column(name="FirstName", type="string", length=64, nullable=false)
      */
     private $firstname;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="LastName", type="string", length=64, nullable=false)
+     * @Column(name="LastName", type="string", length=64, nullable=false)
      */
     private $lastname;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Email", type="string", length=64, nullable=false)
+     * @Column(name="Email", type="string", length=64, nullable=false)
      */
     private $email;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Username", type="string", length=64, nullable=false)
+     * @Column(name="Username", type="string", length=64, nullable=false)
      */
     private $username;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Password", type="string", length=64, nullable=false)
+     * @Column(name="Password", type="string", length=64, nullable=false)
      */
     private $password;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="BirthDate", type="date", nullable=false)
+     * @Column(name="BirthDate", type="date", nullable=false)
      */
     private $birthdate;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Tokens", type="decimal", precision=10, scale=0, nullable=false)
+     * @Column(name="Tokens", type="decimal", precision=10, scale=0, nullable=false)
      */
     private $tokens = '0';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="Banned", type="boolean", nullable=false)
+     * @Column(name="Banned", type="boolean", nullable=false)
      */
     private $banned = '0';
 
     /**
      * @var \Actorrank
      *
-     * @ORM\ManyToOne(targetEntity="Actorrank")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ActorRank", referencedColumnName="ID")
+     * @ManyToOne(targetEntity="Actorrank")
+     * @JoinColumns({
+     *   @JoinColumn(name="ActorRank", referencedColumnName="ID")
      * })
      */
     private $actorrank;
@@ -90,13 +86,13 @@ class Actor
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Section", inversedBy="actor")
-     * @ORM\JoinTable(name="sectionsubscriptions",
+     * @ManyToMany(targetEntity="Section", inversedBy="actor")
+     * @JoinTable(name="sectionsubscriptions",
      *   joinColumns={
-     *     @ORM\JoinColumn(name="Actor", referencedColumnName="ID")
+     *     @JoinColumn(name="Actor", referencedColumnName="ID")
      *   },
      *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="Section", referencedColumnName="ID")
+     *     @JoinColumn(name="Section", referencedColumnName="ID")
      *   }
      * )
      */

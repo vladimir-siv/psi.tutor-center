@@ -1,46 +1,42 @@
 <?php
 
-
-
-use Doctrine\ORM\Mapping as ORM;
-
 /**
- * Workpost
+ * WorkPost
  *
- * @ORM\Table(name="workpost", indexes={@ORM\Index(name="Worker", columns={"Worker"})})
- * @ORM\Entity
+ * @Table(name="workpost", indexes={@Index(name="Worker", columns={"Worker"})})
+ * @Entity
  */
-class Workpost
+class WorkPost
 {
     /**
      * @var string
      *
-     * @ORM\Column(name="Description", type="string", length=64, nullable=false)
+     * @Column(name="Description", type="string", length=64, nullable=false)
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ComittedTokens", type="decimal", precision=10, scale=0, nullable=true)
+     * @Column(name="ComittedTokens", type="decimal", precision=10, scale=0, nullable=true)
      */
     private $comittedtokens;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="WorkerAccepted", type="boolean", nullable=false)
+     * @Column(name="WorkerAccepted", type="boolean", nullable=false)
      */
     private $workeraccepted = '0';
 
     /**
      * @var \Post
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="Post")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ID", referencedColumnName="ID")
+     * @Id
+     * @GeneratedValue(strategy="NONE")
+     * @OneToOne(targetEntity="Post")
+     * @JoinColumns({
+     *   @JoinColumn(name="ID", referencedColumnName="ID")
      * })
      */
     private $id;
@@ -48,9 +44,9 @@ class Workpost
     /**
      * @var \Actor
      *
-     * @ORM\ManyToOne(targetEntity="Actor")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Worker", referencedColumnName="ID")
+     * @ManyToOne(targetEntity="Actor")
+     * @JoinColumns({
+     *   @JoinColumn(name="Worker", referencedColumnName="ID")
      * })
      */
     private $worker;
@@ -61,7 +57,7 @@ class Workpost
      *
      * @param string $description
      *
-     * @return Workpost
+     * @return WorkPost
      */
     public function setDescription($description)
     {
@@ -85,7 +81,7 @@ class Workpost
      *
      * @param string $comittedtokens
      *
-     * @return Workpost
+     * @return WorkPost
      */
     public function setComittedtokens($comittedtokens)
     {
@@ -109,7 +105,7 @@ class Workpost
      *
      * @param boolean $workeraccepted
      *
-     * @return Workpost
+     * @return WorkPost
      */
     public function setWorkeraccepted($workeraccepted)
     {
@@ -133,7 +129,7 @@ class Workpost
      *
      * @param \Post $id
      *
-     * @return Workpost
+     * @return WorkPost
      */
     public function setId(\Post $id)
     {
@@ -157,7 +153,7 @@ class Workpost
      *
      * @param \Actor $worker
      *
-     * @return Workpost
+     * @return WorkPost
      */
     public function setWorker(\Actor $worker = null)
     {

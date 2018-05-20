@@ -1,46 +1,42 @@
 <?php
 
-
-
-use Doctrine\ORM\Mapping as ORM;
-
 /**
- * Actorreview
+ * ActorReview
  *
- * @ORM\Table(name="actorreview", indexes={@ORM\Index(name="Reviewer", columns={"Reviewer"}), @ORM\Index(name="Reviewee", columns={"Reviewee"})})
- * @ORM\Entity
+ * @Table(name="actorreview", indexes={@Index(name="Reviewer", columns={"Reviewer"}), @Index(name="Reviewee", columns={"Reviewee"})})
+ * @Entity
  */
-class Actorreview
+class ActorReview
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="ID", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Column(name="ID", type="integer", nullable=false)
+     * @Id
+     * @GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="Grade", type="integer", nullable=false)
+     * @Column(name="Grade", type="integer", nullable=false)
      */
     private $grade;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Description", type="string", length=64, nullable=false)
+     * @Column(name="Description", type="string", length=64, nullable=false)
      */
     private $description;
 
     /**
      * @var \Actor
      *
-     * @ORM\ManyToOne(targetEntity="Actor")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Reviewer", referencedColumnName="ID")
+     * @ManyToOne(targetEntity="Actor")
+     * @JoinColumns({
+     *   @JoinColumn(name="Reviewer", referencedColumnName="ID")
      * })
      */
     private $reviewer;
@@ -48,9 +44,9 @@ class Actorreview
     /**
      * @var \Actor
      *
-     * @ORM\ManyToOne(targetEntity="Actor")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Reviewee", referencedColumnName="ID")
+     * @ManyToOne(targetEntity="Actor")
+     * @JoinColumns({
+     *   @JoinColumn(name="Reviewee", referencedColumnName="ID")
      * })
      */
     private $reviewee;
@@ -71,7 +67,7 @@ class Actorreview
      *
      * @param integer $grade
      *
-     * @return Actorreview
+     * @return ActorReview
      */
     public function setGrade($grade)
     {
@@ -95,7 +91,7 @@ class Actorreview
      *
      * @param string $description
      *
-     * @return Actorreview
+     * @return ActorReview
      */
     public function setDescription($description)
     {
@@ -119,7 +115,7 @@ class Actorreview
      *
      * @param \Actor $reviewer
      *
-     * @return Actorreview
+     * @return ActorReview
      */
     public function setReviewer(\Actor $reviewer = null)
     {
@@ -143,7 +139,7 @@ class Actorreview
      *
      * @param \Actor $reviewee
      *
-     * @return Actorreview
+     * @return ActorReview
      */
     public function setReviewee(\Actor $reviewee = null)
     {

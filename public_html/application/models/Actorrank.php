@@ -1,50 +1,46 @@
 <?php
 
-
-
-use Doctrine\ORM\Mapping as ORM;
-
 /**
- * Actorrank
+ * ActorRank
  *
- * @ORM\Table(name="actorrank")
- * @ORM\Entity
+ * @Table(name="actorrank")
+ * @Entity
  */
-class Actorrank
+class ActorRank
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="ID", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Column(name="ID", type="integer", nullable=false)
+     * @Id
+     * @GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Name", type="string", length=64, nullable=false)
+     * @Column(name="Name", type="string", length=64, nullable=false)
      */
     private $name;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="Rank", type="integer", nullable=false)
+     * @Column(name="Rank", type="integer", nullable=false)
      */
     private $rank;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Action", inversedBy="actorrank")
-     * @ORM\JoinTable(name="privileges",
+     * @ManyToMany(targetEntity="Action", inversedBy="actorrank")
+     * @JoinTable(name="privileges",
      *   joinColumns={
-     *     @ORM\JoinColumn(name="ActorRank", referencedColumnName="ID")
+     *     @JoinColumn(name="ActorRank", referencedColumnName="ID")
      *   },
      *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="Action", referencedColumnName="ID")
+     *     @JoinColumn(name="Action", referencedColumnName="ID")
      *   }
      * )
      */
@@ -60,7 +56,7 @@ class Actorrank
 	
 	public static function New($name, $rank)
 	{
-		$instance = new Actorrank();
+		$instance = new ActorRank();
 		$instance->name = $name;
 		$instance->rank = $rank;
 		return $instance;
@@ -81,7 +77,7 @@ class Actorrank
      *
      * @param string $name
      *
-     * @return Actorrank
+     * @return ActorRank
      */
     public function setName($name)
     {
@@ -105,7 +101,7 @@ class Actorrank
      *
      * @param integer $rank
      *
-     * @return Actorrank
+     * @return ActorRank
      */
     public function setRank($rank)
     {
@@ -129,7 +125,7 @@ class Actorrank
      *
      * @param \Action $action
      *
-     * @return Actorrank
+     * @return ActorRank
      */
     public function addAction(\Action $action)
     {

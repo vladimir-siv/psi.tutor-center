@@ -1,53 +1,49 @@
 <?php
 
-
-
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Notification
  *
- * @ORM\Table(name="notification", indexes={@ORM\Index(name="Actor", columns={"Actor"})})
- * @ORM\Entity
+ * @Table(name="notification", indexes={@Index(name="Actor", columns={"Actor"})})
+ * @Entity
  */
 class Notification
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="ID", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Column(name="ID", type="integer", nullable=false)
+     * @Id
+     * @GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="Seen", type="boolean", nullable=false)
+     * @Column(name="Seen", type="boolean", nullable=false)
      */
     private $seen = '0';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Title", type="string", length=64, nullable=false)
+     * @Column(name="Title", type="string", length=64, nullable=false)
      */
     private $title;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Content", type="string", length=64, nullable=false)
+     * @Column(name="Content", type="string", length=64, nullable=false)
      */
     private $content;
 
     /**
      * @var \Actor
      *
-     * @ORM\ManyToOne(targetEntity="Actor")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Actor", referencedColumnName="ID")
+     * @ManyToOne(targetEntity="Actor")
+     * @JoinColumns({
+     *   @JoinColumn(name="Actor", referencedColumnName="ID")
      * })
      */
     private $actor;

@@ -1,60 +1,56 @@
 <?php
 
-
-
-use Doctrine\ORM\Mapping as ORM;
-
 /**
- * Promotionrequests
+ * PromotionRequest
  *
- * @ORM\Table(name="promotionrequests", indexes={@ORM\Index(name="Actor", columns={"Actor"})})
- * @ORM\Entity
+ * @Table(name="promotionrequests", indexes={@Index(name="Actor", columns={"Actor"})})
+ * @Entity
  */
-class Promotionrequests
+class PromotionRequest
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="ID", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Column(name="ID", type="integer", nullable=false)
+     * @Id
+     * @GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Title", type="string", length=64, nullable=false)
+     * @Column(name="Title", type="string", length=64, nullable=false)
      */
     private $title;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Description", type="string", length=64, nullable=false)
+     * @Column(name="Description", type="string", length=64, nullable=false)
      */
     private $description;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="SubmittedOn", type="date", nullable=false)
+     * @Column(name="SubmittedOn", type="date", nullable=false)
      */
     private $submittedon;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="Accepted", type="boolean", nullable=true)
+     * @Column(name="Accepted", type="boolean", nullable=true)
      */
     private $accepted;
 
     /**
      * @var \Actor
      *
-     * @ORM\ManyToOne(targetEntity="Actor")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Actor", referencedColumnName="ID")
+     * @ManyToOne(targetEntity="Actor")
+     * @JoinColumns({
+     *   @JoinColumn(name="Actor", referencedColumnName="ID")
      * })
      */
     private $actor;
@@ -75,7 +71,7 @@ class Promotionrequests
      *
      * @param string $title
      *
-     * @return Promotionrequests
+     * @return PromotionRequest
      */
     public function setTitle($title)
     {
@@ -99,7 +95,7 @@ class Promotionrequests
      *
      * @param string $description
      *
-     * @return Promotionrequests
+     * @return PromotionRequest
      */
     public function setDescription($description)
     {
@@ -123,7 +119,7 @@ class Promotionrequests
      *
      * @param \DateTime $submittedon
      *
-     * @return Promotionrequests
+     * @return PromotionRequest
      */
     public function setSubmittedon($submittedon)
     {
@@ -147,7 +143,7 @@ class Promotionrequests
      *
      * @param boolean $accepted
      *
-     * @return Promotionrequests
+     * @return PromotionRequest
      */
     public function setAccepted($accepted)
     {
@@ -171,7 +167,7 @@ class Promotionrequests
      *
      * @param \Actor $actor
      *
-     * @return Promotionrequests
+     * @return PromotionRequest
      */
     public function setActor(\Actor $actor = null)
     {
