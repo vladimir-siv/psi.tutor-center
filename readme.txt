@@ -8,6 +8,9 @@ Pinovano:
 		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTmjv_17LFv0zZRK8TKPEY8Pghk_x2h0I0&callback=initMap" type="text/javascript"></script>
 
 Verzije:
+	-"Initial impl"
+		1. Promenjena bit tip u bazi na tinyint(1)
+		2. Dodat doctrine i generisani entiteti
 	-"UML"
 		1. Dodat UML model aplikacije
 	-"Prototype"
