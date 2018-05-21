@@ -3,9 +3,16 @@
 	
 	class Guest extends CI_Controller
 	{
+		public function __construct()
+		{
+			parent::__construct();
+			$this->load->library('loader');
+			$this->load->library('doctrine');
+		}
+		
 		public function index()
 		{
-			echo "Guest";
+			$this->loader->loadSimplePage($this);
 		}
 	}
 ?>

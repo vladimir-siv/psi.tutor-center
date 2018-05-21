@@ -54,6 +54,12 @@ class ActorRank
         $this->action = new \Doctrine\Common\Collections\ArrayCollection();
     }
 	
+	/*
+	 * New() - kreira nov rank
+	 *	@param string $name: naziv ranka
+	 *	@param int $rank: rank
+	 *	@return: ActorRank
+	 */
 	public static function New($name, $rank)
 	{
 		$instance = new ActorRank();
@@ -155,3 +161,11 @@ class ActorRank
     }
 }
 
+abstract class Rank
+{
+	const Guest = 1;
+	const User = 2;
+	const Tutor = 3;
+	const Moderator = 4;
+	const Administrator = 5;
+}

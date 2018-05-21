@@ -1,0 +1,77 @@
+.cursor-alias {cursor: alias;}
+.cursor-all-scroll {cursor: all-scroll;}
+.cursor-auto {cursor: auto;}
+.cursor-cell {cursor: cell;}
+.cursor-context-menu {cursor: context-menu;}
+.cursor-col-resize {cursor: col-resize;}
+.cursor-copy {cursor: copy;}
+.cursor-crosshair {cursor: crosshair;}
+.cursor-default {cursor: default;}
+.cursor-e-resize {cursor: e-resize;}
+.cursor-ew-resize {cursor: ew-resize;}
+.cursor-grab {cursor: grab;}
+.cursor-grabbing {cursor: grabbing;}
+.cursor-help {cursor: help;}
+.cursor-move {cursor: move;}
+.cursor-n-resize {cursor: n-resize;}
+.cursor-ne-resize {cursor: ne-resize;}
+.cursor-nesw-resize {cursor: nesw-resize;}
+.cursor-ns-resize {cursor: ns-resize;}
+.cursor-nw-resize {cursor: nw-resize;}
+.cursor-nwse-resize {cursor: nwse-resize;}
+.cursor-no-drop {cursor: no-drop;}
+.cursor-none {cursor: none;}
+.cursor-not-allowed {cursor: not-allowed;}
+.cursor-pointer {cursor: pointer;}
+.cursor-progress {cursor: progress;}
+.cursor-row-resize {cursor: row-resize;}
+.cursor-s-resize {cursor: s-resize;}
+.cursor-se-resize {cursor: se-resize;}
+.cursor-sw-resize {cursor: sw-resize;}
+.cursor-text {cursor: text;}
+.cursor-url {cursor: url(myBall.cur),auto;}
+.cursor-w-resize {cursor: w-resize;}
+.cursor-wait {cursor: wait;}
+.cursor-zoom-in {cursor: zoom-in;}
+.cursor-zoom-out {cursor: zoom-out;}
+
+.overflow-visible { overflow: visible; }
+.overflow-hidden { overflow: hidden; }
+.overflow-scroll { overflow: scroll; }
+.overflow-auto { overflow: auto; }
+
+.text-decor-none {text-decoration: none;}
+.text-decor-underline {text-decoration: underline;}
+.text-decor-overline {text-decoration: overline;}
+.text-decor-line-through {text-decoration: line-through;}
+
+.hover-text-decor-none:hover {text-decoration: none;}
+.hover-text-decor-underline:hover {text-decoration: underline;}
+.hover-text-decor-overline:hover {text-decoration: overline;}
+.hover-text-decor-line-through:hover {text-decoration: line-through;}
+
+.btn-link {cursor: pointer;}
+.btn-link:hover {text-decoration: none;}
+.btn-link:active {font-weight: bold;}
+
+.btn-link-light {color: #c2cccc;}
+.btn-link-light:hover {color: #e1e8e8;}
+.btn-link-light:active {color: #c6cece;}
+.btn-link-light:link {color: #c2cccc;}
+.btn-link-light:visited {color: #c2cccc;}
+
+.top-trans-fast {-webkit-transition:top 0.3s; transition:top 0.3s;}
+.top-trans-med {-webkit-transition:top 0.65s; transition:top 0.65s;}
+.top-trans-slow {-webkit-transition:top 1s; transition:top 1s;}
+
+.left-trans-fast {-webkit-transition:left 0.3s; transition:left 0.3s;}
+.left-trans-med {-webkit-transition:left 0.65s; transition:left 0.65s;}
+.left-trans-slow {-webkit-transition:left 1s; transition:left 1s;}
+
+.right-trans-fast {-webkit-transition:right 0.3s; transition:right 0.3s;}
+.right-trans-med {-webkit-transition:right 0.65s; transition:right 0.65s;}
+.right-trans-slow {-webkit-transition:right 1s; transition:right 1s;}
+
+.bottom-trans-fast {-webkit-transition:bottom 0.3s; transition:bottom 0.3s;}
+.bottom-trans-med {-webkit-transition:bottom 0.65s; transition:bottom 0.65s;}
+.bottom-trans-slow {-webkit-transition:bottom 1s; transition:bottom 1s;}

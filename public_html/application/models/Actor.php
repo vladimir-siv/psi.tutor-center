@@ -105,7 +105,35 @@ class Actor
     {
         $this->section = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+	
+	/*
+	 * New() - kreira novog korisnika
+	 *	@param string $firstname: ime korisnika
+	 *	@param string $lastname: prezime korisnika
+	 *	@param string $email: e-posta korisnika
+	 *	@param string $username: korisnicko ime korisnika
+	 *	@param string $password: lozinka korisnika
+	 *	@param DateTime $birthdate: datum rodjenja korisnika
+	 *	@param ActorRank $actorrank: rank
+	 *	@param int $tokens: inicijalno stanje korisnika
+	 *	@param bool $banned: inicijalno banovano stanje
+	 *	@return: Actor
+	 */
+	public static function New($firstname, $lastname, $email, $username, $password, $birthdate, $actorrank, $tokens = 0, $banned = false)
+	{
+		$instance = new Actor();
+		$instance->firstname = $firstname;
+		$instance->lastname = $lastname;
+		$instance->email = $email;
+		$instance->username = $username;
+		$instance->password = MD5($password);
+		$instance->birthdate = $birthdate;
+		$instance->tokens = $tokens;
+		$instance->banned = $banned;
+		$instance->actorrank = $actorrank;
+		return $instance;
+	}
+	
     /**
      * Get id
      *
@@ -115,7 +143,7 @@ class Actor
     {
         return $this->id;
     }
-
+	
     /**
      * Set firstname
      *
