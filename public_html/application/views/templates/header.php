@@ -3,12 +3,12 @@
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-right">
-							<a href="index.html"><img src="res/logo.png" class="img-circle" height="80px" alt="logo"></a>
+							<a href="index.html"><img src="<?php echo base_url(); ?>assets/res/logo.png" class="img-circle" height="80px" alt="logo"></a>
 						</div>
 						<div class="col-lg-3 col-md-3 col-sm-2 hidden-xs text-center">
 						</div>
 						<div class="col-lg-2 col-md-2 col-sm-2 hidden-xs text-center">
-							<a href="index.html"><img src="res/heading.png" alt="heading"></a>
+							<a href="index.html"><img src="<?php echo base_url(); ?>assets/res/heading.png" alt="heading"></a>
 						</div>
 						<div class="col-lg-5 col-md-5 col-sm-6 col-xs-10 text-center">
 							<div class="row" style="height: 40px; padding-top: 3px;">

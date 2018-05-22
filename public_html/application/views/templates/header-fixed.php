@@ -4,7 +4,7 @@
 					<div class="container-fluid">
 						<div class="row">
 							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-right">
-								<a href="index.html"><img src="res/logo.png" class="img-circle" height="40px" alt="logo"></a>
+								<a href="index.html"><img src="<?php echo base_url(); ?>assets/res/logo.png" class="img-circle" height="40px" alt="logo"></a>
 							</div>
 							<div class="col-lg-7 col-md-8 col-sm-6 col-xs-6 text-center"> </div>
 							<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 text-center">
