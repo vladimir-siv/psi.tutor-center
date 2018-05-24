@@ -33,7 +33,7 @@ function login(popupid, username, password)
 			return;
 		}
 		
-		alert(response);
+		$("#" + popupid + "-popup-info").append(Alert.New("success", response, true));
     });
 }
 

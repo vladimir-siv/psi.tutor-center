@@ -20,15 +20,16 @@
         
 		public function login()
 		{
-			//$q = $em->createQuery("SELECT a.username, a.password FROM Actor a WHERE a.username = :username AND a.password = :password");
-			//$q->setParameter('username', $this->input->post('username'));
-			//$q->setParameter('password', md5($this->input->post('password')));
-			//$result = $q->getResult();
+			$actor = $this->loader->findActor($this->input->post('username'), $this->input->post('password'));
 			
-			$actor = $this->loader->findActor($this->input->get('username'), $this->input->get('password'));
+			if ($actor === null)
+			{
+				echo '#Error: Username or password is not valid!';
+				return;
+			}
 			
-			if ($actor === null) echo '#Error: Username or password is not valid!';
-			else echo 'SUCCESS';
+			$actor->setEntityManager($this->loader->getEntityManager());
+			echo 'Success! User is: '.$actor->getActorRankRef()->getName();
 		}
 		
 		public function logout()

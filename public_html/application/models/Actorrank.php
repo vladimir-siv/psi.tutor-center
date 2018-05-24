@@ -1,12 +1,14 @@
 <?php
 
+@require_once(APPPATH.'models/Proxy.php');
+
 /**
  * ActorRank
  *
  * @Table(name="actorrank")
  * @Entity
  */
-class ActorRank
+class ActorRank extends Proxy
 {
     /**
      * @var integer

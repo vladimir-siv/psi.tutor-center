@@ -26,7 +26,7 @@ class Loader
 	 * getController() - dohvata pozivajuci kontroler
 	 *	@return: CI_Controller $controller
 	 */
-	//public function getController() { return $this->controller; }
+	public function getController() { return $this->controller; }
 	
 	/*
 	 * EntityManager $em: Globalni entity manager
@@ -44,7 +44,7 @@ class Loader
 	 * getEntityManager() - dohvata podesen globalni entity manager
 	 *	@return: EntityManager $em
 	 */
-	//public function getEntityManager() { return $this->em; }
+	public function getEntityManager() { return $this->em; }
 	
 	/* ============== VIEWS ============== */
 	
@@ -242,24 +242,15 @@ class Loader
 	{
 		$this->loadEntities();
 		
-		//, a.firstname, a.lastname, a.email, a.username, a.password, a.birthdate, a.tokens, a.banned, a.actorrank
+		$users = $this->em->getRepository(Actor::class)->findBy(array
+		(
+			'username' => $username,
+			'password' => MD5($password)
+		));
 		
-		$q = 
-			$this->em->createQuery(
-				'SELECT a.id FROM Actor a WHERE a.username = :username AND a.password = :password'
-			);
+		if ($users == NULL || count($users) > 1) return NULL;
 		
-		$q->setParameter('username', $username);
-		$q->setParameter('password', MD5($password));
-		$users = $q->getResult();
-		
-		//if ($users == NULL || count($users) > 1) return NULL;
-		
-		//$id = $users[0]['id'];
-		
-		$user = $this->em->find('Actor', 3);
-		
-		return $user;
+		return $users[0];
 	}
 	
 	/* ============== DB INSERT ============== */

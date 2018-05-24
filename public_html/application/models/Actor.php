@@ -1,12 +1,14 @@
 <?php
 
+@require_once(APPPATH.'models/Proxy.php');
+
 /**
  * Actor
  *
  * @Table(name="actor", uniqueConstraints={@UniqueConstraint(name="Email", columns={"Email"}), @UniqueConstraint(name="Username", columns={"Username"})}, indexes={@Index(name="ActorRank", columns={"ActorRank"})})
  * @Entity
  */
-class Actor
+class Actor extends Proxy
 {
     /**
      * @var integer
@@ -74,15 +76,12 @@ class Actor
     private $banned = '0';
 
     /**
-     * @var \ActorRank
+     * @var integer
      *
-     * @ManyToOne(targetEntity="ActorRank")
-     * @JoinColumns({
-     *   @JoinColumn(name="ActorRank", referencedColumnName="ID")
-     * })
+     * @Column(name="ActorRank", type="integer", nullable=false)
      */
     private $actorrank;
-
+	
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
@@ -339,21 +338,21 @@ class Actor
     /**
      * Set actorrank
      *
-     * @param \ActorRank $actorrank
+     * @param integer $actorrank
      *
      * @return Actor
      */
-    public function setActorRank(\ActorRank $actorrank = null)
+    public function setActorRank($actorrank = null)
     {
         $this->actorrank = $actorrank;
-
+		
         return $this;
     }
 
     /**
      * Get actorrank
      *
-     * @return \ActorRank
+     * @return integer
      */
     public function getActorRank()
     {
@@ -393,4 +392,19 @@ class Actor
     {
         return $this->section;
     }
+	
+	/* ============== PROXY ============== */
+	
+	private $actorrank_ref = null;
+	
+	public function getActorRankRef()
+	{
+		if ($this->actorrank_ref === null)
+		{
+			$this->actorrank_ref = $this->em->find('ActorRank', $this->actorrank);
+			$this->actorrank_ref->setEntityManager($this->em);
+		}
+		
+		return $this->actorrank_ref;
+	}
 }
