@@ -134,6 +134,14 @@ class Actor
 		return $instance;
 	}
 	
+        public function find($username, $password)
+        {
+            $em = $this->doctrine->em;
+            $users = $em.getRepository(Actor::class)->findBy(array('username' => $username, 'password' => $password));
+            if ($users == NULL || count($users) != 1) return NULL;
+            else return $users[0];
+        }
+        
     /**
      * Get id
      *

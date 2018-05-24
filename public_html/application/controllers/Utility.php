@@ -12,7 +12,9 @@
 		
 		public function index()
 		{
+                    echo "OK";
 			//$this->loader->insertAdmins($this->doctrine->em);
 		}
+
 	}
 ?>

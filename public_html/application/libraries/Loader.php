@@ -188,7 +188,7 @@ class Loader
 		require_once 'application/models/Subject.php';
 		require_once 'application/models/WorkPost.php';
 	}
-	
+
 	/* ============== DB SELECT ============== */
 	
 	/*
