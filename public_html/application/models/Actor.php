@@ -74,9 +74,9 @@ class Actor
     private $banned = '0';
 
     /**
-     * @var \Actorrank
+     * @var \ActorRank
      *
-     * @ManyToOne(targetEntity="Actorrank")
+     * @ManyToOne(targetEntity="ActorRank")
      * @JoinColumns({
      *   @JoinColumn(name="ActorRank", referencedColumnName="ID")
      * })
@@ -133,14 +133,6 @@ class Actor
 		$instance->actorrank = $actorrank;
 		return $instance;
 	}
-	
-        public function find($username, $password)
-        {
-            $em = $this->doctrine->em;
-            $users = $em.getRepository(Actor::class)->findBy(array('username' => $username, 'password' => $password));
-            if ($users == NULL || count($users) != 1) return NULL;
-            else return $users[0];
-        }
         
     /**
      * Get id
@@ -347,11 +339,11 @@ class Actor
     /**
      * Set actorrank
      *
-     * @param \Actorrank $actorrank
+     * @param \ActorRank $actorrank
      *
      * @return Actor
      */
-    public function setActorrank(\Actorrank $actorrank = null)
+    public function setActorRank(\ActorRank $actorrank = null)
     {
         $this->actorrank = $actorrank;
 
@@ -361,9 +353,9 @@ class Actor
     /**
      * Get actorrank
      *
-     * @return \Actorrank
+     * @return \ActorRank
      */
-    public function getActorrank()
+    public function getActorRank()
     {
         return $this->actorrank;
     }
@@ -402,4 +394,3 @@ class Actor
         return $this->section;
     }
 }
-

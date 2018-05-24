@@ -6,14 +6,16 @@
 		public function __construct()
 		{
 			parent::__construct();
-			$this->load->library('loader');
 			$this->load->library('doctrine');
+			
+			$this->load->library('loader');
+			$this->loader->setController($this);
+			$this->loader->setEntityManager($this->doctrine->em);
 		}
 		
 		public function index()
 		{
-                    echo "OK";
-			//$this->loader->insertAdmins($this->doctrine->em);
+			echo "OK";
 		}
 
 	}

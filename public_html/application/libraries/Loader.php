@@ -8,116 +8,145 @@
  */
 class Loader
 {
+	/* ============== IOC ============== */
+	
+	/*
+	 * CI_Controller $controller: pozivajuci kontroler
+	 */
+	private $controller = null;
+	
+	/*
+	 * setController() - podesava pozivajuci kontroler
+	 *	@param CI_Controller $controller: pozivajuci kontroler
+	 *	@return: void
+	 */
+	public function setController($controller) { if ($this->controller === null) $this->controller = $controller; }
+	
+	/*
+	 * getController() - dohvata pozivajuci kontroler
+	 *	@return: CI_Controller $controller
+	 */
+	//public function getController() { return $this->controller; }
+	
+	/*
+	 * EntityManager $em: Globalni entity manager
+	 */
+	private $em = null;
+	
+	/*
+	 * setEntityManager() - podesava globalni entity manager
+	 *	@param EntityManager $em: entity manager
+	 *	@return: void
+	 */
+	public function setEntityManager($em) { if ($this->em === null) $this->em = $em; }
+	
+	/*
+	 * getEntityManager() - dohvata podesen globalni entity manager
+	 *	@return: EntityManager $em
+	 */
+	//public function getEntityManager() { return $this->em; }
+	
 	/* ============== VIEWS ============== */
 	
 	/*
 	 * loadHead() - ucitava head
-	 *	@param CI_Controller $component: komponenta u koju da se ucita
 	 *	@param string $title: titl stranice
 	 *	@param array $scripts: niz dodatnih skripti koje treba ucitati
 	 *	@return: void
 	 */
-	public function loadHead($component, $title = 'Page', $scripts = null)
+	public function loadHead($title = 'Page', $scripts = null)
 	{
-		$component->load->view('templates/head.php', array('title' => $title, 'scripts' => $scripts));
+		$this->controller->load->view('templates/head.php', array('title' => $title, 'scripts' => $scripts));
 	}
 	
 	/*
 	 * loadFixedHeader() - ucitava fiksni header
-	 *	@param CI_Controller $component: komponenta u koju da se ucita
 	 *	@return: void
 	 *
-	 *	@special: $component mora da ima ucitane sesije
+	 *	@special: $this->controller mora da ima ucitane sesije
 	 */
-	public function loadFixedHeader($component)
+	public function loadFixedHeader()
 	{
-		$component->load->view('templates/header-fixed.php');
+		$this->controller->load->view('templates/header-fixed.php');
 		
 	}
 	
 	/*
 	 * loadHeader() - ucitava header
-	 *	@param CI_Controller $component: komponenta u koju da se ucita
 	 *	@return: void
 	 *
-	 *	@special: $component mora da ima ucitane sesije
+	 *	@special: $this->controller mora da ima ucitane sesije
 	 */
-	public function loadHeader($component)
+	public function loadHeader()
 	{
-		$component->load->view('templates/header.php');
+		$this->controller->load->view('templates/header.php');
 		
 	}
 	
 	/*
 	 * loadNavbar() - ucitava navbar
-	 *	@param CI_Controller $component: komponenta u koju da se ucita
 	 *	@param int $active: indeks aktivnog linka u okviru navbara
 	 *	@return: void
 	 */
-	public function loadNavbar($component, $active = -1)
+	public function loadNavbar($active = -1)
 	{
-		$component->load->view('templates/navbar.php', array('active' => $active));
+		$this->controller->load->view('templates/navbar.php', array('active' => $active));
 	}
 	
 	/*
 	 * contentStart() - zapocinje sadrzaj stranice
-	 *	@param CI_Controller $component: komponenta u koju da se ucita
 	 *	@return: void
 	 */
-	public function contentStart($component)
+	public function contentStart()
 	{
-		$component->load->view('templates/content-start.php');
+		$this->controller->load->view('templates/content-start.php');
 	}
 	
 	/*
 	 * contentEnd() - zavrsava sadrzaj stranice
-	 *	@param CI_Controller $component: komponenta u koju da se ucita
 	 *	@return: void
 	 */
-	public function contentEnd($component)
+	public function contentEnd()
 	{
-		$component->load->view('templates/content-end.php');
+		$this->controller->load->view('templates/content-end.php');
 	}
 	
 	/*
 	 * loadFooter() - ucitava footer
-	 *	@param CI_Controller $component: komponenta u koju da se ucita
 	 *	@return: void
 	 */
-	public function loadFooter($component)
+	public function loadFooter()
 	{
-		$component->load->view('templates/footer.php');
+		$this->controller->load->view('templates/footer.php');
 	}
 	
 	/*
 	 * loadFoot() - ucitava foot
-	 *	@param CI_Controller $component: komponenta u koju da se ucita
 	 *	@return: void
 	 */
-	public function loadFoot($component)
+	public function loadFoot()
 	{
-		$component->load->view('templates/foot.php');
+		$this->controller->load->view('templates/foot.php');
 	}
 	
 	/*
 	 * loadSimplePage() - ucitava jednostavnu stranicu
-	 *	@param CI_Controller $component: komponenta u koju da se ucita
 	 *	@param string $content: sadrzaj stranice
 	 *	@param string $title: titl stranice
 	 *	@param array $scripts: niz dodatnih skripti koje treba ucitati
 	 *	@return: void
 	 */
-	public function loadSimplePage($component, $content = '', $title = 'Page', $scripts = null)
+	public function loadSimplePage($content = '', $title = 'Page', $scripts = null)
 	{
-		$this->loadHead($component, $title, $scripts);
-		$this->loadFixedHeader($component);
-		$this->loadHeader($component);
-		$this->loadNavbar($component);
-		$this->contentStart($component);
+		$this->loadHead($title, $scripts);
+		$this->loadFixedHeader();
+		$this->loadHeader();
+		$this->loadNavbar();
+		$this->contentStart();
 		echo $content;
-		$this->contentEnd($component);
-		$this->loadFooter($component);
-		$this->loadFoot($component);
+		$this->contentEnd();
+		$this->loadFooter();
+		$this->loadFoot();
 	}
 	
 	/* ============== MODELS ============== */
@@ -188,7 +217,7 @@ class Loader
 		require_once 'application/models/Subject.php';
 		require_once 'application/models/WorkPost.php';
 	}
-
+	
 	/* ============== DB SELECT ============== */
 	
 	/*
@@ -197,10 +226,40 @@ class Loader
 	 *	@param Rank $rank: rank
 	 *	@return: ActorRank
 	 */
-	public function getRank($em, $rank)
+	public function getRank($rank)
 	{
 		$this->loadEntities();
-		return $em->find('ActorRank', $rank);
+		return $this->em->find('ActorRank', $rank);
+	}
+	
+	/*
+	 * findActor() - dohvata aktora
+	 *	@param string $username: korisnicko ime
+	 *	@param string $password: lozinka
+	 *	@return: Actor
+	 */
+	public function findActor($username, $password)
+	{
+		$this->loadEntities();
+		
+		//, a.firstname, a.lastname, a.email, a.username, a.password, a.birthdate, a.tokens, a.banned, a.actorrank
+		
+		$q = 
+			$this->em->createQuery(
+				'SELECT a.id FROM Actor a WHERE a.username = :username AND a.password = :password'
+			);
+		
+		$q->setParameter('username', $username);
+		$q->setParameter('password', MD5($password));
+		$users = $q->getResult();
+		
+		//if ($users == NULL || count($users) > 1) return NULL;
+		
+		//$id = $users[0]['id'];
+		
+		$user = $this->em->find('Actor', 3);
+		
+		return $user;
 	}
 	
 	/* ============== DB INSERT ============== */
@@ -210,7 +269,7 @@ class Loader
 	 *	@param EntityManager $em: veza sa bazom
 	 *	@return: void
 	 */
-	public function insertRanks($em)
+	public function insertRanks()
 	{
 		$this->loadEntities();
 		$rank1 = ActorRank::New('Guest', 1);
@@ -218,12 +277,12 @@ class Loader
 		$rank3 = ActorRank::New('Tutor', 3);
 		$rank4 = ActorRank::New('Moderator', 4);
 		$rank5 = ActorRank::New('Administrator', 5);
-		$em->persist($rank1);
-		$em->persist($rank2);
-		$em->persist($rank3);
-		$em->persist($rank4);
-		$em->persist($rank5);
-		$em->flush();
+		$this->em->persist($rank1);
+		$this->em->persist($rank2);
+		$this->em->persist($rank3);
+		$this->em->persist($rank4);
+		$this->em->persist($rank5);
+		$this->em->flush();
 	}
 	
 	/*
@@ -231,17 +290,17 @@ class Loader
 	 *	@param EntityManager $em: veza sa bazom
 	 *	@return: void
 	 */
-	public function insertAdmins($em)
+	public function insertAdmins()
 	{
 		$this->loadEntities();
-		$adminRank = $this->getRank($em, Rank::Administrator);
+		$adminRank = $this->getRank(Rank::Administrator);
 		$admin1 = Actor::New('Vladimir', 'Sivčev', 'vladimirsi@nordeus.com', 'sivi', 'sivi', new \DateTime('now'), $adminRank);
 		$admin2 = Actor::New('Predrag', 'Mitrović', 'pedja1996@gmail.com', 'djape', 'djape', new \DateTime('now'), $adminRank);
 		$admin3 = Actor::New('Miodrag', 'Milošević', 'miodragmilosevic@gmail.com', 'shrd', 'buddy', new \DateTime('now'), $adminRank);
-		$em->persist($admin1);
-		$em->persist($admin2);
-		$em->persist($admin3);
-		$em->flush();
+		$this->em->persist($admin1);
+		$this->em->persist($admin2);
+		$this->em->persist($admin3);
+		$this->em->flush();
 	}
 }
 

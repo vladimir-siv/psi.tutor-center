@@ -17,21 +17,23 @@ function login(popupid, username, password)
         $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter password!"));
         return;
     }
+	
     $.ajax
     ({
-      url: "Guest/login",
-      method: "POST",
-      data: { username : username, password : password },
-      dataType: "html",
-    }).done(function(msg) 
+		url: "Guest/login",
+		method: "POST",
+		data: { username : username, password : password },
+		dataType: "html",
+    })
+	.done(function(response) 
     {
-       
-       if (msg.charAt(0) == "#")
-       {
-         $("#" + popupid + "-popup-info").append(Alert.New("danger", msg.substring(1)));
-          return;
-       }
-       
+		if (response.startsWith("#Error: "))
+		{
+			$("#" + popupid + "-popup-info").append(Alert.New("danger", response.substring(8), true));
+			return;
+		}
+		
+		alert(response);
     });
 }
 
