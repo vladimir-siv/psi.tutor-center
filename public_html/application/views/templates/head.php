@@ -19,23 +19,24 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rammetto+One">
 		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Cookie">
 		
-		<link rel="stylesheet" type="text/css" href="css/utility.css">
-		<link rel="stylesheet" type="text/css" href="css/addition.css">
-		<link rel="stylesheet" type="text/css" href="css/layout.css">
-		<link rel="stylesheet" type="text/css" href="css/stylization.css">
-		<script type="text/javascript" src="style-js/utility.style.js"></script>
-		<script type="text/javascript" src="style-js/fixed-dynamic.style.js"></script>
-		<script type="text/javascript" src="js/popups.js"></script>
-		<script type="text/javascript" src="js/config.js"></script>
-		<script type="text/javascript" src="js/views.js"></script>
-		<script type="text/javascript" src="ajax/actions.ajax.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/utility.css">
+		<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/addition.css">
+		<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/layout.css">
+		<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/stylization.css">
+		<script type="text/javascript" src="<?php echo base_url(); ?>assets/style-js/utility.style.js"></script>
+		<script type="text/javascript" src="<?php echo base_url(); ?>assets/style-js/fixed-dynamic.style.js"></script>
+		<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/popups.js"></script>
+		<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/config.js"></script>
+		<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/views.js"></script>
+		<script type="text/javascript" src="<?php echo base_url(); ?>assets/ajax/actions.ajax.js"></script>
 		<?php
 			if ($scripts != null)
 				foreach ($scripts as $script)
 					echo '<script type="text/javascript" src="'.$script.'"></script>';
 		?>
 		
-		<link rel="icon" href="res/favicon.ico">
+		<link rel="icon" href="<?php echo base_url(); ?>assets/res/favicon.ico">
 		<title>Tutor Center - <?= $title ?></title>
 	</head>
 	<body class="fillup">
