@@ -1,18 +1,20 @@
 class Tutor extends View
 {
-	constructor(id, completed, description)
+	constructor(id, completed, description, firstname, lastname)
 	{
 		super();
-		this.id = id; // username
+		this.id = id;
 		this.completed = completed;
 		this.description = description;
+		this.firstname = firstname;
+		this.lastname = lastname;
 	}
 	
 	AsView()
 	{
 		return "" +
 			"<a class=\"hover-text-decor-none\" href=\"profile.html?id=" + this.id + "\">" +
-				"<img class=\"rounded-oval\" src=\"storage/users/" + this.id + "/avatar.png\" width=\"120\" height=\"120\"/><p name=\"id\" class=\"font-times-new-roman font-sm\"><b>" + this.id + "</b></p>" +
+				"<img class=\"rounded-oval\" src=\""+ window.location.protocol + "//" + window.location.host + "/assets/storage/users/" + this.id + "/avatar.png\" width=\"120\" height=\"120\"/><p name=\"id\" class=\"font-times-new-roman font-sm\"><b>" + this.firstname  + " " + this.lastname + "</b></p>" +
 			"</a>" +
 			"<p class=\"font-times-new-roman font-xs\"><b>Completed: " + this.completed + "</b></p>" +
 			"<p class=\"font-times-new-roman font-xs\"><i>" + this.description + "</i></p>";

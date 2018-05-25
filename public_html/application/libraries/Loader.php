@@ -148,6 +148,26 @@ class Loader
 		$this->loadFooter();
 		$this->loadFoot();
 	}
+
+	public function loadPage($page = '', $data = null, $title = 'Page', $scripts = null)
+	{
+		if (!file_exists(APPPATH.'views/'.$page))
+		{
+			$data = array('heading' => '404', 'message' => 'Page not found');
+			$this->controller->load->view('errors/cli/error_404', $data);
+			return;
+		}
+		
+		$this->loadHead($title, $scripts);
+		$this->loadFixedHeader();
+		$this->loadHeader();
+		$this->loadNavbar();
+		$this->contentStart();
+		$this->controller->load->view($page, $data);
+		$this->contentEnd();
+		$this->loadFooter();
+		$this->loadFoot();
+	}
 	
 	/* ============== MODELS ============== */
 	
