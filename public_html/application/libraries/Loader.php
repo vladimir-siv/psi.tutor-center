@@ -1,5 +1,6 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
+	require_once 'application/models/Entities.php';
 
 /*
  * Loader - usluzna klasa za laksi rad (poput utility klase)
@@ -235,27 +236,6 @@ class Loader
 		$generator->generate($metadata, __DIR__ . '/Entities');
 	}
 	
-	/*
-	 * loadEntities() - ucitava sve entitete (modele)
-	 *	@return: void
-	 */
-	public function loadEntities()
-	{
-		require_once 'application/models/Proxy.php';
-		require_once 'application/models/Action.php';
-		require_once 'application/models/Actor.php';
-		require_once 'application/models/ActorRank.php';
-		require_once 'application/models/ActorReview.php';
-		require_once 'application/models/Notification.php';
-		require_once 'application/models/Post.php';
-		require_once 'application/models/PromotionRequest.php';
-		require_once 'application/models/QAPost.php';
-		require_once 'application/models/Reply.php';
-		require_once 'application/models/Section.php';
-		require_once 'application/models/Subject.php';
-		require_once 'application/models/WorkPost.php';
-	}
-	
 	/* ============== DB SELECT ============== */
 	
 	/*
@@ -266,7 +246,6 @@ class Loader
 	 */
 	public function getRank($rank)
 	{
-		$this->loadEntities();
 		return $this->em->find('ActorRank', $rank);
 	}
 	
@@ -278,8 +257,6 @@ class Loader
 	 */
 	public function findActor($username, $password)
 	{
-		$this->loadEntities();
-		
 		$users = $this->em->getRepository(Actor::class)->findBy(array
 		(
 			'username' => $username,
@@ -300,7 +277,6 @@ class Loader
 	 */
 	public function insertRanks()
 	{
-		$this->loadEntities();
 		$rank1 = ActorRank::New('Guest', 1);
 		$rank2 = ActorRank::New('User', 2);
 		$rank3 = ActorRank::New('Tutor', 3);
@@ -321,7 +297,6 @@ class Loader
 	 */
 	public function insertAdmins()
 	{
-		$this->loadEntities();
 		$adminRank = $this->getRank(Rank::Administrator);
 		$admin1 = Actor::New('Vladimir', 'Sivčev', 'vladimirsi@nordeus.com', 'sivi', 'sivi', new \DateTime('now'), $adminRank);
 		$admin2 = Actor::New('Predrag', 'Mitrović', 'pedja1996@gmail.com', 'djape', 'djape', new \DateTime('now'), $adminRank);

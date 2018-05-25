@@ -34,6 +34,7 @@ function login(popupid, username, password)
 		}
 		
 		$("#" + popupid + "-popup-info").append(Alert.New("success", response, true));
+		window.location.reload();
     });
 }
 

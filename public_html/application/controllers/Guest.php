@@ -1,5 +1,6 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
+	require_once 'application/models/Entities.php';
 	
 	class Guest extends CI_Controller
 	{
@@ -17,10 +18,15 @@
 		{
 			$this->loader->loadSimplePage();
 		}
+		
+		public function register()
+		{
+			
+		}
         
 		public function login()
 		{
-			$actor = $this->loader->findActor($this->input->get('username'), $this->input->get('password'));
+			$actor = $this->loader->findActor($this->input->post('username'), $this->input->post('password'));
 			
 			if ($actor === null)
 			{
@@ -30,34 +36,13 @@
 			
 			$this->session->set_userdata('actor', $actor);
 			
-			echo 'Success! User is: '.$this->session->actor->getFirstname();
+			echo 'Success!';
 		}
 		public function logout()
 		{
-			$this->session_unset_userdata('actor');
+			$this->session->unset_userdata('actor');
 			$this->session->sess_destroy();
 			redirect("Utility/index");
-		}
-		
-		public function try1()
-		{
-			$this->session->set_userdata('ok', 'radi');
-			echo 'cool';
-		}
-		
-		public function try2()
-		{
-			echo 'hello "'.$this->session->userdata('ok').'"';
-		}
-		
-		private function insertUser()
-		{
-			$this->loader->loadEntities();
-			$actor = Actor::New('Dejan', 'Dejanovic', 'ddd@gmail.com', 'deja1', 'deja', new \DateTime('now'), Rank::Tutor);
-			//$actor->loadReferences();
-			$em = $this->loader->getEntityManager();
-			$em->persist($actor);
-			$em->flush();
 		}
 		
 		public function showAllTutors()

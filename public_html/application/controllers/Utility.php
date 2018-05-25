@@ -1,5 +1,6 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
+	require_once 'application/models/Entities.php';
 	
 	class Utility extends CI_Controller
 	{
@@ -15,8 +16,8 @@
 		
 		public function index()
 		{
-			echo "OK";
+			if ($this->session->actor !== null) echo 'Success! User is: '.$this->session->actor->getFirstname();
+			else echo 'No one is logged in';
 		}
-
 	}
 ?>
