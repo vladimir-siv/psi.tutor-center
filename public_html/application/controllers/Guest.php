@@ -59,4 +59,5 @@
 			}
 			$this->loader->loadPage('tutors.php', array('tutors' => $tutors, 'numOfWorkpost' => $numOfWorkpost), 'Tutors', array('scripts'=>'assets/js/tutors.js'));
 		}
+	}
 ?>

@@ -4,7 +4,7 @@
         <?php if($tutors!=null) {
             $count = 0;
             foreach($tutors as $tutor) {
-                echo 'new Tutor('.$tutor->getId().', '. $numOfWorkpost[$tutor->getId()] .', "Sivi smrda", "'.$tutor->getFirstname().'", "'.$tutor->getLastName().'")';
+                echo 'new Tutor('.$tutor->getId().', '. $numOfWorkpost[$tutor->getId()] .', "Miki smrda", "'.$tutor->getFirstname().'", "'.$tutor->getLastName().'")';
                 $count++; 
                 if($count!==count($tutors)) echo ', ';
             }
