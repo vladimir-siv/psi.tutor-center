@@ -15,6 +15,7 @@
 		
 		public function index()
 		{
+                        echo FCPATH;
 			echo "OK";
 		}
 
