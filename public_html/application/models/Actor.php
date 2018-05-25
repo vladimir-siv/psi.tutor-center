@@ -1,7 +1,5 @@
 <?php
 
-@require_once(APPPATH.'models/Proxy.php');
-
 /**
  * Actor
  *
@@ -18,42 +16,42 @@ class Actor extends Proxy
      * @GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
+	
     /**
      * @var string
      *
      * @Column(name="FirstName", type="string", length=64, nullable=false)
      */
     private $firstname;
-
+	
     /**
      * @var string
      *
      * @Column(name="LastName", type="string", length=64, nullable=false)
      */
     private $lastname;
-
+	
     /**
      * @var string
      *
      * @Column(name="Email", type="string", length=64, nullable=false)
      */
     private $email;
-
+	
     /**
      * @var string
      *
      * @Column(name="Username", type="string", length=64, nullable=false)
      */
     private $username;
-
+	
     /**
      * @var string
      *
      * @Column(name="Password", type="string", length=64, nullable=false)
      */
     private $password;
-
+	
     /**
      * @var \DateTime
      *
@@ -83,25 +81,11 @@ class Actor extends Proxy
     private $actorrank;
 	
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ManyToMany(targetEntity="Section", inversedBy="actor")
-     * @JoinTable(name="sectionsubscriptions",
-     *   joinColumns={
-     *     @JoinColumn(name="Actor", referencedColumnName="ID")
-     *   },
-     *   inverseJoinColumns={
-     *     @JoinColumn(name="Section", referencedColumnName="ID")
-     *   }
-     * )
-     */
-    private $section;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
+		parent::__construct();
         $this->section = new \Doctrine\Common\Collections\ArrayCollection();
     }
 	
@@ -132,7 +116,7 @@ class Actor extends Proxy
 		$instance->actorrank = $actorrank;
 		return $instance;
 	}
-        
+    
     /**
      * Get id
      *
@@ -156,7 +140,7 @@ class Actor extends Proxy
 
         return $this;
     }
-
+	
     /**
      * Get firstname
      *
@@ -166,7 +150,7 @@ class Actor extends Proxy
     {
         return $this->firstname;
     }
-
+	
     /**
      * Set lastname
      *
@@ -180,7 +164,7 @@ class Actor extends Proxy
 
         return $this;
     }
-
+	
     /**
      * Get lastname
      *
@@ -190,7 +174,7 @@ class Actor extends Proxy
     {
         return $this->lastname;
     }
-
+	
     /**
      * Set email
      *
@@ -204,7 +188,7 @@ class Actor extends Proxy
 
         return $this;
     }
-
+	
     /**
      * Get email
      *
@@ -214,7 +198,7 @@ class Actor extends Proxy
     {
         return $this->email;
     }
-
+	
     /**
      * Set username
      *
@@ -228,7 +212,7 @@ class Actor extends Proxy
 
         return $this;
     }
-
+	
     /**
      * Get username
      *
@@ -238,7 +222,7 @@ class Actor extends Proxy
     {
         return $this->username;
     }
-
+	
     /**
      * Set password
      *
@@ -252,7 +236,7 @@ class Actor extends Proxy
 
         return $this;
     }
-
+	
     /**
      * Get password
      *
@@ -262,7 +246,7 @@ class Actor extends Proxy
     {
         return $this->password;
     }
-
+	
     /**
      * Set birthdate
      *
@@ -276,7 +260,7 @@ class Actor extends Proxy
 
         return $this;
     }
-
+	
     /**
      * Get birthdate
      *
@@ -286,7 +270,7 @@ class Actor extends Proxy
     {
         return $this->birthdate;
     }
-
+	
     /**
      * Set tokens
      *
@@ -300,7 +284,7 @@ class Actor extends Proxy
 
         return $this;
     }
-
+	
     /**
      * Get tokens
      *
@@ -310,7 +294,7 @@ class Actor extends Proxy
     {
         return $this->tokens;
     }
-
+	
     /**
      * Set banned
      *
@@ -324,7 +308,7 @@ class Actor extends Proxy
 
         return $this;
     }
-
+	
     /**
      * Get banned
      *
@@ -334,7 +318,7 @@ class Actor extends Proxy
     {
         return $this->banned;
     }
-
+	
     /**
      * Set actorrank
      *
@@ -348,7 +332,7 @@ class Actor extends Proxy
 		
         return $this;
     }
-
+	
     /**
      * Get actorrank
      *
@@ -358,78 +342,23 @@ class Actor extends Proxy
     {
         return $this->actorrank;
     }
-
-    /**
-     * Add section
-     *
-     * @param \Section $section
-     *
-     * @return Actor
-     */
-    public function addSection(\Section $section)
-    {
-        $this->section[] = $section;
-
-        return $this;
-    }
-
-    /**
-     * Remove section
-     *
-     * @param \Section $section
-     */
-    public function removeSection(\Section $section)
-    {
-        $this->section->removeElement($section);
-    }
-
-    /**
-     * Get section
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getSection()
-    {
-        return $this->section;
-    }
 	
 	/* ============== PROXY ============== */
 	
-	private $actorrank_ref = null;
-	
-	public function getActorRankRef()
+	public function loadReferences()
 	{
-		if ($this->actorrank_ref === null)
-		{
-			$this->actorrank_ref = $this->em->find('ActorRank', $this->actorrank);
-			$this->actorrank_ref->setEntityManager($this->em);
-		}
+		if (parent::refsAreLoaded()) return;
 		
-		return $this->actorrank_ref;
+		$this->actorrank = $this->em->find('ActorRank', $this->actorrank);
+		
+		parent::loadReferences();
 	}
-	
-	public function persist()
+	public function unloadReferences()
 	{
-		if (!isset($this->id))
-		{
-			$sql = $this->prepare
-			(
-				'INSERT INTO Actor (firstname, lastname, email, username, password, birthdate, tokens, banned, actorrank) VALUES (:f, :l, :e, :u, :p, :b, :t, :n, :a)',
-				array
-				(
-					'f' => $this->firstname,
-					'l' => $this->lastname,
-					'e' => $this->email,
-					'u' => $this->username,
-					'p' => MD5($this->password),
-					'b' => $this->birthdate,
-					't' => $this->tokens,
-					'n' => ($this->banned ? 'true' : 'false'),
-					'a' => $this->actorrank
-				)
-			);
-			
-			$this->em->getConnection()->prepare($sql)->execute();
-		}
+		if (!parent::refsAreLoaded()) return;
+		
+		$this->actorrank = $this->actorrank->getId();
+		
+		parent::unloadReferences();
 	}
 }

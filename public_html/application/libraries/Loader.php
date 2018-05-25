@@ -8,6 +8,23 @@
  */
 class Loader
 {
+	/* ============== INSTANTIATION ============== */
+	
+	/*
+	 * Global instance
+	 */
+	private static $I = null;
+	
+	/*
+	 * Gets the global loader instance
+	 */
+	public static function instance() { return self::$I; }
+	
+	/*
+	 * Constructor
+	 */
+	public function __construct() { if (self::$I === null) self::$I = $this; }
+	
 	/* ============== IOC ============== */
 	
 	/*
@@ -224,6 +241,7 @@ class Loader
 	 */
 	public function loadEntities()
 	{
+		require_once 'application/models/Proxy.php';
 		require_once 'application/models/Action.php';
 		require_once 'application/models/Actor.php';
 		require_once 'application/models/ActorRank.php';
