@@ -60,21 +60,21 @@ class Actor extends Proxy
      * @Column(name="BirthDate", type="date", nullable=false)
      */
     private $birthdate;
-
+	
     /**
      * @var string
      *
      * @Column(name="Tokens", type="decimal", precision=10, scale=0, nullable=false)
      */
     private $tokens = '0';
-
+	
     /**
      * @var boolean
      *
      * @Column(name="Banned", type="boolean", nullable=false)
      */
     private $banned = '0';
-
+	
     /**
      * @var integer
      *
@@ -406,5 +406,30 @@ class Actor extends Proxy
 		}
 		
 		return $this->actorrank_ref;
+	}
+	
+	public function persist()
+	{
+		if (!isset($this->id))
+		{
+			$sql = $this->prepare
+			(
+				'INSERT INTO Actor (firstname, lastname, email, username, password, birthdate, tokens, banned, actorrank) VALUES (:f, :l, :e, :u, :p, :b, :t, :n, :a)',
+				array
+				(
+					'f' => $this->firstname,
+					'l' => $this->lastname,
+					'e' => $this->email,
+					'u' => $this->username,
+					'p' => MD5($this->password),
+					'b' => $this->birthdate,
+					't' => $this->tokens,
+					'n' => ($this->banned ? 'true' : 'false'),
+					'a' => $this->actorrank
+				)
+			);
+			
+			$this->em->getConnection()->prepare($sql)->execute();
+		}
 	}
 }

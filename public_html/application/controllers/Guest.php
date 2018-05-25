@@ -29,7 +29,11 @@
 			}
 			
 			$actor->setEntityManager($this->loader->getEntityManager());
-			echo 'Success! User is: '.$actor->getActorRankRef()->getName();
+			//$this->session->set_userdata('actor', json_encode($actor));
+			
+			echo json_encode($actor);
+			
+			//echo 'Success! User is: '.$actor->getActorRankRef()->getName();
 		}
 		
 		public function logout()
@@ -37,6 +41,15 @@
 			$this->session_unset_userdata('actor');
 			$this->session->sess_destroy();
 			redirect("Utility/index");
+		}
+		
+		public function insertActor()
+		{
+			$this->loader->loadEntities();
+			$actor = Actor::New('Marko', 'Markovic', 'mm@gmail.com', 'mm123', 'mm123', '2018-05-02', Rank::User);
+			$actor->setEntityManager($this->loader->getEntityManager());
+			$actor->persist();
+			echo 'cool';
 		}
 	}
 ?>
