@@ -33,7 +33,7 @@
 		<?php
 			if ($scripts != null)
 				foreach ($scripts as $script)
-					echo '<script type="text/javascript" src="'.$script.'"></script>';
+					echo '<script type="text/javascript" src="'.base_url().$script.'"></script>';
 		?>
 		
 		<link rel="icon" href="<?php echo base_url(); ?>assets/res/favicon.ico">

@@ -31,12 +31,30 @@
 			$actor->setEntityManager($this->loader->getEntityManager());
 			echo 'Success! User is: '.$actor->getActorRankRef()->getName();
 		}
-		
+
 		public function logout()
 		{
 			$this->session_unset_userdata('actor');
 			$this->session->sess_destroy();
 			redirect("Utility/index");
+		}
+		public function showAllTutors()
+		{
+			// UNIMPLEMENTED: tutor description
+			$this->loader->loadEntities();
+			$qb = $this->loader->getEntityManager()->createQueryBuilder();
+			$qb->select('a')->from('Actor', 'a')->where('a.actorrank > 2');
+			$query = $qb->getQuery();
+			$tutors = $query->getResult();
+			$numOfWorkpost = array();
+			foreach($tutors as $tutor){
+				$qb = $this->loader->getEntityManager()->createQueryBuilder();
+				$qb->select('count(w.id)')->from('Workpost', 'w')->where('w.worker = :tutorid')->setParameter('tutorid', $tutor->getId());
+				$query = $qb->getQuery();
+				$workpostsCount = $query->getSingleScalarResult();
+				$numOfWorkpost[$tutor->getId()] = $workpostsCount;
+			}
+			$this->loader->loadPage('tutors.php', array('tutors' => $tutors, 'numOfWorkpost' => $numOfWorkpost), 'Tutors', array('scripts'=>'assets/js/tutors.js'));
 		}
 	}
 ?>
