@@ -20,11 +20,10 @@
 			if ($this->session->actor !== null) echo 'Success! User is: '.$this->session->actor->getFirstname();
 			else echo 'No one is logged in';
 		}
-		
-                
+		   
 		public function register()
 		{
-			// TODO: validate data
+			// TODO: REGEX 
 			$this->load->library('form_validation');
 			
 			$this->form_validation->set_rules('email', 'E-mail', 'required|valid_email');

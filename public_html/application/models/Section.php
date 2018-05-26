@@ -8,6 +8,7 @@
  */
 class Section extends Proxy
 {
+    
     /**
      * @var integer
      *
@@ -233,7 +234,19 @@ class Section extends Proxy
         $this->actor->removeElement($actor);
     }
     
-    
+    /**
+     * Get subscribers
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSubscribers()
+    {
+        $actors = parent::$_em->createQuery('SELECT a FROM Section.actor a WHERE Section.id = :id')
+                           ->setParameter('id', $this->id)
+                           ->getResult();
+        return $actors;
+    }
+ 
     /* ============== PROXY ============== */
 
     public function loadReferences()

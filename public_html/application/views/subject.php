@@ -15,8 +15,8 @@
 </div>
 <div class = "row font-sm">
         <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
-           <p class="font-times-new-roman text-justify">
-                 <?php echo $subject->getDescription() ?>
+           <p class="font-times-new-roman text-center">
+                 <?php echo $subject->getDescription(); ?>
            </p>
         </div>
 </div>
@@ -26,7 +26,7 @@
                    foreach($sections as $section)
                    {
                         echo '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">';       
-                            echo '<a class="hover-text-decor-none" href="'.base_url().'Guest\showOneSection\\'.$section->getId().'" >';
+                            echo '<a class="hover-text-decor-none" href="'.base_url().'Guest\section\\'.$section->getId().'" >';
                                  echo '<article id="article" class="border-boxed expanded no-margin padding-sm solid-border border-xs border-gray edged no-border-bottom text-center" style="height: 100px;">';
                                        echo '<img src="'.base_url().'assets/storage/subjects/'.$subject->getName().'/sections/'.$section->getName().'/icon.png" width="40" height="40"/><p name="id" class="font-times-new-roman font-sm">'.$section->getName().'</p>';
                                  echo '</article>';

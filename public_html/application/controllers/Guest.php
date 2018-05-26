@@ -45,7 +45,7 @@
 			$qb->select('s')->from('Subject', 's');
 			$query = $qb->getQuery();
 			$subjects = $query->getResult();
-			$this->loader->loadPage('subjects.php', array('subjects' => $subjects, ), 'Subjects');
+			$this->loader->loadPage('subjects.php', array('subjects' => $subjects), 'Subjects');
 		}
 		
 		public function subject($id)
@@ -66,5 +66,24 @@
 		{
 			$this->loader->loadPage('about.php', null, 'About');                    
 		}
+                
+                public function section($id)
+                {
+                       $qb = $this->loader->getEntityManager()->createQueryBuilder();
+		       $qb->select('s')->from('Section', 's')->where('s.id = :id')->setParameter('id', $id);
+		       $query = $qb->getQuery();
+		       $section = $query->getSingleResult();
+                       
+                       echo $section->getName();
+                       $actors = $section->getSubscribers();
+                       foreach($actors as $actor)
+                       {
+                           echo $actors->getId();
+                       }
+                      // {
+                       //    echo $actor->getId();
+                      // }
+                       //$this->loader->loadPage('section.php', null, 'Sections');
+                }
 	}
 ?>
