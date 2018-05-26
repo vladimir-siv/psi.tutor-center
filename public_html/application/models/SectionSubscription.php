@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Privilege
+ * SectionSubscription
  *
  * @Table(name="sectionsubscriptions")
  * @Entity
