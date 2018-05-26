@@ -20,36 +20,49 @@
 			else echo 'No one is logged in';
 		}
 		
+                
 		public function register()
 		{
 			// TODO: validate data
-			
-			$firstname= $this->input->post('firstname');
-			$lastname = $this->input->post('lastname');
-			$username = $this->input->post('username');
-			$password = $this->input->post('password');
-			$email = $this->input->post('email');
-			$birthdate =  new \DateTime($this->input->post('birthdate'));
-			
-			$actor = Actor::New
-			(
-				$firstname,
-				$lastname,
-				$email,
-				$username,
-				$password,
-				$birthdate,
-				Rank::User
-			);
-			
-			try
-			{
-				$em = $this->loader->getEntityManager();
-				$em->persist($actor);
-				$em->flush();
-				echo 'Success!';
-			}
-			catch (Exception $ex) { echo '#Error: Username/Email already in use.'; }
+			$this->load->library('form_validation');
+		
+                        $this->form_validation->set_rules('email', 'E-mail', 'required|valid_email');
+                        $this->form_validation->set_rules('password', 'Password', 'required');
+                        $this->form_validation->set_rules('firstname', 'First Name', 'required');
+                        $this->form_validation->set_rules('lastname', 'Last Name', 'required');
+                        $this->form_validation->set_rules('birthdate', 'Birth date', 'required');
+                        
+                        $firstname= $this->input->post('firstname');
+                        $lastname = $this->input->post('lastname');
+                        $username = $this->input->post('username');
+                        $password = $this->input->post('password');
+                        $email = $this->input->post('email');
+                        
+                        if ($this->form_validation->run() && preg_match("/^[a-zA-Z]*$/", $firstname) == true && preg_match("/^[a-zA-Z]*$/", $lastname) == true 
+                            && preg_match("/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|1[0-9]|2[0-9]|3(0|1))$/", $this->input->post('birthdate')) == true)
+                        {
+                            $birthdate = new \DateTime($this->input->post('birthdate'));
+                            $actor = Actor::New
+                            (
+                                    $firstname,
+                                    $lastname,
+                                    $email,
+                                    $username,
+                                    $password,
+                                    $birthdate,
+                                    Rank::User
+                            );
+
+                            try
+                            {
+                                    $em = $this->loader->getEntityManager();
+                                    $em->persist($actor);
+                                    $em->flush();
+                                    echo 'Success!';
+                            }
+                            catch (Exception $ex) { echo '#Error: Username/Email already in use.'; }
+                        }
+                        else echo '#Error: Data is not valid.';
 		}
         
 		public function login()
