@@ -333,6 +333,22 @@
 		}
 		
 		/*
+		 * insertSubjects() - insert-uje kategorije
+		 *	@param array $subjects: niz kategorija
+		 *	@return void
+		 */
+		public function insertSubjects($subjects)
+		{
+			foreach ($subjects as $name => $description)
+			{
+				$subject = Subject::New($name, $description);
+				$this->em->persist($subject);
+			}
+			
+			$this->em->flush();
+		}
+		
+		/*
 		 * initializeDatabase() - inicijalizuje bazu podataka
 		 *	@return void
 		 */

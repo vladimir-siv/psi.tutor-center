@@ -20,6 +20,20 @@
 			echo 'Development controller.';
 		}
 		
+		public function insertSubjects()
+		{
+			$subjects = array
+			(
+				'Computer Science' => 'A computer science subject',
+				'Architecture' => 'I draw like a boss',
+				'Engineering' => 'Trust me I\'m an engineer ;)'
+			);
+			
+			$this->loader->insertSubjects($subjects);
+			
+			echo 'Ok';
+		}
+		
 		public function initdb()
 		{
 			echo 'Initializing database . . . ';

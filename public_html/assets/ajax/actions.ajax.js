@@ -113,27 +113,26 @@ function toggleSeen(notificationid)
 
 function createSubject(popupid, name, description)
 {
-    //alert("USAO");
-  $("#" + popupid + "-popup-info").html("");
-  if (name == "")
-  {
-      $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter name!"));
-      return;
-  }
-  if (description == "")
-  {
-      $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter description!"));
-      return;      
-  }
-  $.ajax
-  ({
-        url: "http://" + window.location.host + "/Utility/createSubject",
-        method: "POST",
-        data: { name : name, description : description },
-        dataType: "html"
-  })
-  .done(function(response) 
-  {
+	$("#" + popupid + "-popup-info").html("");
+	if (name == "")
+	{
+		$("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter name!"));
+		return;
+	}
+	if (description == "")
+	{
+		$("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter description!"));
+		return;      
+	}
+	$.ajax
+	({
+		url: "http://" + window.location.host + "/Utility/createSubject",
+		method: "POST",
+		data: { name : name, description : description },
+		dataType: "html"
+	})
+	.done(function(response)
+	{
 		if (response.startsWith("#Error: "))
 		{
 			$("#" + popupid + "-popup-info").append(Alert.New("danger", response.substring(8), true));
@@ -141,8 +140,7 @@ function createSubject(popupid, name, description)
 		}
 		
 		$("#" + popupid + "-popup-info").append(Alert.New("success", response, true));
-		window.location.reload();
-  });  
+	});
 }
 
 function createSection(popupid, name, subject, description)
