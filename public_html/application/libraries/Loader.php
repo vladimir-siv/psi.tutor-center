@@ -302,7 +302,7 @@ class Loader
 		$em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
 		// fetch metadata
 		$driver = new \Doctrine\Mapping\Driver\DatabaseDriver(
-						$em->getConnection()->getSchemaManager()
+			$em->getConnection()->getSchemaManager()
 		);
 		$em->getConfiguration()->setMetadataDriverImpl($driver);
 		$cmf = new \Doctrine\Tools\DisconnectedClassMetadataFactory($em);
