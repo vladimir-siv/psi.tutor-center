@@ -16,7 +16,9 @@
 		
 		public function index()
 		{
-			$this->about();
+			$this->loader->insertActions();
+			echo 'ok';
+			//$this->about();
 		}
 		
 		public function register()

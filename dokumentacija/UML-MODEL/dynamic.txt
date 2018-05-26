@@ -28,15 +28,15 @@ BuyTokensDialog: utility::buyTokens()
 SellTokensDialog: utility::sellTokens()
 CreateSubjectDialog: utility::createSubject()
 CreateSectionDialog: utility::createSection()
-SubmitTokensDialog: utility::submitTokens()
+SubmitTokensDialog: utility::submitTokens() // SAME AS POST!!!
 ReviewDialog: utility::review()
-AboutTutorDialog: utility::changeTutorAbout()
-TutorDetailsDialog: utility::changeTutorDetails()
+AboutDialog: utility::changeAbout()
+DetailsDialog: utility::changeDetails()
 
 ===push===
 <clientpage>: <controller>::<method>
 
 header: user::getNotifications()
-post: utility::getReplies()
+post: guest::getReplies()
 promotions: admin::getPromotions()
-NOTYETIMPLEMENTED: section: utility::getPosts()
+NOTYETIMPLEMENTED: section: guest::getPosts()

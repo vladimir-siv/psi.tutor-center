@@ -9,6 +9,7 @@ require_once 'application/models/ActorRank.php';
 require_once 'application/models/ActorReview.php';
 require_once 'application/models/Notification.php';
 require_once 'application/models/Post.php';
+require_once 'application/models/Privilege.php';
 require_once 'application/models/PromotionRequest.php';
 require_once 'application/models/QAPost.php';
 require_once 'application/models/Reply.php';

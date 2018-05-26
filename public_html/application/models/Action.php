@@ -6,7 +6,7 @@
  * @Table(name="action", uniqueConstraints={@UniqueConstraint(name="Name", columns={"Name"})})
  * @Entity
  */
-class Action
+class Action extends Proxy
 {
     /**
      * @var integer
@@ -16,29 +16,44 @@ class Action
      * @GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
+	
     /**
      * @var string
      *
      * @Column(name="Name", type="string", length=64, nullable=false)
      */
     private $name;
-
+	
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ManyToMany(targetEntity="Actorrank", mappedBy="action")
      */
     private $actorrank;
-
+	
     /**
      * Constructor
      */
     public function __construct()
     {
+		parent::__construct();
         $this->actorrank = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+	
+	/*
+	 * New() - kreira novu akciju
+	 *	@param string $name: ime akcije
+	 *	@param \ActorRank $rank: minimalni rank za akciju (koji ima privilegije za nju)
+	 *	@return: Action
+	 */
+	public static function New($name, $rank)
+	{
+		$instance = new Action();
+		$instance->name = $name;
+		$instance->addActorrank($rank);
+		return $instance;
+	}
+	
     /**
      * Get id
      *
@@ -48,7 +63,7 @@ class Action
     {
         return $this->id;
     }
-
+	
     /**
      * Set name
      *
@@ -62,7 +77,7 @@ class Action
 
         return $this;
     }
-
+	
     /**
      * Get name
      *
@@ -72,7 +87,7 @@ class Action
     {
         return $this->name;
     }
-
+	
     /**
      * Add actorrank
      *
@@ -86,7 +101,7 @@ class Action
 
         return $this;
     }
-
+	
     /**
      * Remove actorrank
      *
@@ -96,7 +111,7 @@ class Action
     {
         $this->actorrank->removeElement($actorrank);
     }
-
+	
     /**
      * Get actorrank
      *
@@ -106,5 +121,15 @@ class Action
     {
         return $this->actorrank;
     }
+	
+	/**
+	 * Get privilege
+	 *
+	 * @return \Privilege
+	 */
+	public function getPrivilege()
+	{
+		return Privilege::New($this, $this->actorrank[0]);
+	}
 }
 

@@ -201,7 +201,6 @@ class Loader
 	
 	/*
 	 * getRank() - dohvata trazeni rank
-	 *	@param EntityManager $em: veza sa bazom
 	 *	@param Rank $rank: rank
 	 *	@return: ActorRank
 	 */
@@ -233,7 +232,6 @@ class Loader
 	
 	/*
 	 * insertRanks() - insert-uje rankove predviđene u bazu (test funkcija)
-	 *	@param EntityManager $em: veza sa bazom
 	 *	@return: void
 	 */
 	public function insertRanks()
@@ -253,7 +251,6 @@ class Loader
 	
 	/*
 	 * insertAdmins() - insert-uje predvidjene administratore
-	 *	@param EntityManager $em: veza sa bazom
 	 *	@return: void
 	 */
 	public function insertAdmins()
@@ -264,6 +261,50 @@ class Loader
 		$this->em->persist($admin1);
 		$this->em->persist($admin2);
 		$this->em->persist($admin3);
+		$this->em->flush();
+	}
+	
+	/*
+	 * insertActions() - insert-uje dinamicke akcije, kao i privilegije za njih
+	 *	@return void
+	 */
+	public function insertActions()
+	{
+		$ranks = array
+		(
+			$this->getRank(Rank::Guest),
+			$this->getRank(Rank::User),
+			$this->getRank(Rank::Tutor),
+			$this->getRank(Rank::Moderator),
+			$this->getRank(Rank::Administrator)
+		);
+		
+		$actions = array();
+		
+		$this->em->persist($actions[] = Action::New('CreatePost', $ranks[Rank::User - 1]));
+		$this->em->persist($actions[] = Action::New('Reply', $ranks[Rank::User - 1]));
+		$this->em->persist($actions[] = Action::New('LockPost', $ranks[Rank::Tutor - 1]));
+		$this->em->persist($actions[] = Action::New('ReleasePost', $ranks[Rank::User - 1]));
+		$this->em->persist($actions[] = Action::New('SubmitTokens', $ranks[Rank::User - 1]));
+		$this->em->persist($actions[] = Action::New('WorkerAccepted', $ranks[Rank::Tutor - 1]));
+		$this->em->persist($actions[] = Action::New('DeleteReply', $ranks[Rank::Moderator - 1]));
+		$this->em->persist($actions[] = Action::New('DeletePost', $ranks[Rank::Moderator - 1]));
+		$this->em->persist($actions[] = Action::New('BanUser', $ranks[Rank::Administrator - 1]));
+		$this->em->persist($actions[] = Action::New('DeleteSubject', $ranks[Rank::Administrator - 1]));
+		$this->em->persist($actions[] = Action::New('DeleteSection', $ranks[Rank::Administrator - 1]));
+		$this->em->persist($actions[] = Action::New('BuyTokens', $ranks[Rank::User - 1]));
+		$this->em->persist($actions[] = Action::New('SellTokens', $ranks[Rank::Tutor - 1]));
+		$this->em->persist($actions[] = Action::New('CreateSubject', $ranks[Rank::Administrator - 1]));
+		$this->em->persist($actions[] = Action::New('CreateSection', $ranks[Rank::Administrator - 1]));
+		$this->em->persist($actions[] = Action::New('Review', $ranks[Rank::User - 1]));
+		$this->em->persist($actions[] = Action::New('ChangeAbout', $ranks[Rank::User - 1]));
+		$this->em->persist($actions[] = Action::New('ChangeDetails', $ranks[Rank::User - 1]));
+		
+		foreach ($actions as $action)
+		{
+			$this->em->persist($action->getPrivilege());
+		}
+		
 		$this->em->flush();
 	}
 	
@@ -322,8 +363,9 @@ class Loader
 	 */
 	public function initializeDatabase()
 	{
-		$this->loader->insertRanks();
-		$this->loader->insertAdmins();
+		$this->insertRanks();
+		$this->insertAdmins();
+		$this->insertActions();
 	}
 }
 

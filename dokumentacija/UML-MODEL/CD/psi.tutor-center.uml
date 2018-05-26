@@ -2663,7 +2663,7 @@
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="7EdyrtGd8UGSDHbxfScq9QAA">
 <XPD:OBJ name="NameLabel" type="LabelView" guid="d6YW6U5Sd06Rs7By601XdwAA">
 <XPD:ATTR name="FontStyle" type="integer">1</XPD:ATTR>
-<XPD:ATTR name="Text" type="string">AboutTutor</XPD:ATTR>
+<XPD:ATTR name="Text" type="string">About</XPD:ATTR>
 </XPD:OBJ>
 <XPD:OBJ name="StereotypeLabel" type="LabelView" guid="92hjUoAIwUiHYyItqdB3CwAA">
 <XPD:ATTR name="Text" type="string">&lt;&lt;dialog&gt;&gt;</XPD:ATTR>
@@ -2694,7 +2694,7 @@
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="UQNUvqnd70yHzTg8JA2j2AAA">
 <XPD:OBJ name="NameLabel" type="LabelView" guid="LHfiw2lh1kmvT+rdU0K5LgAA">
 <XPD:ATTR name="FontStyle" type="integer">1</XPD:ATTR>
-<XPD:ATTR name="Text" type="string">TutorDetails</XPD:ATTR>
+<XPD:ATTR name="Text" type="string">Details</XPD:ATTR>
 </XPD:OBJ>
 <XPD:OBJ name="StereotypeLabel" type="LabelView" guid="fvfnxIQKKESwc8zUrm6uHQAA">
 <XPD:ATTR name="Text" type="string">&lt;&lt;dialog&gt;&gt;</XPD:ATTR>
@@ -8297,7 +8297,7 @@ implemented
 </XPD:OBJ>
 </XPD:OBJ>
 <XPD:OBJ name="OwnedElements[56]" type="UMLClass" guid="C+klYWbhnEiYLU+OYy/G4wAA">
-<XPD:ATTR name="Name" type="string">AboutTutor</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">About</XPD:ATTR>
 <XPD:ATTR name="StereotypeName" type="string">dialog</XPD:ATTR>
 <XPD:REF name="Namespace">ed++OjyaZUWU8oNPmXAiuQAA</XPD:REF>
 <XPD:ATTR name="#Views" type="integer">4</XPD:ATTR>
@@ -8322,7 +8322,7 @@ implemented
 </XPD:OBJ>
 </XPD:OBJ>
 <XPD:OBJ name="OwnedElements[57]" type="UMLClass" guid="018JpSsGrk6qVIoBCSsDmgAA">
-<XPD:ATTR name="Name" type="string">TutorDetails</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">Details</XPD:ATTR>
 <XPD:ATTR name="StereotypeName" type="string">dialog</XPD:ATTR>
 <XPD:REF name="Namespace">ed++OjyaZUWU8oNPmXAiuQAA</XPD:REF>
 <XPD:ATTR name="#Views" type="integer">4</XPD:ATTR>
