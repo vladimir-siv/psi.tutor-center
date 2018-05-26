@@ -24,7 +24,7 @@ class Section extends Proxy
 	}
 	
 	/* ================ INSTANCE ================ */
-	
+        
     /**
      * @var integer
      *

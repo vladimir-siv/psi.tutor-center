@@ -105,6 +105,7 @@
 		
 		public function createSubject()
 		{
+                        // UNIMPLEMENTED: nedostaje da se doda u popup slika i kreiranje fajla u odgovarajucem folederu
 			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'CreateSubject'))
 			{
 				$this->load->library('form_validation');
@@ -139,9 +140,55 @@
                 //ne postoji subject ne postoji section
                 public function createSection()
                 {
-                    if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'CreateSubject'))
+                    // UNIMPLEMENTED: nedostaje da se doda u popup slika i kreiranje fajla u odgovarajucem folederu
+                    if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'CreateSection'))
                     {
-                        
+                                $this->load->library('form_validation');
+				
+				$this->form_validation->set_rules('name', 'Name', 'required');
+                                $this->form_validation->set_rules('subject', 'Subject', 'required');
+				$this->form_validation->set_rules('description', 'Description', 'required');
+                                
+                                if ($this->form_validation->run())
+				{
+                                        $name = $this->input->post('name');
+                                        $subject= $this->input->post('subject');
+					$description = $this->input->post('description');
+                                        
+                                        $subjects = Subject::findByName($subject);
+                                        if (count($subjects) == 0)
+                                        {
+                                            echo '#Error: Subject with this name not exist!';
+                                            return;
+                                        }
+                                        if (count($subjects) != 1)
+                                        {
+                                            echo '#Error: More then oone subject with that name exist!';
+                                            return;
+                                        }
+                                        if (count(Section::findByName($name)) != 0)
+                                        {
+                                            echo '#Error: Section with this name exist!';
+                                            return;
+                                        }
+                                        
+                                        $section = Section::New
+					(
+						$name,
+                                                $description,
+                                                $subjects[0]->getId()
+					);
+                                        try
+					{
+						$em = $this->loader->getEntityManager();
+						$em->persist($section);
+						$em->flush();
+						echo 'Success!';
+					}
+					catch (Exception $ex) { echo '#Error: Could not create the subject.'; }
+                                }
+                                else echo '#Error: Data is not valid.';
+                                
                     }
                 }
 	}
