@@ -26,5 +26,17 @@
 			$this->loader->initializeDatabase();
 			echo 'Database initialized!';
 		}
+		
+		public function testPrivilege($action)
+		{
+			if (!isset($this->session->actor))
+			{
+				echo 'Please, log in!';
+				return;
+			}
+			
+			$actor = $this->session->actor;
+			echo Privilege::has($actor->getRawRank(), $action) ? 'has' : 'not'; 
+		}
 	}
 ?>

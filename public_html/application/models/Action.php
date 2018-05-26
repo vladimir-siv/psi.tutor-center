@@ -8,6 +8,26 @@
  */
 class Action extends Proxy
 {
+	/* ================= STATIC ================= */
+	
+	/*
+	 * findByName() - dohvata akciju po nazivu
+	 *	@param string $name: naziv akcije
+	 *	@return: Action
+	 */
+	public static function findByName($name)
+	{
+		$actions = parent::$_em->getRepository(Action::class)->findBy(array
+		(
+			'name' => $name
+		));
+		
+		if ($actions == NULL || count($actions) > 1) return NULL;
+		return $actions[0];
+	}
+	
+	/* ================ INSTANCE ================ */
+	
     /**
      * @var integer
      *
@@ -132,4 +152,3 @@ class Action extends Proxy
 		return Privilege::New($this->actorrank[0]->getId(), $this->getId());
 	}
 }
-

@@ -429,6 +429,17 @@ class Actor extends Proxy
         return $this->actorrank;
     }
 	
+    /**
+     * Get raw rank
+     *
+     * @return integer
+     */
+	public function getRawRank()
+	{
+		if (parent::refsAreLoaded()) return $this->actorrank->getRank();
+		else return $this->actorrank;
+	}
+	
 	/* ============== PROXY ============== */
 	
 	public function loadReferences()

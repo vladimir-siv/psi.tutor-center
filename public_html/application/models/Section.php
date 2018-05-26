@@ -233,25 +233,23 @@ class Section extends Proxy
         $this->actor->removeElement($actor);
     }
     
-    
     /* ============== PROXY ============== */
 
     public function loadReferences()
     {
-            if (parent::refsAreLoaded()) return;
+		if (parent::refsAreLoaded()) return;
 
-            $this->subject = $this->em->find('Subject', $this->subject);
+		$this->subject = $this->em->find('Subject', $this->subject);
 
-            parent::loadReferences();
+		parent::loadReferences();
     }
     public function unloadReferences()
     {
-            if (!parent::refsAreLoaded()) return;
+		if (!parent::refsAreLoaded()) return;
 
-            $this->subject= $this->subject->getId();
+		$this->subject= $this->subject->getId();
 
-            parent::unloadReferences();
+		parent::unloadReferences();
     }
-    
 }
 

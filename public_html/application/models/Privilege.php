@@ -8,6 +8,31 @@
  */
 class Privilege extends Proxy
 {
+	/* ================= STATIC ================= */
+	
+	/*
+	 * has() - checks if rank has privilege for the action
+	 *	@param Rank $rank: rank aktora
+	 *	@param string $actionname: naziv akcije
+	 *	@return: bool
+	 */
+	public static function has($rank, $actionname)
+	{
+		$action = Action::findByName($actionname);
+		if ($action === null) throw new Exception('Invalid action');
+		
+		$privileges = parent::$_em->createQuery('SELECT p from Privilege p WHERE p.actorrank <= :actorrank AND p.action = :action')
+					->setParameter('actorrank', $rank)
+					->setParameter('action', $action->getId())
+					->getResult();
+		
+		if ($privileges == NULL || count($privileges) == 0) return false;
+		
+		return true;
+	}
+	
+	/* ================ INSTANCE ================ */
+	
     /**
      * @var integer
      *
@@ -116,3 +141,32 @@ class Privilege extends Proxy
 	}
 }
 
+abstract class Privileges
+{
+	private static $enumeration = array
+	(
+		'CreatePost' => Rank::User,
+		'Reply' => Rank::User,
+		'LockPost' => Rank::Tutor,
+        'ReleasePost' => Rank::User,
+        'SubmitTokens' => Rank::User,
+        'WorkerAccepted' => Rank::Tutor,
+        'DeleteReply' => Rank::Moderator,
+        'DeletePost' => Rank::Moderator,
+        'BanUser' => Rank::Administrator,
+        'DeleteSubject' => Rank::Administrator,
+        'DeleteSection' => Rank::Administrator,
+        'BuyTokens' => Rank::User,
+        'SellTokens' => Rank::Tutor,
+        'CreateSubject' => Rank::Administrator,
+        'CreateSection' => Rank::Administrator,
+        'Review' => Rank::User,
+        'ChangeAbout' => Rank::User,
+        'ChangeDetails' => Rank::User
+	);
+	
+	public static function Enumerate()
+	{
+		return self::$enumeration;
+	}
+}
