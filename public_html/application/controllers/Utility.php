@@ -23,7 +23,7 @@
 		   
 		public function register()
 		{
-			// TODO: REGEX 
+			// TODO: REGEX sa cirilicnim slovima
 			$this->load->library('form_validation');
 			
 			$this->form_validation->set_rules('email', 'E-mail', 'required|valid_email');
@@ -86,5 +86,43 @@
 			$this->session->sess_destroy();
 			echo 'Success!';
 		}
+                
+                public function createSubject()
+                {
+                        $this->load->library('form_validation');
+			
+			$this->form_validation->set_rules('name', 'Name', 'required');
+			$this->form_validation->set_rules('description', 'Description', 'required');
+                        
+                        if ($this->form_validation->run())
+                        {
+                            $name = $this->input->post('name');
+                            $description = $this->input->post('description');
+                            $em = $this->loader->getEntityManager();
+                            $subject = $em->getRepository(Subject::class)->findBy(array
+                            (
+                                    'name' => $this->input->post('name')
+                            ));
+                            if (count($subject) !== 0)
+                            {
+                                echo "#Error: Subject with this name exist!"; 
+                                return;       
+                            }
+                            $subject = Subject::New
+                            (
+                                $name,
+                                $description
+                            );
+
+                            try
+                            {
+                                    $em->persist($subject);
+                                    $em->flush();
+                                    echo 'Success!';
+                            }
+                            catch (Exception $ex) { echo '#Error: Username/Email already in use.'; }
+                        }
+                        else echo '#Error: Data is not valid.';
+                }
 	}
 ?>
