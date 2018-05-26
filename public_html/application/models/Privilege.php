@@ -9,26 +9,18 @@
 class Privilege extends Proxy
 {
     /**
-     * @var \ActorRank
+     * @var integer
      *
-	  * @Column(name="ActorRank")
-     * @Id
-     * @ManyToOne(targetEntity="ActorRank")
-     * @JoinColumns({
-     *   @JoinColumn(name="ActorRank", referencedColumnName="ID")
-     * })
+     * @Column(name="ActorRank", type="integer", nullable=false)
+	 * @Id
      */
     private $actorrank;
 	
-	/**
-     * @var \Action
+    /**
+     * @var integer
      *
-     * @Column(name="Action")
-     * @Id
-     * @ManyToOne(targetEntity="Action")
-     * @JoinColumns({
-     *   @JoinColumn(name="Action", referencedColumnName="ID")
-     * })
+     * @Column(name="Action", type="integer", nullable=false)
+	 * @Id
      */
     private $action;
 	
@@ -42,22 +34,22 @@ class Privilege extends Proxy
 	
 	/*
 	 * New() - kreira novu privilegiju
-	 *	@param \Action $action: akcija
-	 *	@param \ActorRank $rank: rank
+	 *	@param integer $actorrank: actorrank
+	 *	@param integer $action: akcija
 	 *	@return: Privilege
 	 */
-	public static function New($action, $actorrank)
+	public static function New($actorrank, $action)
 	{
 		$instance = new Privilege();
-		$instance->action = $action;
 		$instance->actorrank = $actorrank;
+		$instance->action = $action;
 		return $instance;
 	}
 	
 	/**
      * Set actorrank
      *
-     * @param \ActoRrank $actorrank
+     * @param integer $actorrank
      *
      * @return Privilege
      */
@@ -71,7 +63,7 @@ class Privilege extends Proxy
     /**
      * Get actorrank
      *
-     * @return \ActorRank
+     * @return integer
      */
     public function getActorRank()
     {
@@ -81,7 +73,7 @@ class Privilege extends Proxy
 	/**
      * Set action
      *
-     * @param \Action $action
+     * @param integer $action
      *
      * @return Privilege
      */
@@ -95,7 +87,7 @@ class Privilege extends Proxy
     /**
      * Get action
      *
-     * @return \Action
+     * @return integer
      */
     public function getAction()
     {
@@ -107,7 +99,7 @@ class Privilege extends Proxy
 	public function loadReferences()
 	{
 		if (parent::refsAreLoaded()) return;
-
+		
 		$this->actorrank = $this->em->find('ActorRank', $this->actorrank);
 		$this->action = $this->em->find('Action', $this->action);
 		

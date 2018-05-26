@@ -300,6 +300,8 @@ class Loader
 		$this->em->persist($actions[] = Action::New('ChangeAbout', $ranks[Rank::User - 1]));
 		$this->em->persist($actions[] = Action::New('ChangeDetails', $ranks[Rank::User - 1]));
 		
+		$this->em->flush();
+		
 		foreach ($actions as $action)
 		{
 			$this->em->persist($action->getPrivilege());

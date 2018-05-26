@@ -129,7 +129,7 @@ class Action extends Proxy
 	 */
 	public function getPrivilege()
 	{
-		return Privilege::New($this, $this->actorrank[0]);
+		return Privilege::New($this->actorrank[0]->getId(), $this->getId());
 	}
 }
 
