@@ -4,7 +4,7 @@
 					<div class="container-fluid">
 						<div class="row">
 							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-right">
-								<a href="index.html"><img src="<?php echo base_url(); ?>assets/res/logo.png" class="img-circle" height="40px" alt="logo"></a>
+								<a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/res/logo.png" class="img-circle" height="40px" alt="logo"></a>
 							</div>
 <?php if (isset($actor) && $actor != null) { ?>
 							<div class="col-lg-5 col-md-6 col-sm-2 col-xs-2 text-center"></div>

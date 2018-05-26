@@ -14,6 +14,7 @@ require_once 'application/models/PromotionRequest.php';
 require_once 'application/models/QAPost.php';
 require_once 'application/models/Reply.php';
 require_once 'application/models/Section.php';
+require_once 'application/models/SectionSubscription.php';
 require_once 'application/models/Subject.php';
 require_once 'application/models/WorkPost.php';
 

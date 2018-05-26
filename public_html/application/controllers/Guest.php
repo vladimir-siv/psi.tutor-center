@@ -17,12 +17,20 @@
 		
 		public function index()
 		{
-		        $this->loader->loadPage('index.php', null, 'Index');
+		        $this->loader->loadPage('index.php', null, 'Index', 0);
+		}
+		
+		public function subjects()
+		{
+			$qb = $this->loader->getEntityManager()->createQueryBuilder();
+			$qb->select('s')->from('Subject', 's');
+			$query = $qb->getQuery();
+			$subjects = $query->getResult();
+			$this->loader->loadPage('subjects.php', array('subjects' => $subjects), 'Subjects', 1);
 		}
 		
 		public function tutors()
 		{
-			// UNIMPLEMENTED: tutor description
 			$qb = $this->loader->getEntityManager()->createQueryBuilder();
 			$qb->select('a')->from('Actor', 'a')->where('a.actorrank > 2');
 			$query = $qb->getQuery();
@@ -36,16 +44,12 @@
 				$workpostsCount = $query->getSingleScalarResult();
 				$numOfWorkpost[$tutor->getId()] = $workpostsCount;
 			}
-			$this->loader->loadPage('tutors.php', array('tutors' => $tutors, 'numOfWorkpost' => $numOfWorkpost), 'Tutors', array('scripts'=>'assets/js/tutors.js'));
+			$this->loader->loadPage('tutors.php', array('tutors' => $tutors, 'numOfWorkpost' => $numOfWorkpost), 'Tutors', 2, array('scripts' => 'assets/js/tutors.js'));
 		}
-		
-		public function subjects()
+        
+		public function about()
 		{
-			$qb = $this->loader->getEntityManager()->createQueryBuilder();
-			$qb->select('s')->from('Subject', 's');
-			$query = $qb->getQuery();
-			$subjects = $query->getResult();
-			$this->loader->loadPage('subjects.php', array('subjects' => $subjects), 'Subjects');
+			$this->loader->loadPage('about.php', null, 'About', 4);                    
 		}
 		
 		public function subject($id)
@@ -62,28 +66,21 @@
 			$this->loader->loadPage('subject.php', array('subject' => $subject, 'sections' => $sections), 'Sections');
 		}
         
-		public function about()
+		public function section($id)
 		{
-			$this->loader->loadPage('about.php', null, 'About');                    
+			$qb = $this->loader->getEntityManager()->createQueryBuilder();
+			$qb->select('s')->from('Section', 's')->where('s.id = :id')->setParameter('id', $id);
+			$query = $qb->getQuery();
+			$section = $query->getSingleResult();
+			
+			$actors = $section->getSubscribers();
+			
+			foreach($actors as $actor)
+			{
+				echo $actor->getId().'<br/>';
+			}
+			
+			//$this->loader->loadPage('section.php', null, 'Sections');
 		}
-                
-                public function section($id)
-                {
-                       $qb = $this->loader->getEntityManager()->createQueryBuilder();
-		       $qb->select('s')->from('Section', 's')->where('s.id = :id')->setParameter('id', $id);
-		       $query = $qb->getQuery();
-		       $section = $query->getSingleResult();
-                       
-                       echo $section->getName();
-                       $actors = $section->getSubscribers();
-                       foreach($actors as $actor)
-                       {
-                           echo $actors->getId();
-                       }
-                      // {
-                       //    echo $actor->getId();
-                      // }
-                       //$this->loader->loadPage('section.php', null, 'Sections');
-                }
 	}
 ?>

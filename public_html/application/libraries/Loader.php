@@ -70,6 +70,7 @@
 		 * loadHead() - ucitava head
 		 *	@param string $title: titl stranice
 		 *	@param array $scripts: niz dodatnih skripti koje treba ucitati
+		 *	@param string $scriptAddon: dodatni javascript u okviru stranice
 		 *	@return: void
 		 */
 		public function loadHead($title = 'Page', $scripts = null, $scriptAddon = null)
@@ -118,7 +119,7 @@
 		 *
 		 *	@special: $this->controller mora da ima ucitane sesije
 		 */
-		public function loadHeader($actor = null)
+		public function loadHeader()
 		{
 			$this->controller->load->view('templates/header.php', array('actor' => $this->controller->session->actor));
 			
@@ -174,13 +175,14 @@
 		 * loadSimplePage() - ucitava jednostavnu stranicu
 		 *	@param string $content: sadrzaj stranice
 		 *	@param string $title: titl stranice
-		 *	@param array $scripts: niz dodatnih skripti koje treba ucitati
 		 *	@param int $active: indeks aktivnog linka u okviru navbara
+		 *	@param array $scripts: niz dodatnih skripti koje treba ucitati
+		 *	@param string $scriptAddon: dodatni javascript u okviru stranice
 		 *	@return: void
 		 */
-		public function loadSimplePage($content = '', $title = 'Page', $scripts = null, $active = -1)
+		public function loadSimplePage($content = '', $title = 'Page', $active = -1, $scripts = null, $scriptAddon = null)
 		{
-			$this->loadHead($title, $scripts);
+			$this->loadHead($title, $scripts, $scriptAddon);
 			$this->loadFixedHeader();
 			$this->loadHeader();
 			$this->loadNavbar($active);
@@ -196,11 +198,12 @@
 		 *	@param string $page: stranica koju treba ucitati
 		 *	@param string $data: potrebni podaci za datu stranicu (wrapp-ovani)
 		 *	@param string $title: titl stranice
-		 *	@param array $scripts: niz dodatnih skripti koje treba ucitati
 		 *	@param int $active: indeks aktivnog linka u okviru navbara
+		 *	@param array $scripts: niz dodatnih skripti koje treba ucitati
+		 *	@param string $scriptAddon: dodatni javascript u okviru stranice
 		 *	@return: void
 		 */
-		public function loadPage($page = '', $data = null, $title = 'Page', $scripts = null, $active = -1)
+		public function loadPage($page = '', $data = null, $title = 'Page', $active = -1, $scripts = null, $scriptAddon = null)
 		{
 			if (!file_exists(APPPATH.'views/'.$page))
 			{

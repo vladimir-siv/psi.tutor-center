@@ -7,7 +7,7 @@
 								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-2"></div>
 								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-8">
 									<p class="font-cookie font-lg text-bright"><i>Tutor<span class="text-info">Center</span></i><p>
-									<p class="font-times-new-roman font-xs text-bright"><b><a class="hover-text-decor-none text-bright" href="index.html">Home Page</a></b> - <b><a class="hover-text-decor-none text-bright" href="#">Blog</a></b></p>
+									<p class="font-times-new-roman font-xs text-bright"><b><a class="hover-text-decor-none text-bright" href="<?php echo base_url(); ?>">Home Page</a></b> - <b><a class="hover-text-decor-none text-bright" href="#">Blog</a></b></p>
 									<p class="font-times-new-roman font-xs text-bright">ETF © 2018</p>
 								</div>
 								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-2"></div>

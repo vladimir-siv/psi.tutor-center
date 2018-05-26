@@ -16,49 +16,49 @@ class Section extends Proxy
      * @GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
+	
     /**
      * @var string
      *
      * @Column(name="Name", type="string", length=64, nullable=false)
      */
     private $name;
-
+	
     /**
      * @var string
      *
      * @Column(name="Description", type="string", length=64, nullable=true)
      */
     private $description;
-
+	
     /**
      * @var boolean
      *
      * @Column(name="Deleted", type="boolean", nullable=false)
      */
     private $deleted = '0';
-
+	
     /**
      * @var integer
      *
      * @Column(name="Subject", type="integer", nullable=false)
      */
     private $subject;
-
+	
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ManyToMany(targetEntity="Post", mappedBy="section")
      */
     private $post;
-
+	
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ManyToMany(targetEntity="Actor", mappedBy="section")
      */
     private $actor;
-
+	
     /**
      * Constructor
      */
@@ -68,7 +68,7 @@ class Section extends Proxy
         $this->post = new \Doctrine\Common\Collections\ArrayCollection();
         $this->actor = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+	
     /**
      * Get id
      *
@@ -78,7 +78,7 @@ class Section extends Proxy
     {
         return $this->id;
     }
-
+	
     /**
      * Set name
      *
@@ -92,7 +92,7 @@ class Section extends Proxy
 
         return $this;
     }
-
+	
     /**
      * Get name
      *
@@ -102,7 +102,7 @@ class Section extends Proxy
     {
         return $this->name;
     }
-
+	
     /**
      * Set description
      *
@@ -116,7 +116,7 @@ class Section extends Proxy
 
         return $this;
     }
-
+	
     /**
      * Get description
      *
@@ -126,7 +126,7 @@ class Section extends Proxy
     {
         return $this->description;
     }
-
+	
     /**
      * Set deleted
      *
@@ -140,7 +140,7 @@ class Section extends Proxy
 
         return $this;
     }
-
+	
     /**
      * Get deleted
      *
@@ -150,7 +150,7 @@ class Section extends Proxy
     {
         return $this->deleted;
     }
-
+	
     /**
      * Set subject
      *
@@ -164,7 +164,7 @@ class Section extends Proxy
 
         return $this;
     }
-
+	
     /**
      * Get subject
      *
@@ -174,7 +174,7 @@ class Section extends Proxy
     {
         return $this->subject;
     }
-
+	
     /**
      * Add post
      *
@@ -188,7 +188,7 @@ class Section extends Proxy
 
         return $this;
     }
-
+	
     /**
      * Remove post
      *
@@ -198,7 +198,7 @@ class Section extends Proxy
     {
         $this->post->removeElement($post);
     }
-
+	
     /**
      * Get post
      *
@@ -208,7 +208,7 @@ class Section extends Proxy
     {
         return $this->post;
     }
-
+	
     /**
      * Add actor
      *
@@ -222,7 +222,7 @@ class Section extends Proxy
 
         return $this;
     }
-
+	
     /**
      * Remove actor
      *
@@ -232,9 +232,32 @@ class Section extends Proxy
     {
         $this->actor->removeElement($actor);
     }
+	
+    /**
+     * Get actor
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getActor()
+    {
+        return $this->actor;
+    }
+	
+    /**
+     * Get subscribers
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+	public function getSubscribers()
+	{
+		$subscribers = $this->em->createQuery('SELECT a FROM Section s join s.actor a WHERE s.id = :id')
+						->setParameter('id', $this->id)
+						->getResult();
+		return $subscribers;
+	}
     
     /* ============== PROXY ============== */
-
+	
     public function loadReferences()
     {
 		if (parent::refsAreLoaded()) return;
@@ -243,6 +266,7 @@ class Section extends Proxy
 
 		parent::loadReferences();
     }
+	
     public function unloadReferences()
     {
 		if (!parent::refsAreLoaded()) return;
@@ -252,4 +276,3 @@ class Section extends Proxy
 		parent::unloadReferences();
     }
 }
-
