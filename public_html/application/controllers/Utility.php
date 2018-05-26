@@ -20,7 +20,14 @@
 			if ($this->session->actor !== null) echo 'Success! User is: '.$this->session->actor->getFirstname();
 			else echo 'No one is logged in';
 		}
-		   
+		
+                public function addSlidesToPath($id)
+                {
+                    $src= FCPATH.'assets\res\avatar.png';
+                    $dest=FCPATH.'assets\storage\users\\'.$id;
+                    return copy($src, $dest.'\avatar.png');
+                }   
+                
 		public function register()
 		{
 			// TODO: REGEX sa cirilicnim slovima
@@ -37,7 +44,6 @@
 			$username = $this->input->post('username');
 			$password = $this->input->post('password');
 			$email = $this->input->post('email');
-			
 			if ($this->form_validation->run() && preg_match("/^[a-zA-Z]*$/", $firstname) == true && preg_match("/^[a-zA-Z]*$/", $lastname) == true 
 				&& preg_match("/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|1[0-9]|2[0-9]|3(0|1))$/", $this->input->post('birthdate')) == true)
 			{
@@ -57,7 +63,17 @@
 				{
 					$em = $this->loader->getEntityManager();
 					$em->persist($actor);
-					$em->flush();
+                                        $em->flush();
+                                        if (mkdir(FCPATH.'assets\storage\users\\'.$actor->getId()) == false)
+                                        {
+                                            echo FCPATH.'assets\storage\users\\'.$actor->getId();
+                                            echo '#Error: We don\'t create folder';
+                                            return;
+                                        }
+                                        if ($this->addSlidesToPath($actor->getId()) == false)
+                                        {
+                                            echo 'We don\'t create image';
+                                        }
 					echo 'Success!';
 				}
 				catch (Exception $ex) { echo '#Error: Username/Email already in use.'; }
@@ -119,5 +135,14 @@
 				else echo '#Error: Data is not valid.';
 			}
 		}
+                
+                //ne postoji subject ne postoji section
+                public function createSection()
+                {
+                    if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'CreateSubject'))
+                    {
+                        
+                    }
+                }
 	}
 ?>
