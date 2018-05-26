@@ -6,8 +6,25 @@
  * @Table(name="subject")
  * @Entity
  */
-class Subject
+class Subject extends Proxy
 {
+	/* ================= STATIC ================= */
+	
+	/*
+	 * findByName() - dohvata sve kategorije po nazivu
+	 *	@param string $name: naziv kategorije
+	 *	@return: \Doctrine\Common\Collections\Collection
+	 */
+	public static function findByName($name)
+	{
+		return parent::$_em->getRepository(Subject::class)->findBy(array
+		(
+			'name' => $name
+		));
+	}
+	
+	/* ================ INSTANCE ================ */
+	
     /**
      * @var integer
      *
@@ -37,7 +54,22 @@ class Subject
      * @Column(name="Deleted", type="boolean", nullable=false)
      */
     private $deleted = '0';
+	
+	/**
+     * Constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
+	/*
+	 * New() - kreira novu kategoriju
+	 *	@param string $name: naziv kategorije
+	 *	@param string $description: opis kategorije
+	 *	@param string $deleted: da li je kategorija logicki obrisana
+	 *	@return: Subject
+	 */
     public static function New($name, $description, $deleted = 0)
     {
         $instance = new Subject();

@@ -8,6 +8,23 @@
  */
 class Section extends Proxy
 {
+	/* ================= STATIC ================= */
+	
+	/*
+	 * findByName() - dohvata sve oblasti po nazivu
+	 *	@param string $name: naziv oblasti
+	 *	@return: \Doctrine\Common\Collections\Collection
+	 */
+	public static function findByName($name)
+	{
+		return parent::$_em->getRepository(Section::class)->findBy(array
+		(
+			'name' => $name
+		));
+	}
+	
+	/* ================ INSTANCE ================ */
+	
     /**
      * @var integer
      *
@@ -67,6 +84,24 @@ class Section extends Proxy
         parent::__construct();
         $this->post = new \Doctrine\Common\Collections\ArrayCollection();
         $this->actor = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+	
+	/*
+	 * New() - kreira novu oblast
+	 *	@param string $name: naziv oblasti
+	 *	@param string $description: opis oblasti
+	 *	@param integer $subject: kategorija kojoj pripada
+	 *	@param string $deleted: da li je oblast logicki obrisana
+	 *	@return: Section
+	 */
+    public static function New($name, $description, $subject, $deleted = 0)
+    {
+        $instance = new Section();
+        $instance->name = $name;
+        $instance->description = $description;
+        $instance->subject = $subject;
+        $instance->deleted = $deleted;
+        return $instance;
     }
 	
     /**

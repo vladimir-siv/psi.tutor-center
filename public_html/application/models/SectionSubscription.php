@@ -40,7 +40,7 @@ class SectionSubscription extends Proxy
 	 */
 	public static function New($actor, $section)
 	{
-		$actor = $this->em->find('Actor', $actor);
+		$actor = parent::$_em->find('Actor', $actor);
 		if ($actor === null || $actor->getRawRank() < Rank::Tutor) throw Exception('Invalid tutor.'); 
 		
 		$instance = new SectionSubscription();

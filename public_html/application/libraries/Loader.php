@@ -349,6 +349,40 @@
 		}
 		
 		/*
+		 * insertSection() - insert-uje oblasti
+		 *	@param Subject $subject: kategorija
+		 *	@param array $sections: niz oblasti
+		 *	@return void
+		 */
+		public function insertSections($subject, $sections)
+		{
+			foreach ($sections as $name => $description)
+			{
+				$section = Section::New($name, $description, $subject->getId());
+				$this->em->persist($section);
+			}
+			
+			$this->em->flush();
+		}
+		
+		/*
+		 * subscribeTutors() - subscribe-uje tutore
+		 *	@param Section $section: oblast
+		 *	@param array $tutors: niz tutora
+		 *	@return void
+		 */
+		public function subscribeTutors($section, $tutors)
+		{
+			foreach ($tutors as $tutor)
+			{
+				$subscription = SectionSubscription::New($tutor->getId(), $section->getId());
+				$this->em->persist($subscription);
+			}
+			
+			$this->em->flush();
+		}
+		
+		/*
 		 * initializeDatabase() - inicijalizuje bazu podataka
 		 *	@return void
 		 */

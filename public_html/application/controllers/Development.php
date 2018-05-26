@@ -20,6 +20,13 @@
 			echo 'Development controller.';
 		}
 		
+		public function initdb()
+		{
+			echo 'Initializing database . . . ';
+			$this->loader->initializeDatabase();
+			echo 'Database initialized!';
+		}
+		
 		public function insertSubjects()
 		{
 			$subjects = array
@@ -34,11 +41,49 @@
 			echo 'Ok';
 		}
 		
-		public function initdb()
+		public function insertSections()
 		{
-			echo 'Initializing database . . . ';
-			$this->loader->initializeDatabase();
-			echo 'Database initialized!';
+			$subject = Subject::findByName('Computer Science')[0];
+			
+			$sections = array
+			(
+				'C#' => 'This language is GOAT',
+				'C++' => 'I\'m sexy and I know it'
+			);
+			
+			$this->loader->insertSections($subject, $sections);
+			
+			echo 'Ok';
+		}
+		
+		public function subscribeTutors()
+		{
+			$sectionCS = Section::findByName('C#')[0];
+			$sectionCPP = Section::findByName('C++')[0];
+			
+			$em = $this->loader->getEntityManager();
+			
+			$tutorsCS = array
+			(
+				$em->find('Actor', 1),
+				$em->find('Actor', 2)
+			);
+			
+			$tutorsCPP = array
+			(
+				$em->find('Actor', 3)
+			);
+			
+			$sections = array
+			(
+				'C#' => 'This language is GOAT',
+				'C++' => 'I\'m sexy and I know it'
+			);
+			
+			$this->loader->subscribeTutors($sectionCS, $tutorsCS);
+			$this->loader->subscribeTutors($sectionCPP, $tutorsCPP);
+			
+			echo 'Ok';
 		}
 		
 		public function testPrivilege($action)
