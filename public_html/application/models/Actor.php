@@ -8,6 +8,60 @@
  */
 class Actor extends Proxy
 {
+	/* ================= STATIC ================= */
+	
+	/*
+	 * findActorByUsernameAndPassword() - dohvata aktora po korisnickom imenu i lozinci
+	 *	@param string $username: korisnicko ime
+	 *	@param string $password: lozinka
+	 *	@return: Actor
+	 */
+	public static function findByUsernameAndPassword($username, $password)
+	{
+		$actors = parent::$_em->getRepository(Actor::class)->findBy(array
+		(
+			'username' => $username,
+			'password' => MD5($password)
+		));
+		
+		if ($actors == NULL || count($actors) > 1) return NULL;
+		return $actors[0];
+	}
+	
+	/*
+	 * findActorByUsername() - pronalazi aktora po korisnickom imenu
+	 *	@param string $username: korisnicko ime
+	 *	@return: Actor
+	 */
+	public static function findByUsername($username)
+	{
+		$actors = parent::$_em->getRepository(Actor::class)->findBy(array
+		(
+			'username' => $username
+		));
+		
+		if ($actors == NULL || count($actors) > 1) return NULL;
+		return $actors[0];
+	}
+	
+	/*
+	 * findActorByEmail() - pronalazi aktora po e-mail-u
+	 *	@param string $email: e-mail
+	 *	@return: Actor
+	 */
+	public static function findByEmail($email)
+	{
+		$actors = parent::$_em->getRepository(Actor::class)->findBy(array
+		(
+			'email' => $email
+		));
+		
+		if ($actors == NULL || count($actors) > 1) return NULL;
+		return $actors[0];
+	}
+	
+	/* ================ INSTANCE ================ */
+	
     /**
      * @var integer
      *

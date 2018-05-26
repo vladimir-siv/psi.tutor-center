@@ -10,6 +10,20 @@
  */
 class ActorRank extends Proxy
 {
+	/* ================= STATIC ================= */
+	
+	/*
+	 * get() - dohvata trazeni rank
+	 *	@param Rank $rank: rank
+	 *	@return: ActorRank
+	 */
+	public static function get($rank)
+	{
+		return parent::$_em->find('ActorRank', $rank);
+	}
+	
+	/* ================ INSTANCE ================ */
+	
     /**
      * @var integer
      *

@@ -12,6 +12,7 @@
 			$this->load->library('loader');
 			$this->loader->setController($this);
 			$this->loader->setEntityManager($this->doctrine->em);
+			Proxy::__init__();
 		}
 		
 		public function index()
@@ -54,16 +55,16 @@
         
 		public function login()
 		{
-			$actor = $this->loader->findActor($this->input->post('username'), $this->input->post('password'));
-
+			$actor = Actor::findByUsernameAndPassword($this->input->post('username'), $this->input->post('password'));
+			
 			if ($actor === null)
 			{
 				echo '#Error: Username or password is not valid!';
 				return;
 			}
-
+			
 			$this->session->set_userdata('actor', $actor);
-
+			
 			echo 'Success!';
 		}
 		

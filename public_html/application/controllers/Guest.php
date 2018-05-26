@@ -12,6 +12,7 @@
 			$this->load->library('loader');
 			$this->loader->setController($this);
 			$this->loader->setEntityManager($this->doctrine->em);
+			Proxy::__init__();
 		}
 		
 		public function index()
