@@ -16,38 +16,9 @@
 		
 		public function index()
 		{
-			$this->loader->insertActions();
-			echo 'ok';
-			//$this->about();
+			$this->about();
 		}
 		
-		public function register()
-		{
-			
-		}
-        
-		public function login()
-		{
-			$actor = $this->loader->findActor($this->input->post('username'), $this->input->post('password'));
-
-			if ($actor === null)
-			{
-				echo '#Error: Username or password is not valid!';
-				return;
-			}
-
-			$this->session->set_userdata('actor', $actor);
-
-			echo 'Success!';
-		}
-		
-		public function logout()
-		{
-			$this->session->unset_userdata('actor');
-			$this->session->sess_destroy();
-			redirect("Utility/index");
-		}
-	
 		public function tutors()
 		{
 			// UNIMPLEMENTED: tutor description

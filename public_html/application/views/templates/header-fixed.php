@@ -6,11 +6,32 @@
 							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-right">
 								<a href="index.html"><img src="<?php echo base_url(); ?>assets/res/logo.png" class="img-circle" height="40px" alt="logo"></a>
 							</div>
-							<div class="col-lg-7 col-md-8 col-sm-6 col-xs-6 text-center"> </div>
+<?php if (isset($actor) && $actor != null) { ?>
+							<div class="col-lg-5 col-md-6 col-sm-2 col-xs-2 text-center"></div>
+							<div class="col-lg-4 col-md-4 col-sm-8 col-xs-8 text-center">
+								<button id="notifications-1" type="button" class="btn btn-xs btn-link btn-link-light" data-toggle="popover" data-html="true" data-placement="bottom" data-trigger="focus"><span class="glyphicon glyphicon-pushpin"></span> Noty (0)</button>
+								<button type="button" class="btn btn-xs btn-link btn-link-light" data-toggle="popover" data-html="true" data-placement="bottom" data-trigger="focus"
+									data-content=
+									'
+										<div class="list-group no-margin">
+											<a class="cursor-pointer list-group-item list-group-item-action" onclick="createSubjectPopupFeed.Toggle(0);">Create Subject</a>
+											<a class="cursor-pointer list-group-item list-group-item-action" onclick="createSectionPopupFeed.Toggle(0);">Create Section</a>
+											<a class="cursor-pointer list-group-item list-group-item-action" onclick="buyTokensPopupFeed.Toggle(0);">Buy Tokens</a>
+											<a class="cursor-pointer list-group-item list-group-item-action" onclick="sellTokensPopupFeed.Toggle(0);">Sell Tokens</a>
+											<a class="cursor-pointer list-group-item list-group-item-action" href="req-promotion.html">Submit Request</a>
+										</div>
+									'
+								><span class="glyphicon glyphicon-wrench"></span> Tools</button>
+								<a class="btn btn-xs btn-link btn-link-light" href="<?php echo base_url(); ?>Guest/profile?id=<?php echo $actor->getId(); ?>"><span class="glyphicon glyphicon-user"></span> Profile</a>
+								<a class="btn btn-xs btn-link btn-link-light" onclick="logout();"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+							</div>
+<?php } else { ?>
+							<div class="col-lg-7 col-md-8 col-sm-6 col-xs-6 text-center"></div>
 							<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 text-center">
 								<a class="btn btn-xs btn-link btn-link-light" onclick="registerPopupFeed.Toggle(0);"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
 								<a class="btn btn-xs btn-link btn-link-light" onclick="loginPopupFeed.Toggle(0);"><span class="glyphicon glyphicon-log-in"></span> Login</a>
 							</div>
+<?php } ?>
 							<div class="col-lg-1 hidden-md hidden-sm hidden-xs"></div>
 						</div>
 					</div>

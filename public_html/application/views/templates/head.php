@@ -30,14 +30,18 @@
 		<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/config.js"></script>
 		<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/views.js"></script>
 		<script type="text/javascript" src="<?php echo base_url(); ?>assets/ajax/actions.ajax.js"></script>
-		<?php
-			if ($scripts != null)
-				foreach ($scripts as $script)
-					echo '<script type="text/javascript" src="'.base_url().$script.'"></script>';
-		?>
-		
+<?php
+	if (isset($scripts) && $scripts != null)
+		foreach ($scripts as $script)
+			echo '<script type="text/javascript" src="'.base_url().$script.'"></script>';
+?>		
 		<link rel="icon" href="<?php echo base_url(); ?>assets/res/favicon.ico">
 		<title>Tutor Center - <?= $title ?></title>
+<?php if (isset($scriptAddon) && $scriptAddon !== null) { ?>
+		<script type="text/javascript">
+			<?php echo $scriptAddon; ?>
+		</script>
+<?php } ?>
 	</head>
 	<body class="fillup">
 		<div id="wrapper" class="border-boxed expanded fillup">

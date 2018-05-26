@@ -20,7 +20,7 @@ function login(popupid, username, password)
 	
     $.ajax
     ({
-		url: "Guest/login",
+		url: "http://" + window.location.host + "/Utility/login",
 		method: "POST",
 		data: { username : username, password : password },
 		dataType: "html",
@@ -40,8 +40,16 @@ function login(popupid, username, password)
 
 function logout()
 {
-	alertPopupFeed.content = Alert.New("success", "<b>Success!</b> You have logged out!", true, "modal");
-	alertPopupFeed.Toggle(0);
+    $.ajax
+    ({
+		url: "http://" + window.location.host + "/Utility/logout",
+		method: "POST",
+		dataType: "html"
+    })
+	.done(function(response)
+	{
+		window.location.reload();
+	});
 }
 
 function register(popupid, firstname, lastname, username, password, email, birthdate)

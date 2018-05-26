@@ -14,7 +14,7 @@ class Notification extends View
 		return "" +
 			"<div class=\"border-boxed expanded no-margin padding-xs solid-border border-xs border-gray no-border-bottom\" style=\"min-height: 80px;\">" +
 				"<a class=\"cursor-pointer\" onclick=\"toggleSeen(" + this.id + ");\">" +
-					"<img class=\"margin-sm\" src=\"res/" + (this.seen ? "" : "un") + "seen.png\" width=\"40\" height=\"40\" style=\"float: left;\"/>" +
+					"<img class=\"margin-sm\" src=\"http://" + window.location.host + "/assets/res/" + (this.seen ? "" : "un") + "seen.png\" width=\"40\" height=\"40\" style=\"float: left;\"/>" +
 				"</a>" +
 				"<h4>" + this.title + "</h4>" +
 				this.content +

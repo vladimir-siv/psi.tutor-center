@@ -72,9 +72,27 @@ class Loader
 	 *	@param array $scripts: niz dodatnih skripti koje treba ucitati
 	 *	@return: void
 	 */
-	public function loadHead($title = 'Page', $scripts = null)
+	public function loadHead($title = 'Page', $scripts = null, $scriptAddon = null)
 	{
-		$this->controller->load->view('templates/head.php', array('title' => $title, 'scripts' => $scripts));
+		if ($scripts === null) $scripts = array();
+		if (isset($this->controller->session->actor))
+		{
+			$scripts[] = 'assets/js/notifications.js';
+			
+			// load some notifications
+			$notifications =
+				'notifications =
+				[
+					new Notification(1, "Notification 1", "<p>Notif 1 content</p>", true),
+					new Notification(2, "Notification 2", "<p>Notif 2 content</p>", false),
+					new Notification(3, "Notification 3", "<p>Notif 3 content</p>", true),
+					new Notification(4, "Notification 4", "<p>Notif 4 content</p>", true)
+				]';
+			
+			if ($scriptAddon === null) $scriptAddon = $notifications;
+			else $scriptAddon .= $notifications;
+		}
+		$this->controller->load->view('templates/head.php', array('title' => $title, 'scripts' => $scripts, 'scriptAddon' => $scriptAddon));
 	}
 	
 	/*
@@ -85,8 +103,7 @@ class Loader
 	 */
 	public function loadFixedHeader()
 	{
-		$this->controller->load->view('templates/header-fixed.php');
-		
+		$this->controller->load->view('templates/header-fixed.php', array('actor' => $this->controller->session->actor));
 	}
 	
 	/*
@@ -95,9 +112,9 @@ class Loader
 	 *
 	 *	@special: $this->controller mora da ima ucitane sesije
 	 */
-	public function loadHeader()
+	public function loadHeader($actor = null)
 	{
-		$this->controller->load->view('templates/header.php');
+		$this->controller->load->view('templates/header.php', array('actor' => $this->controller->session->actor));
 		
 	}
 	
