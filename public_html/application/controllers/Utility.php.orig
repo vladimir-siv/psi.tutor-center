@@ -19,6 +19,40 @@
 			if ($this->session->actor !== null) echo 'Success! User is: '.$this->session->actor->getFirstname();
 			else echo 'No one is logged in';
 		}
+<<<<<<< HEAD
+		
+		public function register()
+		{
+			
+		}
+        
+		public function login()
+		{
+			$actor = $this->loader->findActor($this->input->post('username'), $this->input->post('password'));
 
+			if ($actor === null)
+			{
+				echo '#Error: Username or password is not valid!';
+				return;
+			}
+
+			$this->session->set_userdata('actor', $actor);
+
+			echo 'Success!';
+		}
+		
+		public function logout()
+		{
+			if (isset($this->session->actor)) $this->session->unset_userdata('actor');
+			$this->session->sess_destroy();
+			echo 'Success';
+		}
+=======
+                
+                public function one($id)
+                {
+                    echo $id;
+                }
+>>>>>>> origin/MiodragMilosevic
 	}
 ?>

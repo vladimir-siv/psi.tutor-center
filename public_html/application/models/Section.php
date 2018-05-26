@@ -6,7 +6,7 @@
  * @Table(name="section", indexes={@Index(name="Subject", columns={"Subject"})})
  * @Entity
  */
-class Section
+class Section extends Proxy
 {
     /**
      * @var integer
@@ -39,12 +39,9 @@ class Section
     private $deleted = '0';
 
     /**
-     * @var \Subject
+     * @var integer
      *
-     * @ManyToOne(targetEntity="Subject")
-     * @JoinColumns({
-     *   @JoinColumn(name="Subject", referencedColumnName="ID")
-     * })
+     * @Column(name="Subject", type="integer", nullable=false)
      */
     private $subject;
 
@@ -67,6 +64,7 @@ class Section
      */
     public function __construct()
     {
+        parent::__construct();
         $this->post = new \Doctrine\Common\Collections\ArrayCollection();
         $this->actor = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -234,15 +232,26 @@ class Section
     {
         $this->actor->removeElement($actor);
     }
+    
+    
+    /* ============== PROXY ============== */
 
-    /**
-     * Get actor
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getActor()
+    public function loadReferences()
     {
-        return $this->actor;
+            if (parent::refsAreLoaded()) return;
+
+            $this->subject = $this->em->find('Subject', $this->subject);
+
+            parent::loadReferences();
     }
+    public function unloadReferences()
+    {
+            if (!parent::refsAreLoaded()) return;
+
+            $this->subject= $this->subject->getId();
+
+            parent::unloadReferences();
+    }
+    
 }
 

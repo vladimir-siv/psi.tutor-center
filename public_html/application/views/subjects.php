@@ -6,7 +6,7 @@
         {
           echo '<div class="row">';
                 echo '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">';
-                        echo '<a class="hover-text-decor-none" href="'.base_url().'Guest\showOneSubject?id='.$subject->getName().'">';   //subject.html?id=Computer Science">';
+                        echo '<a class="hover-text-decor-none" href="'.base_url().'Guest\subject\\'.$subject->getId().'">'; 
                                 echo '<article id="article-1" class="border-boxed expanded no-margin padding-sm solid-border border-xs border-gray edged no-border-bottom text-center" style="height: 100px;">';
                                        echo '<img src="'.base_url().'assets\storage\subjects\\'.$subject->getName().'\icon.png" width="40" height="40"/><p name="id" class="font-times-new-roman font-sm">'.$subject->getName().'</p>';
                                 echo '</article>';

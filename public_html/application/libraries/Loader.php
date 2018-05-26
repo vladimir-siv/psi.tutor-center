@@ -245,6 +245,23 @@ class Loader
 		return $users[0];
 	}
 	
+        	/*
+	 * existActor() - pronalazi actor
+	 *	@param string $username: korisnicko ime
+	 *	@return: boolean
+	 */
+        public function existActor($username)
+        {
+ 		$users = $this->em->getRepository(Actor::class)->findBy(array
+		(
+			'username' => $username
+		));
+		
+		if (count($users) === 1) return true;
+		
+		return false;              
+        }
+        
 	/* ============== DB INSERT ============== */
 	
 	/*

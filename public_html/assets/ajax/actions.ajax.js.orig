@@ -20,7 +20,11 @@ function login(popupid, username, password)
 	
     $.ajax
     ({
+<<<<<<< HEAD
 		url: "http://" + window.location.host + "/Utility/login",
+=======
+		url: "login",
+>>>>>>> origin/MiodragMilosevic
 		method: "POST",
 		data: { username : username, password : password },
 		dataType: "html",
