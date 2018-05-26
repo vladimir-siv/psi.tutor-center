@@ -17,7 +17,7 @@
 		
 		public function index()
 		{
-			$this->about();
+		        $this->loader->loadPage('index.php', null, 'Index');
 		}
 		
 		public function tutors()
