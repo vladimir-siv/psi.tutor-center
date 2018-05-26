@@ -82,9 +82,9 @@ function register(popupid, firstname, lastname, username, password, email, birth
     }
     $.ajax
     ({
-		url: "register",
+		url: "http://" + window.location.host + "/Utility/register",
 		method: "POST",
-		data: { firstname: firstname, lastname : lastname, username : username, password : password, email : email},
+		data: { firstname: firstname, lastname : lastname, username : username, password : password, email : email, birthdate : birthdate},
 		dataType: "html",
     })
 	.done(function(response) 
@@ -96,7 +96,6 @@ function register(popupid, firstname, lastname, username, password, email, birth
 		}
 		
 		$("#" + popupid + "-popup-info").append(Alert.New("success", response, true));
-		//window.location.reload();
     });
 }
 

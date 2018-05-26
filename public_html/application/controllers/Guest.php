@@ -16,40 +16,10 @@
 		
 		public function index()
 		{
-                    $this->about();
+			$this->about();
 		}
 		
-                public function register()
-                {
-                       // UNIMPLEMENTED: works with date
-                       $firstname= $this->input->post('firstname');
-                       $lastname = $this->input->post('lastname');
-                       $username = $this->input->post('username');
-                       $password = $this->input->post('password');
-                       $email = $this->input->post('email');
-                       $birthdate =  new \DateTime('now');
-                       if ($this->loader->existActor($username) === true)
-                       {
-                           echo "#Error: Exist user with this username!";
-                           return;
-                       }
-                       $actor = Actor::New
-                       (
-                           $firstname,
-                           $lastname,
-                           $email,
-                           $username,
-                           $password,
-                           $birthdate,
-                           Rank::User
-                       );
-                       $this->loader->getEntityManager()->persist($actor);
-                       $this->loader->getEntityManager()->flush();
-
-		       echo 'Success!';
-                       return;
-                }
-                
+        public function tutors()
 		{
 			// UNIMPLEMENTED: tutor description
 			$qb = $this->loader->getEntityManager()->createQueryBuilder();
@@ -77,32 +47,23 @@
 			$this->loader->loadPage('subjects.php', array('subjects' => $subjects, ), 'Subjects');
 		}
 		
-                public function subject($id)
-                {
-                        $qb = $this->loader->getEntityManager()->createQueryBuilder();
-                        $qb->select('s')->from('Subject', 's')->where('s.id = :id')->setParameter('id', $id);
-                        $query = $qb->getQuery();
-                        $subject = $query->getSingleResult();
-                        
-                        $qb = $this->loader->getEntityManager()->createQueryBuilder();
+		public function subject($id)
+		{
+			$qb = $this->loader->getEntityManager()->createQueryBuilder();
+			$qb->select('s')->from('Subject', 's')->where('s.id = :id')->setParameter('id', $id);
+			$query = $qb->getQuery();
+			$subject = $query->getSingleResult();
+			
+			$qb = $this->loader->getEntityManager()->createQueryBuilder();
 			$qb->select('s')->from('Section', 's')->where('s.subject = :id')->setParameter('id', $id);
-                        $query = $qb->getQuery();
-                        $sections = $query->getResult();
-		        $this->loader->loadPage('subject.php', array('subject' => $subject, 'sections' => $sections), 'Sections');
-                }
-                
+			$query = $qb->getQuery();
+			$sections = $query->getResult();
+			$this->loader->loadPage('subject.php', array('subject' => $subject, 'sections' => $sections), 'Sections');
+		}
+        
 		public function about()
 		{
 			$this->loader->loadPage('about.php', null, 'About');                    
 		}
-		public function insertAdmins()
-		{
-			$this->loader->insertAdmins();
-		}
-                
-                public function showOneSection($id)
-                {
-                    echo "MIKI";
-                }
 	}
 ?>
