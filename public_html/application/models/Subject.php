@@ -38,7 +38,15 @@ class Subject
      */
     private $deleted = '0';
 
-
+    public static function New($name, $description, $deleted = 0)
+    {
+        $instance = new Subject();
+        $instance->name = $name;
+        $instance->description = $description;
+        $instance->deleted = $deleted;
+        return $instance;
+    }
+    
     /**
      * Get id
      *
