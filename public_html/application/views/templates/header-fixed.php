@@ -14,11 +14,16 @@
 									data-content=
 									'
 										<div class="list-group no-margin">
+<?php if (Privilege::has($actor->getRawRank(), 'CreateSubject')) { ?>
 											<a class="cursor-pointer list-group-item list-group-item-action" onclick="createSubjectPopupFeed.Toggle(0);">Create Subject</a>
+<?php } if (Privilege::has($actor->getRawRank(), 'CreateSection')) { ?>
 											<a class="cursor-pointer list-group-item list-group-item-action" onclick="createSectionPopupFeed.Toggle(0);">Create Section</a>
+<?php } if (Privilege::has($actor->getRawRank(), 'BuyTokens')) { ?>
 											<a class="cursor-pointer list-group-item list-group-item-action" onclick="buyTokensPopupFeed.Toggle(0);">Buy Tokens</a>
+<?php } if (Privilege::has($actor->getRawRank(), 'SellTokens')) { ?>
 											<a class="cursor-pointer list-group-item list-group-item-action" onclick="sellTokensPopupFeed.Toggle(0);">Sell Tokens</a>
-											<a class="cursor-pointer list-group-item list-group-item-action" href="req-promotion.html">Submit Request</a>
+<?php } ?>
+											<a class="cursor-pointer list-group-item list-group-item-action" href="<?php echo base_url(); ?>User/req-promotion">Submit Request</a>
 										</div>
 									'
 								><span class="glyphicon glyphicon-wrench"></span> Tools</button>

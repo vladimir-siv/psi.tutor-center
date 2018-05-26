@@ -77,7 +77,13 @@
 			if ($scripts === null) $scripts = array();
 			if (isset($this->controller->session->actor))
 			{
+				$scripts[] = 'assets/js/tokens.js';
 				$scripts[] = 'assets/js/notifications.js';
+				
+				if ($this->controller->session->actor->getRawRank() >= Rank::Moderator)
+				{
+					$scripts[] = 'assets/js/administration.js';
+				}
 				
 				// load some notifications
 				$notifications =
@@ -316,29 +322,10 @@
 			
 			$actions = array();
 			
-			$this->em->persist($actions[] = Action::New('CreatePost', $ranks[Rank::User - 1]));
-			$this->em->persist($actions[] = Action::New('Reply', $ranks[Rank::User - 1]));
-			$this->em->persist($actions[] = Action::New('LockPost', $ranks[Rank::Tutor - 1]));
-			$this->em->persist($actions[] = Action::New('ReleasePost', $ranks[Rank::User - 1]));
-			$this->em->persist($actions[] = Action::New('SubmitTokens', $ranks[Rank::User - 1]));
-			$this->em->persist($actions[] = Action::New('WorkerAccepted', $ranks[Rank::Tutor - 1]));
-			$this->em->persist($actions[] = Action::New('DeleteReply', $ranks[Rank::Moderator - 1]));
-			$this->em->persist($actions[] = Action::New('DeletePost', $ranks[Rank::Moderator - 1]));
-			$this->em->persist($actions[] = Action::New('BanUser', $ranks[Rank::Administrator - 1]));
-			$this->em->persist($actions[] = Action::New('DeleteSubject', $ranks[Rank::Administrator - 1]));
-			$this->em->persist($actions[] = Action::New('DeleteSection', $ranks[Rank::Administrator - 1]));
-			$this->em->persist($actions[] = Action::New('BuyTokens', $ranks[Rank::User - 1]));
-			$this->em->persist($actions[] = Action::New('SellTokens', $ranks[Rank::Tutor - 1]));
-			$this->em->persist($actions[] = Action::New('CreateSubject', $ranks[Rank::Administrator - 1]));
-			$this->em->persist($actions[] = Action::New('CreateSection', $ranks[Rank::Administrator - 1]));
-			$this->em->persist($actions[] = Action::New('Review', $ranks[Rank::User - 1]));
-			$this->em->persist($actions[] = Action::New('ChangeAbout', $ranks[Rank::User - 1]));
-			$this->em->persist($actions[] = Action::New('ChangeDetails', $ranks[Rank::User - 1]));
-			
+			foreach (Privileges::Enumerate() as $action => $rank) $this->em->persist($actions[] = Action::New($action, $ranks[$rank - 1]));
 			$this->em->flush();
 			
 			foreach ($actions as $action) $this->em->persist($action->getPrivilege());
-			
 			$this->em->flush();
 		}
 		
