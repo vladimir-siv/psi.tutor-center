@@ -20,7 +20,7 @@ function login(popupid, username, password)
 	
     $.ajax
     ({
-		url: "Guest/login",
+		url: "login",
 		method: "POST",
 		data: { username : username, password : password },
 		dataType: "html",
@@ -46,7 +46,50 @@ function logout()
 
 function register(popupid, firstname, lastname, username, password, email)
 {
-	$("#" + popupid + "-popup-info").append(Alert.New("success", "<b>Success!</b> You have successfully registered to the system."));
+    $("#" + popupid + "-popup-info").html("");
+    if (firstname == "")
+    {
+        $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter firstname!"));
+        return;
+    }
+    if (lastname == "")
+    {
+        $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter lastname!"));
+        return;
+    }
+    if (username == "")
+    {
+        $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter username!"));
+        return;        
+    }
+    if (password == "")
+    {
+        $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter password!"));
+        return;        
+    }
+    if (email == "")
+    {
+        $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter email!"));
+        return;         
+    }
+    $.ajax
+    ({
+		url: "register",
+		method: "POST",
+		data: { firstname: firstname, lastname : lastname, username : username, password : password, email : email},
+		dataType: "html",
+    })
+	.done(function(response) 
+    {
+		if (response.startsWith("#Error: "))
+		{
+			$("#" + popupid + "-popup-info").append(Alert.New("danger", response.substring(8), true));
+			return;
+		}
+		
+		$("#" + popupid + "-popup-info").append(Alert.New("success", response, true));
+		//window.location.reload();
+    });
 }
 
 function sendMail(name, email, subject, message)

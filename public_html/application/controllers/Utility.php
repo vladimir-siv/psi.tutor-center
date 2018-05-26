@@ -19,5 +19,10 @@
 			if ($this->session->actor !== null) echo 'Success! User is: '.$this->session->actor->getFirstname();
 			else echo 'No one is logged in';
 		}
+                
+                public function one($id)
+                {
+                    echo $id;
+                }
 	}
 ?>
