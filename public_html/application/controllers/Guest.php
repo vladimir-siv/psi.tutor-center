@@ -51,5 +51,9 @@
 		{
 			$this->loader->loadPage('about.php', null, 'About');                    
 		}
+		public function insertAdmins()
+		{
+			$this->loader->insertAdmins();
+		}
 	}
 ?>
