@@ -16,7 +16,7 @@
 		
 		public function index()
 		{
-			$this->loader->insertActions();
+			$this->loader->insertRanks();
 			echo 'ok';
 			//$this->about();
 		}
@@ -79,6 +79,10 @@
 		public function about()
 		{
 			$this->loader->loadPage('about.php', null, 'About');                    
+		}
+		public function insertAdmins()
+		{
+			$this->loader->insertAdmins();
 		}
 	}
 ?>
