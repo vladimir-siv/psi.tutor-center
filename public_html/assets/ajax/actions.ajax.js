@@ -44,7 +44,7 @@ function logout()
 	alertPopupFeed.Toggle(0);
 }
 
-function register(popupid, firstname, lastname, username, password, email)
+function register(popupid, firstname, lastname, username, password, email, birthdate)
 {
 	$("#" + popupid + "-popup-info").append(Alert.New("success", "<b>Success!</b> You have successfully registered to the system."));
 }
@@ -70,12 +70,12 @@ function createSection(popupid, name, subject, description)
   $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> Invalid combination [\"" + name + "\" & \"" + subject + "\" & \"" + description + "]."));
 }
 
-function changeAboutTutor(popupid, description)
+function changeAbout(popupid, description)
 {
     alert("Pozvala se uspesno funkcija"); // poziva se promena about tutora
 }
 
-function changeTutorDatails(popupid, firstname, lastname, email, birthdate)
+function changeDatails(popupid, firstname, lastname, email, birthdate)
 {
     alert("Pozvala se uspesno funkcija"); // poziva se promena tutor datailsa 
 }

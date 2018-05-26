@@ -152,22 +152,32 @@ class Loader
 	 *	@param string $content: sadrzaj stranice
 	 *	@param string $title: titl stranice
 	 *	@param array $scripts: niz dodatnih skripti koje treba ucitati
+	 *	@param int $active: indeks aktivnog linka u okviru navbara
 	 *	@return: void
 	 */
-	public function loadSimplePage($content = '', $title = 'Page', $scripts = null)
+	public function loadSimplePage($content = '', $title = 'Page', $scripts = null, $active = -1)
 	{
 		$this->loadHead($title, $scripts);
 		$this->loadFixedHeader();
 		$this->loadHeader();
-		$this->loadNavbar();
+		$this->loadNavbar($active);
 		$this->contentStart();
 		echo $content;
 		$this->contentEnd();
 		$this->loadFooter();
 		$this->loadFoot();
 	}
-
-	public function loadPage($page = '', $data = null, $title = 'Page', $scripts = null)
+	
+	/*
+	 * loadSimplePage() - ucitava jednostavnu stranicu
+	 *	@param string $page: stranica koju treba ucitati
+	 *	@param string $data: potrebni podaci za datu stranicu (wrapp-ovani)
+	 *	@param string $title: titl stranice
+	 *	@param array $scripts: niz dodatnih skripti koje treba ucitati
+	 *	@param int $active: indeks aktivnog linka u okviru navbara
+	 *	@return: void
+	 */
+	public function loadPage($page = '', $data = null, $title = 'Page', $scripts = null, $active = -1)
 	{
 		if (!file_exists(APPPATH.'views/'.$page))
 		{
@@ -179,12 +189,82 @@ class Loader
 		$this->loadHead($title, $scripts);
 		$this->loadFixedHeader();
 		$this->loadHeader();
-		$this->loadNavbar();
+		$this->loadNavbar($active);
 		$this->contentStart();
 		$this->controller->load->view($page, $data);
 		$this->contentEnd();
 		$this->loadFooter();
 		$this->loadFoot();
+	}
+	
+	/* ============== DB SELECT ============== */
+	
+	/*
+	 * getRank() - dohvata trazeni rank
+	 *	@param EntityManager $em: veza sa bazom
+	 *	@param Rank $rank: rank
+	 *	@return: ActorRank
+	 */
+	public function getRank($rank)
+	{
+		return $this->em->find('ActorRank', $rank);
+	}
+	
+	/*
+	 * findActor() - dohvata aktora
+	 *	@param string $username: korisnicko ime
+	 *	@param string $password: lozinka
+	 *	@return: Actor
+	 */
+	public function findActor($username, $password)
+	{
+		$users = $this->em->getRepository(Actor::class)->findBy(array
+		(
+			'username' => $username,
+			'password' => MD5($password)
+		));
+		
+		if ($users == NULL || count($users) > 1) return NULL;
+		
+		return $users[0];
+	}
+	
+	/* ============== DB INSERT ============== */
+	
+	/*
+	 * insertRanks() - insert-uje rankove predviđene u bazu (test funkcija)
+	 *	@param EntityManager $em: veza sa bazom
+	 *	@return: void
+	 */
+	public function insertRanks()
+	{
+		$rank1 = ActorRank::New('Guest', Rank::Guest);
+		$rank2 = ActorRank::New('User', Rank::User);
+		$rank3 = ActorRank::New('Tutor', Rank::Tutor);
+		$rank4 = ActorRank::New('Moderator', Rank::Moderator);
+		$rank5 = ActorRank::New('Administrator', Rank::Administrator);
+		$this->em->persist($rank1);
+		$this->em->persist($rank2);
+		$this->em->persist($rank3);
+		$this->em->persist($rank4);
+		$this->em->persist($rank5);
+		$this->em->flush();
+	}
+	
+	/*
+	 * insertAdmins() - insert-uje predvidjene administratore
+	 *	@param EntityManager $em: veza sa bazom
+	 *	@return: void
+	 */
+	public function insertAdmins()
+	{
+		$admin1 = Actor::New('Vladimir', 'Sivčev', 'vladimirsi@nordeus.com', 'sivi', 'sivi', new \DateTime('now'), Rank::Administrator);
+		$admin2 = Actor::New('Predrag', 'Mitrović', 'pedja1996@gmail.com', 'djape', 'djape', new \DateTime('now'), Rank::Administrator);
+		$admin3 = Actor::New('Miodrag', 'Milošević', 'miodragmilosevic@gmail.com', 'shrd', 'buddy', new \DateTime('now'), Rank::Administrator);
+		$this->em->persist($admin1);
+		$this->em->persist($admin2);
+		$this->em->persist($admin3);
+		$this->em->flush();
 	}
 	
 	/* ============== MODELS ============== */
@@ -236,75 +316,14 @@ class Loader
 		$generator->generate($metadata, __DIR__ . '/Entities');
 	}
 	
-	/* ============== DB SELECT ============== */
-	
 	/*
-	 * getRank() - dohvata trazeni rank
-	 *	@param EntityManager $em: veza sa bazom
-	 *	@param Rank $rank: rank
-	 *	@return: ActorRank
+	 * initializeDatabase() - inicijalizuje bazu podataka
+	 *	@return void
 	 */
-	public function getRank($rank)
+	public function initializeDatabase()
 	{
-		return $this->em->find('ActorRank', $rank);
-	}
-	
-	/*
-	 * findActor() - dohvata aktora
-	 *	@param string $username: korisnicko ime
-	 *	@param string $password: lozinka
-	 *	@return: Actor
-	 */
-	public function findActor($username, $password)
-	{
-		$users = $this->em->getRepository(Actor::class)->findBy(array
-		(
-			'username' => $username,
-			'password' => MD5($password)
-		));
-		
-		if ($users == NULL || count($users) > 1) return NULL;
-		
-		return $users[0];
-	}
-	
-	/* ============== DB INSERT ============== */
-	
-	/*
-	 * insertRanks() - insert-uje rankove predviđene u bazu (test funkcija)
-	 *	@param EntityManager $em: veza sa bazom
-	 *	@return: void
-	 */
-	public function insertRanks()
-	{
-		$rank1 = ActorRank::New('Guest', 1);
-		$rank2 = ActorRank::New('User', 2);
-		$rank3 = ActorRank::New('Tutor', 3);
-		$rank4 = ActorRank::New('Moderator', 4);
-		$rank5 = ActorRank::New('Administrator', 5);
-		$this->em->persist($rank1);
-		$this->em->persist($rank2);
-		$this->em->persist($rank3);
-		$this->em->persist($rank4);
-		$this->em->persist($rank5);
-		$this->em->flush();
-	}
-	
-	/*
-	 * insertAdmins() - insert-uje predvidjene administratore
-	 *	@param EntityManager $em: veza sa bazom
-	 *	@return: void
-	 */
-	public function insertAdmins()
-	{
-		$adminRank = $this->getRank(Rank::Administrator);
-		$admin1 = Actor::New('Vladimir', 'Sivčev', 'vladimirsi@nordeus.com', 'sivi', 'sivi', new \DateTime('now'), $adminRank);
-		$admin2 = Actor::New('Predrag', 'Mitrović', 'pedja1996@gmail.com', 'djape', 'djape', new \DateTime('now'), $adminRank);
-		$admin3 = Actor::New('Miodrag', 'Milošević', 'miodragmilosevic@gmail.com', 'shrd', 'buddy', new \DateTime('now'), $adminRank);
-		$this->em->persist($admin1);
-		$this->em->persist($admin2);
-		$this->em->persist($admin3);
-		$this->em->flush();
+		$this->loader->insertRanks();
+		$this->loader->insertAdmins();
 	}
 }
 

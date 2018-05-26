@@ -60,23 +60,27 @@ class RegisterPopupFeed extends PopupFeed
 		return "" +
 			"<div class=\"input-group\">" +
 				"<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-font\"></i></span>" +
-				"<input id=\"register-firstname\" type=\"text\" class=\"form-control\" name=\"register-firstname\" placeholder=\"First name\">" +
+				"<input id=\"register-firstname\" type=\"text\" class=\"form-control\" name=\"register-firstname\" placeholder=\"First name (eg. Vladimir)\">" +
 			"</div>" +
 			"<div class=\"input-group\">" +
 				"<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-bold\"></i></span>" +
-				"<input id=\"register-lastname\" type=\"text\" class=\"form-control\" name=\"register-lastname\" placeholder=\"Last name\">" +
+				"<input id=\"register-lastname\" type=\"text\" class=\"form-control\" name=\"register-lastname\" placeholder=\"Last name (eg. Sivčev)\">" +
 			"</div>" +
 			"<div class=\"input-group\">" +
 				"<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-user\"></i></span>" +
-				"<input id=\"register-username\" type=\"text\" class=\"form-control\" name=\"register-username\" placeholder=\"Username\">" +
+				"<input id=\"register-username\" type=\"text\" class=\"form-control\" name=\"register-username\" placeholder=\"Username (eg. vladimirsi)\">" +
 			"</div>" +
 			"<div class=\"input-group\">" +
 				"<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-lock\"></i></span>" +
-				"<input id=\"register-password\" type=\"password\" class=\"form-control\" name=\"register-password\" placeholder=\"Password\">" +
+				"<input id=\"register-password\" type=\"password\" class=\"form-control\" name=\"register-password\" placeholder=\"Password (eg. @Th!nkBoutAStr0ngP4ss)\">" +
 			"</div>" +
 			"<div class=\"input-group\">" +
 				"<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-envelope\"></i></span>" +
-				"<input id=\"register-email\" type=\"email\" class=\"form-control\" name=\"register-email\" placeholder=\"E-mail\">" +
+				"<input id=\"register-email\" type=\"email\" class=\"form-control\" name=\"register-email\" placeholder=\"E-mail (eg. vladimirsi@nordeus.com)\">" +
+			"</div>" +
+			"<div class=\"input-group\">" +
+				"<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-lock\"></i></span>" +
+				"<input id=\"register-birthdate\" type=\"text\" class=\"form-control\" name=\"register-birthdate\" placeholder=\"Birthdate (eg. 1996-02-06)\">" +
 			"</div>";
 	}
 	Footer()
@@ -84,7 +88,7 @@ class RegisterPopupFeed extends PopupFeed
 		return "" +
 			"<div class=\"row\">" +
 				"<div class=\"col-lg-2 col-md-2 col-sm-2 col-xs-4\">" +
-					"<button type=\"button\" class=\"btn btn-primary btn-sm btn-block\" onclick=\"" + this.callback + "('" + this.popups[this.current].id + "', $('#" + this.popups[this.current].id + " #register-firstname')[0].value, $('#" + this.popups[this.current].id + " #register-lastname')[0].value, $('#" + this.popups[this.current].id + " #register-username')[0].value, $('#" + this.popups[this.current].id + " #register-password')[0].value, $('#" + this.popups[this.current].id + " #register-email')[0].value);\">Sign up</button>" +
+					"<button type=\"button\" class=\"btn btn-primary btn-sm btn-block\" onclick=\"" + this.callback + "('" + this.popups[this.current].id + "', $('#" + this.popups[this.current].id + " #register-firstname')[0].value, $('#" + this.popups[this.current].id + " #register-lastname')[0].value, $('#" + this.popups[this.current].id + " #register-username')[0].value, $('#" + this.popups[this.current].id + " #register-password')[0].value, $('#" + this.popups[this.current].id + " #register-email')[0].value, $('#" + this.popups[this.current].id + " #register-birthdate')[0].value);\">Sign up</button>" +
 				"</div>" +
 				"<div class=\"col-lg-8 col-md-8 col-sm-8 col-xs-4\"></div>" +
 				"<div class=\"col-lg-2 col-md-2 col-sm-2 col-xs-4\">" +

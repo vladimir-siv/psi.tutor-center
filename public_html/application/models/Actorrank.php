@@ -127,7 +127,7 @@ class ActorRank extends Proxy
     {
         return $this->rank;
     }
-
+	
     /**
      * Add action
      *

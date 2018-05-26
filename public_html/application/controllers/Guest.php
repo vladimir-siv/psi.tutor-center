@@ -46,10 +46,9 @@
 			redirect("Utility/index");
 		}
 	
-		public function showAllTutors()
+		public function tutors()
 		{
 			// UNIMPLEMENTED: tutor description
-			$this->loader->loadEntities();
 			$qb = $this->loader->getEntityManager()->createQueryBuilder();
 			$qb->select('a')->from('Actor', 'a')->where('a.actorrank > 2');
 			$query = $qb->getQuery();
@@ -66,9 +65,8 @@
 			$this->loader->loadPage('tutors.php', array('tutors' => $tutors, 'numOfWorkpost' => $numOfWorkpost), 'Tutors', array('scripts'=>'assets/js/tutors.js'));
 		}
 		
-		public function showAllSubjects()
+		public function subjects()
 		{
-			$this->loader->loadEntities();
 			$qb = $this->loader->getEntityManager()->createQueryBuilder();
 			$qb->select('s')->from('Subject', 's');
 			$query = $qb->getQuery();
@@ -78,7 +76,6 @@
 		
 		public function about()
 		{
-			$this->loader->loadEntities();
 			$this->loader->loadPage('about.php', null, 'About');                    
 		}
 	}

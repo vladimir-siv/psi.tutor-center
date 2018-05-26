@@ -62,6 +62,13 @@ class Actor extends Proxy
     /**
      * @var string
      *
+     * @Column(name="Description", type="string", length=256, nullable=true)
+     */
+    private $description = null;
+	
+    /**
+     * @var string
+     *
      * @Column(name="Tokens", type="decimal", precision=10, scale=0, nullable=false)
      */
     private $tokens = '0';
@@ -102,7 +109,7 @@ class Actor extends Proxy
 	 *	@param bool $banned: inicijalno banovano stanje
 	 *	@return: Actor
 	 */
-	public static function New($firstname, $lastname, $email, $username, $password, $birthdate, $actorrank, $tokens = 0, $banned = false)
+	public static function New($firstname, $lastname, $email, $username, $password, $birthdate, $actorrank, $description = null, $tokens = 0, $banned = false)
 	{
 		$instance = new Actor();
 		$instance->firstname = $firstname;
@@ -111,6 +118,7 @@ class Actor extends Proxy
 		$instance->username = $username;
 		$instance->password = MD5($password);
 		$instance->birthdate = $birthdate;
+		$instance->description = $description;
 		$instance->tokens = $tokens;
 		$instance->banned = $banned;
 		$instance->actorrank = $actorrank;
@@ -269,6 +277,30 @@ class Actor extends Proxy
     public function getBirthdate()
     {
         return $this->birthdate;
+    }
+	
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Actor
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+	
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 	
     /**
