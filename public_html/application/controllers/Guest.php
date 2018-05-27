@@ -8,7 +8,7 @@
 		{
 			parent::__construct();
 			$this->load->library('doctrine');
-
+			
 			$this->load->library('loader');
 			$this->loader->setController($this);
 			$this->loader->setEntityManager($this->doctrine->em);
@@ -22,10 +22,7 @@
 		
 		public function subjects()
 		{
-			$qb = $this->loader->getEntityManager()->createQueryBuilder();
-			$qb->select('s')->from('Subject', 's');
-			$query = $qb->getQuery();
-			$subjects = $query->getResult();
+			$subjects = $this->loader->getEntityManager()->createQuery('SELECT s FROM Subject s')->getResult();
 			$this->loader->loadPage('subjects.php', array('subjects' => $subjects), 'Subjects', 1);
 		}
 		
@@ -35,8 +32,9 @@
 			$qb->select('a')->from('Actor', 'a')->where('a.actorrank > 2');
 			$query = $qb->getQuery();
 			$tutors = $query->getResult();
+			
 			$numOfWorkpost = array();
-			foreach($tutors as $tutor)
+			foreach ($tutors as $tutor)
 			{
 				$qb = $this->loader->getEntityManager()->createQueryBuilder();
 				$qb->select('count(w.id)')->from('Workpost', 'w')->where('w.worker = :tutorid')->setParameter('tutorid', $tutor->getId());
@@ -44,7 +42,9 @@
 				$workpostsCount = $query->getSingleScalarResult();
 				$numOfWorkpost[$tutor->getId()] = $workpostsCount;
 			}
-			$this->loader->loadPage('tutors.php', array('tutors' => $tutors, 'numOfWorkpost' => $numOfWorkpost), 'Tutors', 2, array('scripts' => 'assets/js/tutors.js'));
+			
+			$tutorsvms = $this->load->view('templates/generate-tutors.php', array('tutors' => $tutors, 'numOfWorkpost' => $numOfWorkpost), true);
+			$this->loader->loadPage('tutors.php', null, 'Tutors', 2, array('scripts' => 'assets/js/tutors.js'), $tutorsvms);
 		}
         
 		public function about()
@@ -68,19 +68,21 @@
         
 		public function section($id)
 		{
-			$qb = $this->loader->getEntityManager()->createQueryBuilder();
-			$qb->select('s')->from('Section', 's')->where('s.id = :id')->setParameter('id', $id);
-			$query = $qb->getQuery();
-			$section = $query->getSingleResult();
+			$section = $this->loader->getEntityManager()->find('Section', $id);
+			$tutors = $section->getSubscribers();
 			
-			$actors = $section->getSubscribers();
-			
-			foreach($actors as $actor)
+			$numOfWorkpost = array();
+			foreach ($tutors as $tutor)
 			{
-				echo $actor->getId().'<br/>';
+				$qb = $this->loader->getEntityManager()->createQueryBuilder();
+				$qb->select('count(w.id)')->from('Workpost', 'w')->where('w.worker = :tutorid')->setParameter('tutorid', $tutor->getId());
+				$query = $qb->getQuery();
+				$workpostsCount = $query->getSingleScalarResult();
+				$numOfWorkpost[$tutor->getId()] = $workpostsCount;
 			}
 			
-			//$this->loader->loadPage('section.php', null, 'Sections');
+			$tutorsvms = $this->load->view('templates/generate-tutors.php', array('tutors' => $tutors, 'numOfWorkpost' => $numOfWorkpost), true);
+			$this->loader->loadPage('section.php', array('section' => $section), 'Sections', -1, array('scripts' => 'assets/js/tutors.js'), $tutorsvms);
 		}
 	}
 ?>

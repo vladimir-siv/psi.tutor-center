@@ -24,8 +24,14 @@ class Proxy
 	
 	public function __construct()
 	{
-		$this->loader = self::$_loader;
-		$this->em = self::$_em;
+		$this->loader = Loader::instance();
+		$this->em = $this->loader->getEntityManager();
+	}
+	
+	public function reloadbase()
+	{
+		$this->loader = Loader::instance();
+		$this->em = $this->loader->getEntityManager();
 	}
 	
 	public function loadReferences() { $this->refLoaded = true; }

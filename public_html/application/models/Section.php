@@ -285,8 +285,8 @@ class Section extends Proxy
      */
 	public function getSubscribers()
 	{
-		$subscribers = $this->em->createQuery('SELECT a FROM Section s join s.actor a WHERE s.id = :id')
-						->setParameter('id', $this->id)
+		$subscribers = parent::$_em->createQuery('SELECT a FROM Actor a WHERE a.id in (SELECT s.actor FROM SectionSubscription s WHERE s.section = :section)')
+						->setParameter('section', $this->id)
 						->getResult();
 		return $subscribers;
 	}
@@ -296,18 +296,18 @@ class Section extends Proxy
     public function loadReferences()
     {
 		if (parent::refsAreLoaded()) return;
-
+		
 		$this->subject = $this->em->find('Subject', $this->subject);
-
+		
 		parent::loadReferences();
     }
 	
     public function unloadReferences()
     {
 		if (!parent::refsAreLoaded()) return;
-
+		
 		$this->subject= $this->subject->getId();
-
+		
 		parent::unloadReferences();
     }
 }

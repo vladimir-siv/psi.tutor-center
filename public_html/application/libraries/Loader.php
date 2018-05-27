@@ -212,7 +212,7 @@
 				return;
 			}
 			
-			$this->loadHead($title, $scripts);
+			$this->loadHead($title, $scripts, $scriptAddon);
 			$this->loadFixedHeader();
 			$this->loadHeader();
 			$this->loadNavbar($active);
