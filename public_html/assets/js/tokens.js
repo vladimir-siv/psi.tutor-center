@@ -1,3 +1,10 @@
+const TOKEN_RATE = 1;
+
+function conversion(value)
+{
+    return value * TOKEN_RATE;
+}
+
 class SellTokensPopupFeed extends PopupFeed
 {
 	constructor(callback)
@@ -5,7 +12,7 @@ class SellTokensPopupFeed extends PopupFeed
 		super();
 		this.callback = callback;
 	}
-	
+	        
 	Header() 
 	{
 		return "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"close\">&times;</button>" +
@@ -15,18 +22,18 @@ class SellTokensPopupFeed extends PopupFeed
 	Body() 
 	{ 
 	  return "" + 
-			  "<div class=\"input-group\">" +
-			  "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-eye-close\"></i></span>" +
-			  "<input id=\"account-number\" type=\"text\" class=\"form-control\" name=\"account-number\" placeholder=\"Account number\">" +
-			  "</div>" + 
-			  "<div class=\"input-group\">" +
-			  "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-grain\"></i></span>" +
-			  "<input id=\"amount-tokens\" type=\"text\" class=\"form-control\" name=\"amount-tokens\" placeholder=\"Amount tokens\">" +
-			  "</div>" +
-			  "<div class=\"input-group\">" + 
-			  "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-usd\"></i></span>" +
-			  "<input id=\"amount-dollar\" type=\"text\" class=\"form-control\" name=\"amount-dollar\" placeholder=\"Amount dollar\" disabled>" +
-			  "</div>";
+                "<div class=\"input-group\">" +
+                "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-eye-close\"></i></span>" +
+                "<input id=\"account-number\" type=\"text\" class=\"form-control\" name=\"account-number\" placeholder=\"Account number\">" +
+                "</div>" + 
+                "<div class=\"input-group\">" +
+                "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-grain\"></i></span>" +
+                "<input id=\"amount-tokens\" type=\"text\" class=\"form-control\" name=\"amount-tokens\" placeholder=\"Amount tokens\" onchange=\"$('#amount-dollar')[0].value = conversion(parseFloat(this.value))\"; >" +
+                "</div>" +
+                "<div class=\"input-group\">" + 
+                "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-usd\"></i></span>" +
+                "<input id=\"amount-dollar\" type=\"text\" class=\"form-control\" name=\"amount-dollar\" placeholder=\"Amount dollar\" disabled>" +
+                "</div>";
 	}
 	
 	Footer()
@@ -76,7 +83,7 @@ class BuyTokensPopupFeed extends PopupFeed
 			  "</div>" + 
 			  "<div class=\"input-group\">" +
 			  "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-usd\"></i></span>" +
-			  "<input id=\"amount-dollar\" type=\"text\" class=\"form-control\" name=\"amount-dollar\" placeholder=\"Amount dollar\">" +
+			  "<input id=\"amount-dollar\" type=\"text\" class=\"form-control\" name=\"amount-dollar\" placeholder=\"Amount dollar\" onchange=\"$('#amount-tokens')[0].value = conversion(parseFloat(this.value))\";>" +
 			  "</div>" +
 			  "<div class=\"input-group\">" + 
 			  "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-grain\"></i></span>" +

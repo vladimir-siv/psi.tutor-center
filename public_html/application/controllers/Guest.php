@@ -15,17 +15,28 @@
 			Proxy::__init__();
 		}
 		
+                /*
+                 * index() - poziva se funkcija za otvaranje stranice index.php
+                 */
 		public function index()
 		{
 		        $this->loader->loadPage('index.php', null, 'Index', 0);
 		}
 		
+                /*
+                 * subjects() - dohvata sve predmete i salje ih stranici subjects.php
+                 * koju i otvara
+                 */
 		public function subjects()
 		{
 			$subjects = $this->loader->getEntityManager()->createQuery('SELECT s FROM Subject s')->getResult();
 			$this->loader->loadPage('subjects.php', array('subjects' => $subjects), 'Subjects', 1);
 		}
 		
+                /*
+                 *  tutors() - dohvata sve tutore i broj domacih koji su oni uradili i 
+                 *  salje ih stranici subjects.php koju i otvara
+                 */
 		public function tutors()
 		{
 			$qb = $this->loader->getEntityManager()->createQueryBuilder();
@@ -46,12 +57,20 @@
 			$tutorsvms = $this->load->view('templates/generate-tutors.php', array('tutors' => $tutors, 'numOfWorkpost' => $numOfWorkpost), true);
 			$this->loader->loadPage('tutors.php', null, 'Tutors', 2, array('scripts' => 'assets/js/tutors.js'), $tutorsvms);
 		}
-        
+               
+                /*
+                 *  about() - poziva se funkcija za otvaranje about.php
+                 */
 		public function about()
 		{
 			$this->loader->loadPage('about.php', null, 'About', 4);                    
 		}
 		
+                /*
+                 *  subject() - dohvata sve section-e u okviru tog subject-a
+                 *  i salje ih stranici subject.php koju i otvara
+                 *  @param int $id : identifikator subject-a
+                 */
 		public function subject($id)
 		{
 			$qb = $this->loader->getEntityManager()->createQueryBuilder();
@@ -65,7 +84,13 @@
 			$sections = $query->getResult();
 			$this->loader->loadPage('subject.php', array('subject' => $subject, 'sections' => $sections), 'Sections');
 		}
-        
+                
+                /*
+                 *  section() - dohvata sve tutor-e subscribe-ovanih
+                 *  na tu sekciju i broj postova koji su oni
+                 *  do sad odradili
+                 *  @param int $id : identifikator section-a
+                 */
 		public function section($id)
 		{
 			$section = $this->loader->getEntityManager()->find('Section', $id);

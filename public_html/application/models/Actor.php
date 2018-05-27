@@ -6,6 +6,7 @@
  * @Table(name="actor", uniqueConstraints={@UniqueConstraint(name="Email", columns={"Email"}), @UniqueConstraint(name="Username", columns={"Username"})}, indexes={@Index(name="ActorRank", columns={"ActorRank"})})
  * @Entity
  */
+
 class Actor extends Proxy
 {
 	/* ================= STATIC ================= */
@@ -458,4 +459,11 @@ class Actor extends Proxy
 		
 		parent::unloadReferences();
 	}
+}
+
+abstract class ActorBalanceMetrix
+{
+	const TOKEN_RATE = 1;
+        const HIGH_TRANSFER_RATE = 0.8;
+        const LOW_TRANSFER_RATE = 0.55;
 }
