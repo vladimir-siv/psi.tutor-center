@@ -6,7 +6,7 @@
  * @Table(name="workpost", indexes={@Index(name="Worker", columns={"Worker"})})
  * @Entity
  */
-class WorkPost
+class WorkPost extends Proxy
 {
     /**
      * @var string
@@ -30,27 +30,48 @@ class WorkPost
     private $workeraccepted = '0';
 
     /**
-     * @var \Post
+     * @var integer
      *
      * @Id
+     * @Column(name="ID", type="integer", nullable=false)
      * @GeneratedValue(strategy="NONE")
-     * @OneToOne(targetEntity="Post")
-     * @JoinColumns({
-     *   @JoinColumn(name="ID", referencedColumnName="ID")
-     * })
      */
     private $id;
 
     /**
-     * @var \Actor
+     * @var integer
      *
-     * @ManyToOne(targetEntity="Actor")
-     * @JoinColumns({
-     *   @JoinColumn(name="Worker", referencedColumnName="ID")
-     * })
+     * @Column(name="Worker", type="integer", nullable=false)
      */
     private $worker;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /*
+	 * New() - kreira novi qapost
+	 *	@param string $description: opis workposta
+     *	@param integer $comittedtokens: kolicina tokena koju korisnik placa workeru
+     *	@param bool $workeraccepted: da li je worker prihvatio da radi na workpostu
+	 *	@param integer $id: id posta
+     *	@param integer $worker: id workera koji dobija tokene na kraju uradjenog workposta
+	 *	@return: Actor
+	 */
+	public static function New($description, $comittedtokens, $workeraccepted, $id, $worker)
+	{
+		$instance = new Workpost();
+		$instance->description = $description;
+        $instance->comittedtokens = $comittedtokens;
+        $instance->workeraccepted = $workeraccepted;
+        $instance->id = $id;
+        $instance->worker = $worker;
+		return $instance;
+	}
 
     /**
      * Set description
@@ -127,11 +148,11 @@ class WorkPost
     /**
      * Set id
      *
-     * @param \Post $id
+     * @param integer $id
      *
      * @return WorkPost
      */
-    public function setId(\Post $id)
+    public function setId($id)
     {
         $this->id = $id;
 
@@ -151,11 +172,11 @@ class WorkPost
     /**
      * Set worker
      *
-     * @param \Actor $worker
+     * @param integer $worker
      *
      * @return WorkPost
      */
-    public function setWorker(\Actor $worker = null)
+    public function setWorker($worker = null)
     {
         $this->worker = $worker;
 
@@ -171,5 +192,25 @@ class WorkPost
     {
         return $this->worker;
     }
+
+    /* ============== PROXY ============== */
+	
+	public function loadReferences()
+	{
+		if (parent::refsAreLoaded()) return;
+		
+		$this->acceptedanswer = $this->em->find('Reply', $this->acceptedanswer);
+		
+		parent::loadReferences();
+	}
+	
+	public function unloadReferences()
+	{
+		if (!parent::refsAreLoaded()) return;
+		
+		$this->acceptedanswer = $this->acceptedanswer->getId();
+		
+		parent::unloadReferences();
+	}
 }
 

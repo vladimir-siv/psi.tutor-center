@@ -82,5 +82,17 @@
 			
 			//$this->loader->loadPage('section.php', null, 'Sections');
 		}
+		
+		public function post($postid)
+		{
+			$em = $this->loader->getEntityManager();
+			$post = $em->find('Post', $postid);
+
+			$replies = $em->createQuery('SELECT r FROM Reply r WHERE r.deleted = false AND r.post = :id')
+							->setParameter('id', $post->getId())
+							->getResult();
+
+			$this->loader->loadPage('post.php', array('post' => $post, 'replies' => $replies), 'Post', array('scripts'=>'assets/js/posts.js'));
+		}
 	}
 ?>

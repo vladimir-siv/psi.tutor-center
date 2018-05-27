@@ -6,7 +6,7 @@
  * @Table(name="reply", indexes={@Index(name="Post", columns={"Post"}), @Index(name="Actor", columns={"Actor"})})
  * @Entity
  */
-class Reply
+class Reply extends Proxy
 {
     /**
      * @var integer
@@ -39,24 +39,44 @@ class Reply
     private $deleted = '0';
 
     /**
-     * @var \Post
+     * @var integer
      *
-     * @ManyToOne(targetEntity="Post")
-     * @JoinColumns({
-     *   @JoinColumn(name="Post", referencedColumnName="ID")
-     * })
+     * @Column(name="Post", type="integer", nullable=false)
      */
     private $post;
 
     /**
-     * @var \Actor
+     * @var integer
      *
-     * @ManyToOne(targetEntity="Actor")
-     * @JoinColumns({
-     *   @JoinColumn(name="Actor", referencedColumnName="ID")
-     * })
+     * @Column(name="Actor", type="integer", nullable=false)
      */
     private $actor;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+		parent::__construct();
+    }
+
+    /*
+	 * New() - kreira novi reply
+	 *	@param string $description: opis qaposta
+	 *	@param integer $id: id posta
+     *	@param integer $acceptedanswer: prihvacen odgovor
+	 *	@return: Actor
+	 */
+	public static function New($message, $postedon, $deleted = 0, $post, $actor)
+	{
+		$instance = new Reply();
+		$instance->message = $message;
+        $instance->postedon = $postedon;
+        $instance->deleted = $deleted;
+        $instance->post = $post;
+        $instance->actor = $actor;
+		return $instance;
+	}
 
 
     /**
@@ -144,11 +164,11 @@ class Reply
     /**
      * Set post
      *
-     * @param \Post $post
+     * @param integer $post
      *
      * @return Reply
      */
-    public function setPost(\Post $post = null)
+    public function setPost($post = null)
     {
         $this->post = $post;
 
@@ -158,7 +178,7 @@ class Reply
     /**
      * Get post
      *
-     * @return \Post
+     * @return integer
      */
     public function getPost()
     {
@@ -168,11 +188,11 @@ class Reply
     /**
      * Set actor
      *
-     * @param \Actor $actor
+     * @param integer $actor
      *
      * @return Reply
      */
-    public function setActor(\Actor $actor = null)
+    public function setActor($actor = null)
     {
         $this->actor = $actor;
 
@@ -182,11 +202,32 @@ class Reply
     /**
      * Get actor
      *
-     * @return \Actor
+     * @return integer
      */
     public function getActor()
     {
         return $this->actor;
     }
+
+	/* ============== PROXY ============== */
+	
+    public function loadReferences()
+	{
+		if (parent::refsAreLoaded()) return;
+		
+		$this->actor = $this->em->find('Actor', $this->actor);
+        $this->post = $this->em->find('Post', $this->post);
+        
+		parent::loadReferences();
+	}
+	public function unloadReferences()
+	{
+		if (!parent::refsAreLoaded()) return;
+		
+		$this->actor = $this->actor->getId();
+        $this->post = $this->post->getId();
+        
+		parent::unloadReferences();
+	}
 }
 

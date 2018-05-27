@@ -6,8 +6,17 @@
  * @Table(name="qapost", indexes={@Index(name="AcceptedAnswer", columns={"AcceptedAnswer"})})
  * @Entity
  */
-class QAPost
+class QAPost extends Proxy
 {
+    /**
+     * @var integer
+     *
+     * @Id
+     * @Column(name="ID", type="integer", nullable=false)
+     * @GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
     /**
      * @var string
      *
@@ -16,27 +25,35 @@ class QAPost
     private $description;
 
     /**
-     * @var \Post
+     * @var integer
      *
-     * @Id
-     * @GeneratedValue(strategy="NONE")
-     * @OneToOne(targetEntity="Post")
-     * @JoinColumns({
-     *   @JoinColumn(name="ID", referencedColumnName="ID")
-     * })
-     */
-    private $id;
-
-    /**
-     * @var \Reply
-     *
-     * @ManyToOne(targetEntity="Reply")
-     * @JoinColumns({
-     *   @JoinColumn(name="AcceptedAnswer", referencedColumnName="ID")
-     * })
+     * @Column(name="AcceptedAnswer", type="integer", nullable=false)
      */
     private $acceptedanswer;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /*
+	 * New() - kreira novi qapost
+	 *	@param string $description: opis qaposta
+	 *	@param integer $id: id posta
+     *	@param integer $acceptedanswer: prihvacen odgovor
+	 *	@return: Actor
+	 */
+	public static function New($description, $id, $acceptedanswer)
+	{
+		$instance = new Qapost();
+		$instance->description = $description;
+        $instance->id = $id;
+        $instance->acceptedanswer = $acceptedanswer;
+		return $instance;
+	}
 
     /**
      * Set description
@@ -65,11 +82,11 @@ class QAPost
     /**
      * Set id
      *
-     * @param \Post $id
+     * @param integer $id
      *
      * @return QAPost
      */
-    public function setId(\Post $id)
+    public function setId($id)
     {
         $this->id = $id;
 
@@ -79,7 +96,7 @@ class QAPost
     /**
      * Get id
      *
-     * @return \Post
+     * @return integer
      */
     public function getId()
     {
@@ -89,7 +106,7 @@ class QAPost
     /**
      * Set acceptedanswer
      *
-     * @param \Reply $acceptedanswer
+     * @param integer $acceptedanswer
      *
      * @return QAPost
      */
@@ -103,11 +120,31 @@ class QAPost
     /**
      * Get acceptedanswer
      *
-     * @return \Reply
+     * @return integer
      */
     public function getAcceptedanswer()
     {
         return $this->acceptedanswer;
     }
+
+    /* ============== PROXY ============== */
+	
+	public function loadReferences()
+	{
+		if (parent::refsAreLoaded()) return;
+		
+		$this->acceptedanswer = $this->em->find('Reply', $this->acceptedanswer);
+		
+		parent::loadReferences();
+	}
+	
+	public function unloadReferences()
+	{
+		if (!parent::refsAreLoaded()) return;
+		
+		$this->acceptedanswer = $this->acceptedanswer->getId();
+		
+		parent::unloadReferences();
+	}
 }
 

@@ -381,6 +381,55 @@
 			
 			$this->em->flush();
 		}
+
+		/*
+		 * insertPosts() - insert-uje postove
+		 *	@param Subject $subject: kategorija
+		 *	@param array $sections: niz oblasti
+		 *	@return void
+		 */
+		public function insertPosts($posts)
+		{
+			foreach ($posts as $post)
+			{
+				$currentpost = Post::New($post['title'], $post['postedon'], $post['originalposter'], '1', '0');
+				$this->em->persist($currentpost);
+				$this->em->flush();
+				if($post['type']==='qapost')
+				{
+					$qapost = Qapost::New($post['description'], $currentpost->getId(), $post['acceptedanswer']);
+					$this->em->persist($qapost);
+					$this->em->flush();
+				}
+				else if($post['type']==='workpost')
+				{
+					$workpost = Workpost::New($post['description'], $post['comittedtokens'], $post['workeraccepted'], $currentpost->getId(), $post['worker']);
+					$this->em->persist($workpost);
+					$this->em->flush();
+				}
+				foreach($post['postsections'] as $section)
+				{
+					$postsection = PostSection::New($currentpost->getId(), $section->getId());
+					$this->em->persist($postsection);
+					$this->em->flush();
+				}
+			}
+		}
+
+		/*
+		 * insertPosts() - insert-uje odgovore
+		 *	@param array $replies: niz odgovora
+		 *	@return void
+		 */
+		public function insertReplies($replies)
+		{
+			foreach ($replies as $reply)
+			{
+				$currentreply = Reply::New($reply['message'], $reply['postedon'], $reply['deleted'], $reply['post'], $reply['actor']);
+				$this->em->persist($currentreply);
+				$this->em->flush();
+			}
+		}
 		
 		/*
 		 * initializeDatabase() - inicijalizuje bazu podataka

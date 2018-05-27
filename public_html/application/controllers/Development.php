@@ -97,5 +97,52 @@
 			$actor = $this->session->actor;
 			echo Privilege::has($actor->getRawRank(), $action) ? 'has' : 'not'; 
 		}
+
+		public function insertPosts()
+		{
+			$sectionCS = Section::findByName('C#')[0];
+			$sectionCPP = Section::findByName('C++')[0];
+			$sections = array($sectionCS, $sectionCPP);
+			$qapost = array
+			(
+				'type' => 'qapost',
+				'title' => 'SampleTitleQApost',
+				'postedon' => new \DateTime('now'),
+				'originalposter' => 1,
+				'description' => 'SampleDescriptionQApost',
+				'acceptedanswer' => 1,
+				'postsections' => $sections
+			);
+			$workpost = array
+			(
+				'type' => 'workpost',
+				'title' => 'SampleTitleWorkpost',
+				'originalposter' => 3,
+				'description' => 'SampleDescriptionWorkpost',
+				'worker' => 1,
+				'comittedtokens' => 99,
+				'workeraccepted' => 1,
+				'postsections' => array($sectionCS)
+			);
+			$posts = array($qapost, $workpost);
+			$this->loader->insertPosts($posts);
+			
+			echo 'Posts inserted.';
+		}
+		public function insertReplies()
+		{
+			$reply1 = array
+			(
+				'message' => 'SampleReply',
+				'postedon' => new \DateTime('now'),
+				'deleted' => 0,
+				'post' => 1,
+				'actor' => 1
+			);
+			$replies = array($reply1);
+			$this->loader->insertReplies($replies);
+			
+			echo 'Replies inserted.';
+		}
 	}
 ?>

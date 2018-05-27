@@ -56,7 +56,7 @@ class SectionSubscription extends Proxy
 	 *
 	 * @return SectionSubscription
 	 */
-	public function setActior($actor = null)
+	public function setActor($actor = null)
 	{
 		$this->actor = $actor;
 		
@@ -68,7 +68,7 @@ class SectionSubscription extends Proxy
 	 *
 	 * @return integer
 	 */
-	public function getActior()
+	public function getActor()
 	{
 		return $this->actor;
 	}
@@ -103,7 +103,7 @@ class SectionSubscription extends Proxy
 	{
 		if (parent::refsAreLoaded()) return;
 		
-		$this->actior = $this->em->find('Actior', $this->actior);
+		$this->actor = $this->em->find('Actor', $this->actor);
 		$this->section = $this->em->find('Section', $this->section);
 		
 		parent::loadReferences();
@@ -113,7 +113,7 @@ class SectionSubscription extends Proxy
 	{
 		if (!parent::refsAreLoaded()) return;
 		
-		$this->actior = $this->actior->getId();
+		$this->actor = $this->actor->getId();
 		$this->section = $this->section->getId();
 		
 		parent::unloadReferences();
