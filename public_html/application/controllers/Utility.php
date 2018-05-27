@@ -28,6 +28,19 @@
 			else echo 'No one is logged in';
 		}
                 
+                
+                /*
+                 *  addSlidesToPath() - kopira sliku iz jednog fajla u novi fajl
+                 *  @Param int $id : identifikator korisnika koji se registrovao
+                 */
+                /*
+                 *  register() - registracija korsnika
+                 *  proverava se validnost podataka
+                 *  kreira se i ubacuje u bazu novi korisnik
+                 *  kreira se novi folder sa korisnickim $id-em
+                 *  kopira se podrazumevajuca slika pomocu funkcije
+                 *  addSlidesToPath() 
+                 */
 		public function register()
 		{
 			// TODO: REGEX sa cirilicnim slovima
@@ -81,6 +94,10 @@
 			else echo '#Error: Data not valid.';
 		}
         
+                /*
+                 *  login() - login korisnika
+                 *  provarava se validnost Username-a i Password-a
+                 */
 		public function login()
 		{
 			$actor = Actor::findByUsernameAndPassword($this->input->post('username'), $this->input->post('password'));
@@ -95,7 +112,9 @@
 			
 			echo 'Success!';
 		}
-		
+		/*
+                 *  logut() - logout korisnika
+                 */
 		public function logout()
 		{
 			if (isset($this->session->actor)) $this->session->unset_userdata('actor');
@@ -103,8 +122,14 @@
 			echo 'Success!';
 		}
 		
+                /*
+                 * createSubject() - kreiranje predmeta
+                 * ispituje validnost podataka
+                 * kreira se novi subject u bazi
+                 */
 		public function createSubject()
 		{
+                        // UNIMPLEMENTED: nedostaje da se doda u popup slika i kreiranje fajla u odgovarajucem folederu
 			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'CreateSubject'))
 			{
 				$this->load->library('form_validation');
@@ -136,12 +161,127 @@
 			}
 		}
 		
-		//ne postoji subject ne postoji section
+                /*
+                 * createSection() - kreiranje sekcije
+                 * provara validnosti podataka
+                 * provera da li postoji subject sa tim imenom
+                 * provera da li postoji section sa tim imenom
+                 */
 		public function createSection()
 		{
-			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'CreateSubject'))
-			{
+                    // UNIMPLEMENTED: nedostaje da se doda u popup slika i kreiranje fajla u odgovarajucem folederu
+                    if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'CreateSection'))
+                    {
+                                $this->load->library('form_validation');
 				
+				$this->form_validation->set_rules('name', 'Name', 'required');
+                                $this->form_validation->set_rules('subject', 'Subject', 'required');
+				$this->form_validation->set_rules('description', 'Description', 'required');
+                                
+                                if ($this->form_validation->run())
+				{
+                                        $name = $this->input->post('name');
+                                        $subject= $this->input->post('subject');
+					$description = $this->input->post('description');
+                                        
+                                        $subjects = Subject::findByName($subject);
+                                        if (count($subjects) == 0)
+                                        {
+                                            echo '#Error: Subject with this name not exist!';
+                                            return;
+                                        }
+                                        if (count($subjects) != 1)
+                                        {
+                                            echo '#Error: More then oone subject with that name exist!';
+                                            return;
+                                        }
+                                        if (count(Section::findByName($name)) != 0)
+                                        {
+                                            echo '#Error: Section with this name exist!';
+                                            return;
+                                        }
+                                        
+                                        $section = Section::New
+					(
+						$name,
+                                                $description,
+                                                $subjects[0]->getId()
+					);
+                                        try
+					{
+						$em = $this->loader->getEntityManager();
+						$em->persist($section);
+						$em->flush();
+						echo 'Success!';
+					}
+					catch (Exception $ex) { echo '#Error: Could not create the subject.'; }
+                                }
+                                else echo '#Error: Data is not valid.';                      
+                    }
+                }
+				
+                public function sellTokens()
+                {
+                    if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'SellTokens'))
+                    {
+                                $this->load->library('form_validation');
+				
+				$this->form_validation->set_rules('accountnumber', 'Acountnumber', 'required');
+                                $this->form_validation->set_rules('amountTokens', 'AmountTokens', 'required');
+                                
+                                if ($this->form_validation->run() && preg_match("/^\d+$/", $this->input->post('accountnumber')) == true
+                                                      && preg_match("/^\d+$/", $this->input->post('amountTokens')) == true)
+                                {
+                                        $accountnumber = $this->input->post('accountnumber');
+                                        $amountTokens = $this->input->post('amountTokens');
+                                        
+                                        $qb = $this->loader->getEntityManager()->createQueryBuilder();
+                                        $qb->select('a')->from('Actor', 'a')->where('a.id = :id')->setParameter('id', $this->session->actor->getId());
+                                        $query = $qb->getQuery();
+                                        $actor = $query->getSingleResult();
+                                        $tokens = $actor->getTokens();
+                                        if ($amountTokens > $tokens)
+                                        {
+                                            echo '#Error: Not enough tokens!';
+                                            return;
+                                        }
+                                        $tokens -= $amountTokens;
+                                        $em = $this->loader->getEntityManager();
+                                        $actor->setTokens($tokens);
+                                        $em->flush();
+                                        echo 'Success!';
+                                }
+                                else echo '#Error: Data is not valid.';
+                    }
+                }
+                
+                public function buyTokens()
+                {
+                    if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'SellTokens'))
+                    {
+                                $this->load->library('form_validation');
+				
+				$this->form_validation->set_rules('accountnumber', 'Acountnumber', 'required');
+                                $this->form_validation->set_rules('amountEuro', 'AmountEuro', 'required');
+                                
+                                if ($this->form_validation->run() && preg_match("/^\d+$/", $this->input->post('accountnumber')) == true
+                                                      && preg_match("/^\d+$/", $this->input->post('amountEuro')) == true)
+                                {
+                                        $accountnumber = $this->input->post('accountnumber');
+                                        $amountEuro = $this->input->post('amountEuro');
+                                        
+                                        $qb = $this->loader->getEntityManager()->createQueryBuilder();
+                                        $qb->select('a')->from('Actor', 'a')->where('a.id = :id')->setParameter('id', $this->session->actor->getId());
+                                        $query = $qb->getQuery();
+                                        $actor = $query->getSingleResult();
+                                        $tokens = $actor->getTokens();
+                                        $tokens += $amountEuro * ActorBalanceMetrix::TOKEN_RATE;
+                                        $em = $this->loader->getEntityManager();
+                                        $actor->setTokens($tokens);
+                                        $em->flush();
+                                        echo 'Success!';
+                                }
+                                else echo '#Error: Data is not valid.';
 			}
 		}
 		

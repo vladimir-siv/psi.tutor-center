@@ -145,9 +145,9 @@ abstract class Privileges
 {
 	private static $enumeration = array
 	(
-		'CreatePost' => Rank::User,
-		'Reply' => Rank::User,
-		'LockPost' => Rank::Tutor,
+        'CreatePost' => Rank::User,
+        'Reply' => Rank::User,
+        'LockPost' => Rank::Tutor,
         'ReleasePost' => Rank::User,
         'SubmitTokens' => Rank::User,
         'WorkerAccepted' => Rank::Tutor,

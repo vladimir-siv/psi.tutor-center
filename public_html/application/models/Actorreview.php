@@ -6,7 +6,7 @@
  * @Table(name="actorreview", indexes={@Index(name="Reviewer", columns={"Reviewer"}), @Index(name="Reviewee", columns={"Reviewee"})})
  * @Entity
  */
-class ActorReview
+class ActorReview extends Proxy
 {
     /**
      * @var integer
@@ -32,26 +32,25 @@ class ActorReview
     private $description;
 
     /**
-     * @var \Actor
+     * @var integer
      *
-     * @ManyToOne(targetEntity="Actor")
-     * @JoinColumns({
-     *   @JoinColumn(name="Reviewer", referencedColumnName="ID")
-     * })
+     * @Column(name="Reviewer", type="integer", nullable=false)
      */
     private $reviewer;
 
     /**
-     * @var \Actor
+     * @var integer
      *
-     * @ManyToOne(targetEntity="Actor")
-     * @JoinColumns({
-     *   @JoinColumn(name="Reviewee", referencedColumnName="ID")
-     * })
+     * @Column(name="Reviewee", type="integer", nullable=false)
      */
     private $reviewee;
 
-
+     public function __construct()
+    {
+        parent::__construct();
+        $this->section = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+	
     /**
      * Get id
      *
@@ -157,5 +156,25 @@ class ActorReview
     {
         return $this->reviewee;
     }
+    
+    /* ============== PROXY ============== */
+	
+	public function loadReferences()
+	{
+		if (parent::refsAreLoaded()) return;
+		
+		$this->reviewee = $this->em->find('Actor', $this->reviewee);
+                $this->reviewer = $this->em->find('Actor', $this->reviewer);		
+		parent::loadReferences();
+	}
+	public function unloadReferences()
+	{
+		if (!parent::refsAreLoaded()) return;
+			
+		$this->reviewee = $this->reviewee->getId();
+                $this->reviewer = $this->reviewer->getId();
+		parent::unloadReferences();
+	}
+    
 }
 

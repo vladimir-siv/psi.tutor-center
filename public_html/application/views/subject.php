@@ -3,13 +3,13 @@
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div class="media">
 							<div class="col-lg-3 col-md-3 hidden-sm hidden-xs text-center"> 
-								<img class="mr-3" src=<?php echo '"'.base_url().'assets/storage/subjects/'.$subject->getName().'/icon.png"' ?> style="width:80px">
+								<img class="mr-3" src=<?php echo '"'.base_url().'assets/storage/subjects/'.$subject->getId().'/icon.png"' ?> style="width:80px">
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
 								<h1 class="mt-0 font-rammetto-one font-md" style="padding-top:10px; ">Computer Science</h1>
 							</div>
 							<div class="col-lg-3 col-md-3 hidden-sm hidden-xs text-center">
-								<img class="mr-3" src=<?php echo '"'.base_url().'assets/storage/subjects/'.$subject->getName().'/icon.png"' ?> style="width:80px">
+								<img class="mr-3" src=<?php echo '"'.base_url().'assets/storage/subjects/'.$subject->getId().'/icon.png"' ?> style="width:80px">
 							</div>
 						</div>
 					</div>
