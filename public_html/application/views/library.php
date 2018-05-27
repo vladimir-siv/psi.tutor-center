@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
-<div class="jumbotron no-padding-bottom font-rammetto-one text-center" style="background-color: inherit;">
+				<div class="jumbotron no-padding-bottom font-rammetto-one text-center" style="background-color: inherit;">
 					<h1><span class="text-primary">L</span>ibrary</h1>
 				</div>
 				<section id="section-main" class="border-boxed expanded no-margin no-padding margin-bottom-md">
