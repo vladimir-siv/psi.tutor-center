@@ -6,7 +6,7 @@
  * @Table(name="post", indexes={@Index(name="OriginalPoster", columns={"OriginalPoster"})})
  * @Entity
  */
-class Post
+class Post extends Proxy
 {
     /**
      * @var integer
@@ -46,12 +46,9 @@ class Post
     private $deleted = '0';
 
     /**
-     * @var \Actor
+     * @var integer
      *
-     * @ManyToOne(targetEntity="Actor")
-     * @JoinColumns({
-     *   @JoinColumn(name="OriginalPoster", referencedColumnName="ID")
-     * })
+     * @Column(name="OriginalPoster", type="integer", nullable=false)
      */
     private $originalposter;
 
@@ -75,7 +72,38 @@ class Post
      */
     public function __construct()
     {
+        parent::__construct();
         $this->section = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /*
+	 * New() - kreira novi post
+	 *	@param string $title: naslov posta
+	 *	@param \Datetime $postedon: vreme postavljanja
+	 *	@param integer $originalposter: osoba koja je postavila post
+     *	@param bool $active: inicijalno aktivno stanje
+     *	@param bool $deleted: inicijalno obrisano stanje
+	 *	@return: Actor
+	 */
+	public static function New($title, $postedon, $originalposter, $active = '1', $deleted = '0')
+	{
+		$instance = new Post();
+		$instance->title = $title;
+        $instance->postedon = $postedon;
+        $instance->active = $active;
+        $instance->deleted = $deleted;
+        $instance->originalposter = $originalposter;
+		return $instance;
+    }
+    
+    /*
+	 * getOriginalPosterReference($post) - dohvata op za dati post
+	 *	@return: \Actor
+	 */
+    public function getOriginalPosterReference()
+	{
+        if (parent::refsAreLoaded()) return $this->originalposter;
+		else return parent::$_em->find('Actor', $this->originalposter);
     }
 
     /**
@@ -187,11 +215,11 @@ class Post
     /**
      * Set originalposter
      *
-     * @param \Actor $originalposter
+     * @param integer $originalposter
      *
      * @return Post
      */
-    public function setOriginalposter(\Actor $originalposter = null)
+    public function setOriginalposter($originalposter = null)
     {
         $this->originalposter = $originalposter;
 
@@ -201,7 +229,7 @@ class Post
     /**
      * Get originalposter
      *
-     * @return \Actor
+     * @return integer
      */
     public function getOriginalposter()
     {
@@ -241,5 +269,24 @@ class Post
     {
         return $this->section;
     }
+    
+	/* ============== PROXY ============== */
+	
+	public function loadReferences()
+	{
+		if (parent::refsAreLoaded()) return;
+		
+		$this->originalposter = $this->em->find('Post', $this->originalposter);
+		
+		parent::loadReferences();
+	}
+	public function unloadReferences()
+	{
+		if (!parent::refsAreLoaded()) return;
+		
+		$this->originalposter = $this->originalposter->getId();
+		
+		parent::unloadReferences();
+	}
 }
 

@@ -1,9 +1,10 @@
 class Reply extends View
 {
-	constructor(id, username, message, postedOn, isOP)
+	constructor(id, userid, username, message, postedOn, isOP)
 	{
 		super();
 		this.id = id;
+		this.userid = userid;
 		this.username = username;
 		this.message = message;
 		this.postedOn = postedOn;
@@ -29,8 +30,8 @@ class Reply extends View
 						"</div>" +
 					"</div>" +
 					"<div class=\"col-lg-1 col-md-1 col-sm-2 col-xs-4 text-left\">" +
-						"<a href=\"profile.html?id=" + this.username + "\" class=\"font-times-new-roman hover-text-decor-none\">" +
-							"<img src=\"storage/users/" + this.username + "/avatar.png\" width=\"60\" height=\"60\"><br>" +
+						"<a href=\"profile.html?id=" + this.userid + "\" class=\"font-times-new-roman hover-text-decor-none\">" +
+							"<img src=\"storage/users/" + this.userid + "/avatar.png\" width=\"60\" height=\"60\"><br>" +
 							this.username +
 						"</a>" +
 						"<p class=\"font-times-new-roman\">Posted on: <i>" + this.postedOn + "</i></p>" +
@@ -41,8 +42,8 @@ class Reply extends View
 			"<article name=\"reply\" class=\"border-boxed expanded no-margin padding-sm\">" +
 				"<div class=\"row\">" +
 					"<div class=\"col-lg-1 col-md-1 col-sm-2 col-xs-4 text-right\">" +
-						"<a href=\"profile.html?id=" + this.username + "\" class=\"font-times-new-roman hover-text-decor-none\">" +
-							"<img src=\"storage/users/" + this.username + "/avatar.png\" width=\"60\" height=\"60\"><br>" +
+						"<a href=\"profile.html?id=" + this.userid + "\" class=\"font-times-new-roman hover-text-decor-none\">" +
+							"<img src=\"storage/users/" + this.userid + "/avatar.png\" width=\"60\" height=\"60\"><br>" +
 							this.username +
 						"</a>" +
 						"<p class=\"font-times-new-roman\">Posted on: <i>" + this.postedOn + "</i></p>" +
