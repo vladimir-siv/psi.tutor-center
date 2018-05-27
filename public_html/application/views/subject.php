@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
-				<div class = "row">
+				<div class = "row margin-top-md">
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div class="media">
 							<div class="col-lg-3 col-md-3 hidden-sm hidden-xs text-center"> 
@@ -21,7 +21,7 @@
 					   </p>
 					</div>
 				</div>
-				<section id="section-main" class="border-boxed expanded no-margin no-padding">
+				<section id="section-main" class="border-boxed expanded no-margin no-padding margin-top-md">
 					<div class="row">
 <?php foreach($sections as $section) { ?>
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

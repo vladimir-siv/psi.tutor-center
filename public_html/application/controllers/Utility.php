@@ -4,6 +4,13 @@
 	
 	class Utility extends CI_Controller
 	{
+		private function addSlidesToPath($id)
+		{
+			$src= FCPATH.'assets\res\avatar.png';
+			$dest=FCPATH.'assets\storage\users\\'.$id;
+			return copy($src, $dest.'\avatar.png');
+		}
+		
 		public function __construct()
 		{
 			parent::__construct();
@@ -20,13 +27,6 @@
 			if ($this->session->actor !== null) echo 'Success! User is: '.$this->session->actor->getFirstname();
 			else echo 'No one is logged in';
 		}
-		
-                public function addSlidesToPath($id)
-                {
-                    $src= FCPATH.'assets\res\avatar.png';
-                    $dest=FCPATH.'assets\storage\users\\'.$id;
-                    return copy($src, $dest.'\avatar.png');
-                }   
                 
 		public function register()
 		{
@@ -63,22 +63,22 @@
 				{
 					$em = $this->loader->getEntityManager();
 					$em->persist($actor);
-                                        $em->flush();
-                                        if (mkdir(FCPATH.'assets\storage\users\\'.$actor->getId()) == false)
-                                        {
-                                            echo FCPATH.'assets\storage\users\\'.$actor->getId();
-                                            echo '#Error: We don\'t create folder';
-                                            return;
-                                        }
-                                        if ($this->addSlidesToPath($actor->getId()) == false)
-                                        {
-                                            echo 'We don\'t create image';
-                                        }
+					$em->flush();
+					if (mkdir(FCPATH.'assets\storage\users\\'.$actor->getId()) == false)
+					{
+						echo FCPATH.'assets\storage\users\\'.$actor->getId();
+						echo '#Error: We don\'t create folder';
+						return;
+					}
+					if ($this->addSlidesToPath($actor->getId()) == false)
+					{
+						echo 'We don\'t create image';
+					}
 					echo 'Success!';
 				}
 				catch (Exception $ex) { echo '#Error: Username/Email already in use.'; }
 			}
-			else echo '#Error: Data is not valid.';
+			else echo '#Error: Data not valid.';
 		}
         
 		public function login()
@@ -132,17 +132,35 @@
 					}
 					catch (Exception $ex) { echo '#Error: Could not create the subject.'; }
 				}
-				else echo '#Error: Data is not valid.';
+				else echo '#Error: Data not valid.';
 			}
 		}
-                
-                //ne postoji subject ne postoji section
-                public function createSection()
-                {
-                    if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'CreateSubject'))
-                    {
-                        
-                    }
-                }
+		
+		//ne postoji subject ne postoji section
+		public function createSection()
+		{
+			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'CreateSubject'))
+			{
+				
+			}
+		}
+		
+		public function searchdb()
+		{
+			$this->load->library('form_validation');
+			
+			$this->form_validation->set_rules('domain', 'Domain', 'required');
+			$this->form_validation->set_rules('params', 'Params', 'required');
+			
+			if ($this->form_validation->run())
+			{
+				$domain = $this->input->post('domain');
+				$format = $this->input->post('format');
+				$params = json_decode($this->input->post('params'));
+				
+				if ($domain === 'subject-section') echo Section::searchSubjectSection($params[0], $params[1], $format);
+			}
+			else '#Error: Provided data does not match any valid database search.';
+		}
 	}
 ?>

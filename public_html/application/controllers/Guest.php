@@ -17,7 +17,7 @@
 		
 		public function index()
 		{
-		        $this->loader->loadPage('index.php', null, 'Index', 0);
+			$this->loader->loadPage('index.php', null, 'Home Page', 0);
 		}
 		
 		public function subjects()
@@ -44,7 +44,12 @@
 			}
 			
 			$tutorsvms = $this->load->view('templates/generate-tutors.php', array('tutors' => $tutors, 'numOfWorkpost' => $numOfWorkpost), true);
-			$this->loader->loadPage('tutors.php', null, 'Tutors', 2, array('scripts' => 'assets/js/tutors.js'), $tutorsvms);
+			$this->loader->loadPage('tutors.php', null, 'Tutors', 2, array('assets/js/tutors.js'), $tutorsvms);
+		}
+		
+		public function library()
+		{
+			$this->loader->loadPage('library.php', null, 'Library', 3, array('assets/ajax/search.ajax.js'));
 		}
         
 		public function about()
@@ -82,7 +87,7 @@
 			}
 			
 			$tutorsvms = $this->load->view('templates/generate-tutors.php', array('tutors' => $tutors, 'numOfWorkpost' => $numOfWorkpost), true);
-			$this->loader->loadPage('section.php', array('section' => $section), 'Sections', -1, array('scripts' => 'assets/js/tutors.js'), $tutorsvms);
+			$this->loader->loadPage('section.php', array('section' => $section), 'Sections', -1, array('assets/js/tutors.js'), $tutorsvms);
 		}
 	}
 ?>

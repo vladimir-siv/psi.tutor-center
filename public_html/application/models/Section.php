@@ -23,6 +23,30 @@ class Section extends Proxy
 		));
 	}
 	
+	/*
+	 * searchSubjectSection() - trazi oblasti po nazivu (contains) koje pripadaju kategoriji po nazivu (contains)
+	 *	@param string $subject: naziv kategorije (contains)
+	 *	@param string $section:	naziv oblasti (contains)
+	 *	@param string $format: specificni formati rezultata
+	 *	@return: JSON string
+	 */
+	public static function searchSubjectSection($subject, $section, $format = null)
+	{
+		$sections = self::$_em->createQuery('SELECT sc FROM Section sc WHERE sc.subject in (SELECT sb.id FROM Subject sb WHERE sb.name LIKE :subject) AND sc.name LIKE :section')
+						->setParameter('subject', '%'.$subject.'%')
+						->setParameter('section', '%'.$section.'%')
+						->getResult();
+		
+		$json = array();
+		
+		foreach ($sections as $section)
+		{
+			$json[] = array('id' => $section->getId(), 'section' => $section->getName());
+		}
+		
+		return json_encode($json);
+	}
+	
 	/* ================ INSTANCE ================ */
 	
     /**

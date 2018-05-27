@@ -36,6 +36,8 @@
 												<a class="cursor-pointer list-group-item list-group-item-action" onclick="buyTokensPopupFeed.Toggle(0);">Buy Tokens</a>
 <?php } if (Privilege::has($actor->getRawRank(), 'SellTokens')) { ?>
 												<a class="cursor-pointer list-group-item list-group-item-action" onclick="sellTokensPopupFeed.Toggle(0);">Sell Tokens</a>
+<?php } if (Privilege::has($actor->getRawRank(), 'CreatePost')) { ?>
+												<a class="cursor-pointer list-group-item list-group-item-action" href="<?php echo base_url(); ?>User/create-post">Create Post</a>
 <?php } ?>
 												<a class="cursor-pointer list-group-item list-group-item-action" href="<?php echo base_url(); ?>User/req-promotion">Submit Request</a>
 											</div>
