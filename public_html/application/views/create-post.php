@@ -105,7 +105,6 @@
 								</script>
 							</div>
 						</div>
-						
 					</article>
 					<article id="post-create" class="border-boxed expanded margin-bottom-md collapse">
 						<button type="button" class="btn btn-primary btn-md" onclick="post($('#section-main #post-details #post-type')[0].value);">Post!</button>

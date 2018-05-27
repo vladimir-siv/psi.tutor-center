@@ -96,7 +96,7 @@ function register(popupid, firstname, lastname, username, password, email, birth
 		}
 		
 		$("#" + popupid + "-popup-info").append(Alert.New("success", response, true));
-                window.location.reload();
+		window.location.reload();
     });
 }
 

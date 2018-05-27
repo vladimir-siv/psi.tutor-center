@@ -15,8 +15,8 @@ post: utility::workerAccepted()
 post: utility::deletePost()
 post: utility::deleteReply()
 view-promotion: admin::confirmPromotion() //accept|decline
-profile: tutor::changeAbout()
-profile: tutor::changeDetails()
+profile: user::changeAbout()
+profile: user::changeDetails()
 profile: utility:banUser() //or unban
 subject: utility::deleteSubject()
 section: utility::deleteSection()

@@ -145,6 +145,48 @@
 			}
 		}
 		
+		public function createPost()
+		{
+			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'CreatePost'))
+			{
+				$this->load->library('form_validation');
+				
+				$this->form_validation->set_rules('post-title', 'Title', 'required');
+				$this->form_validation->set_rules('section', 'Post Sections', 'required');
+				$this->form_validation->set_rules('post-type', 'Type', 'required');
+				// Needed for both WorkPost & QAPost (if new one is added, should be considered to move to another place)
+				$this->form_validation->set_rules('post-description', 'Description', 'required');
+				
+				if ($this->form_validation->run())
+				{
+					// Create post here
+					$postid = 1;
+					
+					$this->load->helper(array('form', 'url'));
+					$this->load->library('upload', array
+					(
+						'upload_path'	=> FCPATH.'assets/storage/posts/'.$postid.'/',
+						'allowed_types'	=> 'txt|doc|docx|pdf|jpg|png',
+						'max_size'		=> 102400
+					));
+					
+					$uploadedall = true;
+					
+					foreach ($_FILES as $id => $file)
+					{
+						if (!$this->upload->do_upload($id))
+						{
+							$uploadedall = false;
+						}
+					}
+					
+					if ($uploadedall) echo '<b>Success!</b> Your post has been created!';
+					else echo '#Warning: <b>Success!</b> Your post has been created, but some of the files could not be uploaded!';
+				}
+				else echo '#Error: Data not valid.';
+			}
+		}
+		
 		public function searchdb()
 		{
 			$this->load->library('form_validation');
