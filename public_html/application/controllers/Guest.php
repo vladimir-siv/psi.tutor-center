@@ -109,5 +109,42 @@
 			$tutorsvms = $this->load->view('templates/generate-tutors.php', array('tutors' => $tutors, 'numOfWorkpost' => $numOfWorkpost), true);
 			$this->loader->loadPage('section.php', array('section' => $section), 'Sections', -1, array('scripts' => 'assets/js/tutors.js'), $tutorsvms);
 		}
+                
+                public function profile($id)
+                {
+                     if (isset($this->session->actor))
+		     {
+                         $em = $this->loader->getEntityManager();
+                         $result = $em->createQuery('SELECT s FROM SectionSubscription s WHERE s.actor = :id')
+                                        ->setParameter('id', $id)
+                                        ->getResult();
+                         $sections = array();
+                         foreach ($result as $res)
+                         {
+                             $sections[] = $em->createQuery('SELECT s FROM Section s WHERE s.id = :id')
+                                              ->setParameter('id', $res->getSection())
+                                              ->getSingleResult();
+                         }
+                         
+                         $reviews = $em->createQuery('SELECT a FROM ActorReview a WHERE a.reviewee = :id')
+                                              ->setParameter('id', $id)
+                                              ->getResult();
+                         $avg = 0;
+                         $count = 0;
+                         foreach($reviews as $review)
+                         {
+                             $avg += $review->getGrade();
+                             $count++;
+                         }
+                         $avg /= $count;
+                         $qb = $this->loader->getEntityManager()->createQueryBuilder();
+                         $qb->select('count(w.id)')->from('Workpost', 'w')->where('w.worker = :tutorid')->setParameter('tutorid', $this->session->actor->getId());
+                         $query = $qb->getQuery();
+                         $workpostsCount = $query->getSingleScalarResult();
+                         $degree = $workpostsCount;
+                         $this->loader->loadPage('profile.php', array('actor' => $this->session->actor, 'sections' => $sections, 'avg' => $avg, 'reviews' => $reviews, 'degree' => $degree), 'Profile');
+                     }
+                }
+                
 	}
 ?>

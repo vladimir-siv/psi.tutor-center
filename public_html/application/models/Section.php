@@ -283,13 +283,13 @@ class Section extends Proxy
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-	public function getSubscribers()
-	{
-		$subscribers = parent::$_em->createQuery('SELECT a FROM Actor a WHERE a.id in (SELECT s.actor FROM SectionSubscription s WHERE s.section = :section)')
-						->setParameter('section', $this->id)
-						->getResult();
-		return $subscribers;
-	}
+    public function getSubscribers()
+    {
+        $subscribers = parent::$_em->createQuery('SELECT a FROM Actor a WHERE a.id in (SELECT s.actor FROM SectionSubscription s WHERE s.section = :section)')
+                                        ->setParameter('section', $this->id)
+                                        ->getResult();
+        return $subscribers;
+    }
     
     /* ============== PROXY ============== */
 	

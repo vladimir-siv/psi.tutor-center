@@ -147,7 +147,7 @@ class Actor extends Proxy
      */
     public function __construct()
     {
-		parent::__construct();
+        parent::__construct();
         $this->section = new \Doctrine\Common\Collections\ArrayCollection();
     }
 	

@@ -17,7 +17,7 @@
 								</div>
 								<div class="col-lg-7 col-md-7 col-sm-7 col-xs-9 text-left">
 									<button id="notifications-2" type="button" class="btn btn-md btn-link btn-link-light" data-toggle="popover" data-html="true" data-placement="bottom" data-trigger="focus"><span class="glyphicon glyphicon-pushpin"></span> Noty (1)</button>
-									<a class="btn btn-md btn-link btn-link-light" href="<?php echo base_url(); ?>Guest/profile?id=<?php echo $actor->getId(); ?>"><span class="glyphicon glyphicon-user"></span> Profile</a>
+									<a class="btn btn-md btn-link btn-link-light" href="<?php echo base_url(); ?>Guest/profile/<?php echo $actor->getId(); ?>"><span class="glyphicon glyphicon-user"></span> Profile</a>
 								</div>
 							</div>
 							<div class="row" style="height: 40px; padding-top: 3px;">

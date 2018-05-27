@@ -97,5 +97,6 @@
 			$actor = $this->session->actor;
 			echo Privilege::has($actor->getRawRank(), $action) ? 'has' : 'not'; 
 		}
+                
 	}
 ?>
