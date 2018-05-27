@@ -71,11 +71,11 @@
 			$this->loader->loadPage('about.php', null, 'About', 4);                    
 		}
 		
-                /*
-                 *  subject() - dohvata sve section-e u okviru tog subject-a
-                 *  i salje ih stranici subject.php koju i otvara
-                 *  @param int $id : identifikator subject-a
-                 */
+		/*
+		 *  subject() - dohvata sve section-e u okviru tog subject-a
+		 *  i salje ih stranici subject.php koju i otvara
+		 *  @param int $id : identifikator subject-a
+		 */
 		public function subject($id)
 		{
 			$qb = $this->loader->getEntityManager()->createQueryBuilder();
@@ -90,12 +90,12 @@
 			$this->loader->loadPage('subject.php', array('subject' => $subject, 'sections' => $sections), 'Sections');
 		}
                 
-                /*
-                 *  section() - dohvata sve tutor-e subscribe-ovanih
-                 *  na tu sekciju i broj postova koji su oni
-                 *  do sad odradili
-                 *  @param int $id : identifikator section-a
-                 */
+		/*
+		 *  section() - dohvata sve tutor-e subscribe-ovanih
+		 *  na tu sekciju i broj postova koji su oni
+		 *  do sad odradili
+		 *  @param int $id : identifikator section-a
+		 */
 		public function section($id)
 		{
 			$section = $this->loader->getEntityManager()->find('Section', $id);
@@ -149,41 +149,39 @@
 			$this->loader->loadPage('post.php', array('post' => $post,'actor' => $this->session->actor), 'Post', -1, array('assets/js/posts.js'), $repliesvms);
 		}
                 
-                public function profile($id)
-                {
-                     if (isset($this->session->actor))
-		     {
-                         $em = $this->loader->getEntityManager();
-                         $result = $em->createQuery('SELECT s FROM SectionSubscription s WHERE s.actor = :id')
-                                        ->setParameter('id', $id)
-                                        ->getResult();
-                         $sections = array();
-                         foreach ($result as $res)
-                         {
-                             $sections[] = $em->createQuery('SELECT s FROM Section s WHERE s.id = :id')
-                                              ->setParameter('id', $res->getSection())
-                                              ->getSingleResult();
-                         }
-                         
-                         $reviews = $em->createQuery('SELECT a FROM ActorReview a WHERE a.reviewee = :id')
-                                              ->setParameter('id', $id)
-                                              ->getResult();
-                         $avg = 0;
-                         $count = 0;
-                         foreach($reviews as $review)
-                         {
-                             $avg += $review->getGrade();
-                             $count++;
-                         }
-                         $avg /= $count;
-                         $qb = $this->loader->getEntityManager()->createQueryBuilder();
-                         $qb->select('count(w.id)')->from('Workpost', 'w')->where('w.worker = :tutorid')->setParameter('tutorid', $this->session->actor->getId());
-                         $query = $qb->getQuery();
-                         $workpostsCount = $query->getSingleScalarResult();
-                         $degree = $workpostsCount;
-                         $this->loader->loadPage('profile.php', array('actor' => $this->session->actor, 'sections' => $sections, 'avg' => $avg, 'reviews' => $reviews, 'degree' => $degree), 'Profile');
-                     }
-                }
-                
+		public function profile($id)
+		{
+			$em = $this->loader->getEntityManager();
+			$result = $em->createQuery('SELECT s FROM SectionSubscription s WHERE s.actor = :id')
+						->setParameter('id', $id)
+						->getResult();
+			$sections = array();
+			foreach ($result as $res)
+			{
+				$sections[] = $em->createQuery('SELECT s FROM Section s WHERE s.id = :id')
+							  ->setParameter('id', $res->getSection())
+							  ->getSingleResult();
+			}
+
+			$reviews = $em->createQuery('SELECT a FROM ActorReview a WHERE a.reviewee = :id')
+							  ->setParameter('id', $id)
+							  ->getResult();
+			$avg = 0;
+			$count = 0;
+			foreach($reviews as $review)
+			{
+				$avg += $review->getGrade();
+				$count++;
+			}
+			
+			if ($count === 0) $avg = 0;
+			else $avg /= $count;
+			$qb = $this->loader->getEntityManager()->createQueryBuilder();
+			$qb->select('count(w.id)')->from('Workpost', 'w')->where('w.worker = :tutorid')->setParameter('tutorid', $this->session->actor->getId());
+			$query = $qb->getQuery();
+			$workpostsCount = $query->getSingleScalarResult();
+			$degree = $workpostsCount;
+			$this->loader->loadPage('profile.php', array('actor' => $this->session->actor, 'sections' => $sections, 'avg' => $avg, 'reviews' => $reviews, 'degree' => $degree), 'Profile', -1, array('assets/js/profile.js'));
+		}   
 	}
 ?>

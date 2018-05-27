@@ -111,7 +111,7 @@ var detailsPopupFeed;
 $(document).ready(function()
 {
 	aboutPopupFeed = new AboutPopupFeed("changeTutor");
-	aboutPopupFeed.Subscribe(0);
+	aboutPopupFeed.Subscribe(mainPopup);
 	detailsPopupFeed = new DetailsPopupFeed("changeDatails");
-	detailsPopupFeed.Subscribe(0);
+	detailsPopupFeed.Subscribe(mainPopup);
 });

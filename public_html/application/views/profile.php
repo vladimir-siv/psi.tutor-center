@@ -25,7 +25,7 @@
               if ($actor->getDescription() != null)
               {
                   echo '<p id = "aboutTutor">'.$actor->getDescription().'</p>';
-                  echo '<center><button class = "btn rounded-md btn-info font-rammetto-one" onclick = "btnClickAboutTutor();">Change</button></center>';
+                  echo '<center><button class = "btn rounded-md btn-info font-rammetto-one" onclick = "aboutPopupFeed.Toggle(0);">Change</button></center>';
               }
             ?>
         </div>					   
@@ -76,7 +76,7 @@
                     ?>
 
             </table>
-            <center><button class = "btn rounded-md btn-info font-rammetto-one" onclick = "btnClickTutorDatails();">Change</button></center>
+            <center><button class = "btn rounded-md btn-info font-rammetto-one" onclick = "detailsPopupFeed.Toggle(0);">Change</button></center>
        </div>					   
 </div>    
 <div id = "tutor-review" class = "row">
