@@ -53,6 +53,51 @@ class QAPost extends Proxy
         $instance->id = $id;
         $instance->acceptedanswer = $acceptedanswer;
 		return $instance;
+    }
+    /*
+	 * checkIfPostIsQA() - proverava da li je post tipa qa
+	 *	@param \Post $post: post
+	 *	@return: bool
+	 */
+    public static function checkIfPostIsQA($post)
+	{
+		$qapost = parent::$_em->createQuery('SELECT qap from Qapost qap WHERE qap.id = :postid')
+					->setParameter('postid', $post->getId())
+					->getResult();
+		
+		if ($qapost == NULL || count($qapost) == 0) return false;
+		
+		return true;
+    }
+
+    /*
+	 * getDescriptionForPost($post) - dohvata description za dati post
+	 *	@param \Post $post: post
+	 *	@return: string
+	 */
+    public static function getDescriptionForPost($post)
+	{
+		$qapost = parent::$_em->find('Qapost', $post->getId());
+		
+		return $qapost->getDescription();
+    }
+    
+    /*
+	 * isReplyAccepted() - proverava da li je reply prihvacen
+     * 	@param \Reply $reply: reply
+	 *	@param \Post $post: post
+	 *	@return: bool
+	 */
+    public static function isReplyAccepted($post, $reply)
+	{
+		$qapost = parent::$_em->createQuery('SELECT qap from Qapost qap WHERE qap.id = :postid AND qap.acceptedanswer = :replyid')
+                    ->setParameter('postid', $post->getId())
+                    ->setParameter('replyid', $reply->getId())
+					->getResult();
+		
+		if ($qapost == NULL || count($qapost) == 0) return false;
+		
+		return true;
 	}
 
     /**

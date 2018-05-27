@@ -94,7 +94,17 @@ class Post extends Proxy
         $instance->deleted = $deleted;
         $instance->originalposter = $originalposter;
 		return $instance;
-	}
+    }
+    
+    /*
+	 * getOriginalPosterReference($post) - dohvata op za dati post
+	 *	@return: \Actor
+	 */
+    public function getOriginalPosterReference()
+	{
+        if (parent::refsAreLoaded()) return $this->originalposter;
+		else return parent::$_em->find('Actor', $this->originalposter);
+    }
 
     /**
      * Get id

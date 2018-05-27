@@ -71,7 +71,21 @@ class WorkPost extends Proxy
         $instance->id = $id;
         $instance->worker = $worker;
 		return $instance;
-	}
+    }
+    
+    /*
+	 * getDescriptionForPost($post) - dohvata description za dati post
+	 *	@param \Post $post: post
+	 *	@return: string
+	 */
+    public static function getDescriptionForPost($post)
+	{
+		$workpost = parent::$_em->createQuery('SELECT w from Workpost w WHERE w.id = :postid')
+					->setParameter('postid', $post->getId())
+					->getResult();
+		
+		return $workpost->getDescription();
+    }
 
     /**
      * Set description
