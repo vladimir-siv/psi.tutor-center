@@ -174,14 +174,17 @@
 				$count++;
 			}
 			
+                        $actor = $em->createQuery('SELECT a FROM Actor a WHERE a.id = :id')
+                                    ->setParameter('id', $id)
+                                    ->getSingleResult();
 			if ($count === 0) $avg = 0;
 			else $avg /= $count;
 			$qb = $this->loader->getEntityManager()->createQueryBuilder();
-			$qb->select('count(w.id)')->from('Workpost', 'w')->where('w.worker = :tutorid')->setParameter('tutorid', $this->session->actor->getId());
+			$qb->select('count(w.id)')->from('Workpost', 'w')->where('w.worker = :tutorid')->setParameter('tutorid', $actor->getId());
 			$query = $qb->getQuery();
 			$workpostsCount = $query->getSingleScalarResult();
 			$degree = $workpostsCount;
-			$this->loader->loadPage('profile.php', array('actor' => $this->session->actor, 'sections' => $sections, 'avg' => $avg, 'reviews' => $reviews, 'degree' => $degree), 'Profile', -1, array('assets/js/profile.js'));
+			$this->loader->loadPage('profile.php', array('actor' => $actor, 'sections' => $sections, 'avg' => $avg, 'reviews' => $reviews, 'degree' => $degree), 'Profile', -1, array('assets/js/profile.js'));
 		}   
 	}
 ?>

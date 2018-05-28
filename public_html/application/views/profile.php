@@ -5,19 +5,21 @@
 <div class = "row">
      <div class = "col-lg-6 col-md-6 col-sm-12 col-xs-12">
 	<div class = "font-md text-center font-times-new-roman">
+               
                 <?php
+                    if ($actor->getRawRank() != 2) echo '<h2>Online tutoring section:</h2>';
                   if ($sections != null)
                   {
-                    echo '<h2>Online Tutoring Sections</h2>';
                     foreach($sections as $section)
                     {
                        echo '<a href = "'.base_url().'Guest\section\\'.$section->getId().'" class = "btn rounded-md btn-info font-rammetto-one">'.$section->getName().'</a>&nbsp;&nbsp;';  
                     }
-                    if ($actor->getRawRank() == 2) echo '<h2>About user:</h2>';
+                  }
+                  else echo '<br/><br/>';
+                  if ($actor->getRawRank() == 2) echo '<h2>About user:</h2>';
                     else if ($actor->getRawRank() == 3) echo '<h2>About tutor:</h2>';
                     else if ($actor->getRawRank() == 4) echo '<h2>About moderator:</h2>';
                     else if ($actor->getRawRank() == 5) echo '<h2>About administrator:</h2>';
-                  }
                 ?>
 	 </div>
         <div class = "text-justify font-times-new-roman">
@@ -25,9 +27,10 @@
               if ($actor->getDescription() != null)
               {
                   echo '<p id = "aboutTutor">'.$actor->getDescription().'</p>';
-                  echo '<center><button class = "btn rounded-md btn-info font-rammetto-one" onclick = "aboutPopupFeed.Toggle(0);">Change</button></center>';
               }
+              else echo '<br/><br/>';
             ?>
+            <center><button class = "btn rounded-md btn-info font-rammetto-one" onclick = "aboutPopupFeed.Toggle(0);">Change</button></center>
         </div>					   
         </div>
       <div class = "col-lg-6 col-md-6 col-sm-12 col-xs-12 font-times-new-roman text-center" style = "font-size: 25px">
@@ -56,7 +59,7 @@
                    </tr>
                    <?php 
                     
-                      if ($actor->getRawRank() != Rank::Guest)
+                      if ($actor->getRawRank() != Rank::Guest && $avg != 0)
                       {
                          echo '<tr>';
                          echo '<td>Completed:</td>';
@@ -81,10 +84,12 @@
 </div>    
 <div id = "tutor-review" class = "row">
     <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
-       <h2>Tutor-review:</h2>
            <table class = "table table-bordered table-striped table-dark">
-                 <?php foreach($reviews as $review)
+                 <?php 
+                 if ($reviews == null) echo '<br/><br/>';
+                 foreach($reviews as $review)
                  {
+                     echo '<h2>Tutor-review:</h2>';
                      echo '<tr>';
                      echo '<td style = "width:15%">Degree:<br/>';
                      for($count = 0; $count < $review->getGrade() - 1; $count++)
