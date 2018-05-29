@@ -417,7 +417,7 @@
 		}
 
 		/*
-		 * insertPosts() - insert-uje odgovore
+		 * inserReplies() - insert-uje odgovore
 		 *	@param array $replies: niz odgovora
 		 *	@return void
 		 */
@@ -427,6 +427,21 @@
 			{
 				$currentreply = Reply::New($reply['message'], $reply['postedon'], $reply['deleted'], $reply['post'], $reply['actor']);
 				$this->em->persist($currentreply);
+				$this->em->flush();
+			}
+		}
+
+		/*
+		 * insertRequests() - insert-uje zahteve za promociju
+		 *	@param array $requests: niz zahteva
+		 *	@return void
+		 */
+		public function insertPromotionRequests($requests)
+		{
+			foreach ($requests as $request)
+			{
+				$currentrequest = PromotionRequest::New($request['title'], $request['description'], $request['submittedon'], $request['accepted'], $request['actor']);
+				$this->em->persist($currentrequest);
 				$this->em->flush();
 			}
 		}

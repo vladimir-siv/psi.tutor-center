@@ -62,10 +62,12 @@ class Reply extends Proxy
 
     /*
 	 * New() - kreira novi reply
-	 *	@param string $description: opis qaposta
-	 *	@param integer $id: id posta
-     *	@param integer $acceptedanswer: prihvacen odgovor
-	 *	@return: Actor
+	 *	@param string $message: poruka
+	 *	@param \DateTime $postedon: datum postavljanja
+     *	@param bool $deleted: da li je odgovor obrisan
+     *	@param integer $post: post na koji je odgovoreno
+     *	@param integer $actor: actor koji je odgovorio
+	 *	@return: Reply
 	 */
 	public static function New($message, $postedon, $deleted = 0, $post, $actor)
 	{

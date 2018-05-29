@@ -144,5 +144,20 @@
 			
 			echo 'Replies inserted.';
 		}
+		public function insertPromotionRequests()
+		{
+			$request1 = array
+			(
+				'title' => 'Prijava za tutora',
+				'description' => 'Zeleo bih da postanem tutor',
+				'submittedon' => new \DateTime('now'),
+				'accepted' => 0,
+				'actor' => 1
+			);
+			$requests = array($request1);
+			$this->loader->insertPromotionRequests($requests);
+			
+			echo 'Requests inserted.';
+		}
 	}
 ?>

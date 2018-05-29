@@ -6,7 +6,7 @@
  * @Table(name="promotionrequests", indexes={@Index(name="Actor", columns={"Actor"})})
  * @Entity
  */
-class PromotionRequest
+class PromotionRequest extends Proxy
 {
     /**
      * @var integer
@@ -46,14 +46,31 @@ class PromotionRequest
     private $accepted;
 
     /**
-     * @var \Actor
+     * @var integer
      *
-     * @ManyToOne(targetEntity="Actor")
-     * @JoinColumns({
-     *   @JoinColumn(name="Actor", referencedColumnName="ID")
-     * })
+     * @Column(name="Actor", type="integer", nullable=false)
      */
     private $actor;
+
+    /*
+	 * New() - kreira novi promotion request
+	 *	@param string $title: naslov koji actor unosi
+	 *	@param string $description: opis koji actor unosi
+     *	@param \DateTime $submittedon: datum postavljanja zahteva
+     *	@param bool $accepted: da li je zahtev prihvacen
+     *	@param integer $actor: actor koji je postavio zahtev
+	 *	@return: PromotionRequest
+	 */
+	public static function New($title, $description, $submittedon, $accepted, $actor)
+	{
+		$instance = new PromotionRequest();
+		$instance->title = $title;
+        $instance->description = $description;
+        $instance->submittedon = $submittedon;
+        $instance->accepted = $accepted;
+        $instance->actor = $actor;
+		return $instance;
+    }
 
 
     /**
@@ -165,7 +182,7 @@ class PromotionRequest
     /**
      * Set actor
      *
-     * @param \Actor $actor
+     * @param integer $actor
      *
      * @return PromotionRequest
      */
@@ -179,11 +196,31 @@ class PromotionRequest
     /**
      * Get actor
      *
-     * @return \Actor
+     * @return integer
      */
     public function getActor()
     {
         return $this->actor;
     }
+
+    /* ============== PROXY ============== */
+	
+	public function loadReferences()
+	{
+		if (parent::refsAreLoaded()) return;
+		
+		$this->actor = $this->em->find('Actor', $this->actor);
+		
+		parent::loadReferences();
+	}
+	
+	public function unloadReferences()
+	{
+		if (!parent::refsAreLoaded()) return;
+		
+		$this->actor = $this->actor->getId();
+		
+		parent::unloadReferences();
+	}
 }
 

@@ -116,5 +116,9 @@
 			$repliesvms = $this->load->view('templates/generate-replies.php', array('op' => $post->getOriginalPosterReference(), 'replies' => $replies, 'replyposter' => $replyposter, 'replyaccepted' => $replyaccepted, 'sections' => $sections), true);
 			$this->loader->loadPage('post.php', array('post' => $post,'actor' => $this->session->actor), 'Post', -1, array('assets/js/posts.js'), $repliesvms);
 		}
+		public function reqpromotion()
+		{
+			$this->loader->loadPage('reqpromotion.php', null, 'PromotionRequest', -1, null, null);
+		}
 	}
 ?>
