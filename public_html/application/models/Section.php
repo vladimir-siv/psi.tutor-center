@@ -23,8 +23,32 @@ class Section extends Proxy
 		));
 	}
 	
-	/* ================ INSTANCE ================ */
+	/*
+	 * searchSubjectSection() - trazi oblasti po nazivu (contains) koje pripadaju kategoriji po nazivu (contains)
+	 *	@param string $subject: naziv kategorije (contains)
+	 *	@param string $section:	naziv oblasti (contains)
+	 *	@param string $format: specificni formati rezultata
+	 *	@return: JSON string
+	 */
+	public static function searchSubjectSection($subject, $section, $format = null)
+	{
+		$sections = self::$_em->createQuery('SELECT sc FROM Section sc WHERE sc.subject in (SELECT sb.id FROM Subject sb WHERE sb.name LIKE :subject) AND sc.name LIKE :section')
+						->setParameter('subject', '%'.$subject.'%')
+						->setParameter('section', '%'.$section.'%')
+						->getResult();
+		
+		$json = array();
+		
+		foreach ($sections as $section)
+		{
+			$json[] = array('id' => $section->getId(), 'section' => $section->getName());
+		}
+		
+		return json_encode($json);
+	}
 	
+	/* ================ INSTANCE ================ */
+        
     /**
      * @var integer
      *
@@ -283,31 +307,31 @@ class Section extends Proxy
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-	public function getSubscribers()
-	{
-		$subscribers = $this->em->createQuery('SELECT a FROM Section s join s.actor a WHERE s.id = :id')
-						->setParameter('id', $this->id)
-						->getResult();
-		return $subscribers;
-	}
+    public function getSubscribers()
+    {
+        $subscribers = parent::$_em->createQuery('SELECT a FROM Actor a WHERE a.id in (SELECT s.actor FROM SectionSubscription s WHERE s.section = :section)')
+                                        ->setParameter('section', $this->id)
+                                        ->getResult();
+        return $subscribers;
+    }
     
     /* ============== PROXY ============== */
 	
     public function loadReferences()
     {
 		if (parent::refsAreLoaded()) return;
-
+		
 		$this->subject = $this->em->find('Subject', $this->subject);
-
+		
 		parent::loadReferences();
     }
 	
     public function unloadReferences()
     {
 		if (!parent::refsAreLoaded()) return;
-
+		
 		$this->subject= $this->subject->getId();
-
+		
 		parent::unloadReferences();
     }
 }

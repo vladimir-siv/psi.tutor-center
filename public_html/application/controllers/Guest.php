@@ -8,35 +8,44 @@
 		{
 			parent::__construct();
 			$this->load->library('doctrine');
-
+			
 			$this->load->library('loader');
 			$this->loader->setController($this);
 			$this->loader->setEntityManager($this->doctrine->em);
 			Proxy::__init__();
 		}
 		
+                /*
+                 * index() - poziva se funkcija za otvaranje stranice index.php
+                 */
 		public function index()
 		{
-		        $this->loader->loadPage('index.php', null, 'Index', 0);
+			$this->loader->loadPage('index.php', null, 'Home Page', 0);
 		}
 		
+                /*
+                 * subjects() - dohvata sve predmete i salje ih stranici subjects.php
+                 * koju i otvara
+                 */
 		public function subjects()
 		{
-			$qb = $this->loader->getEntityManager()->createQueryBuilder();
-			$qb->select('s')->from('Subject', 's');
-			$query = $qb->getQuery();
-			$subjects = $query->getResult();
+			$subjects = $this->loader->getEntityManager()->createQuery('SELECT s FROM Subject s')->getResult();
 			$this->loader->loadPage('subjects.php', array('subjects' => $subjects), 'Subjects', 1);
 		}
 		
+                /*
+                 *  tutors() - dohvata sve tutore i broj domacih koji su oni uradili i 
+                 *  salje ih stranici subjects.php koju i otvara
+                 */
 		public function tutors()
 		{
 			$qb = $this->loader->getEntityManager()->createQueryBuilder();
 			$qb->select('a')->from('Actor', 'a')->where('a.actorrank > 2');
 			$query = $qb->getQuery();
 			$tutors = $query->getResult();
+			
 			$numOfWorkpost = array();
-			foreach($tutors as $tutor)
+			foreach ($tutors as $tutor)
 			{
 				$qb = $this->loader->getEntityManager()->createQueryBuilder();
 				$qb->select('count(w.id)')->from('Workpost', 'w')->where('w.worker = :tutorid')->setParameter('tutorid', $tutor->getId());
@@ -44,14 +53,29 @@
 				$workpostsCount = $query->getSingleScalarResult();
 				$numOfWorkpost[$tutor->getId()] = $workpostsCount;
 			}
-			$this->loader->loadPage('tutors.php', array('tutors' => $tutors, 'numOfWorkpost' => $numOfWorkpost), 'Tutors', 2, array('scripts' => 'assets/js/tutors.js'));
+			
+			$tutorsvms = $this->load->view('templates/generate-tutors.php', array('tutors' => $tutors, 'numOfWorkpost' => $numOfWorkpost), true);
+			$this->loader->loadPage('tutors.php', null, 'Tutors', 2, array('assets/js/tutors.js'), $tutorsvms);
 		}
-        
+		
+		public function library()
+		{
+			$this->loader->loadPage('library.php', null, 'Library', 3, array('assets/ajax/search.ajax.js'));
+		}
+               
+                /*
+                 *  about() - poziva se funkcija za otvaranje about.php
+                 */
 		public function about()
 		{
 			$this->loader->loadPage('about.php', null, 'About', 4);                    
 		}
 		
+		/*
+		 *  subject() - dohvata sve section-e u okviru tog subject-a
+		 *  i salje ih stranici subject.php koju i otvara
+		 *  @param int $id : identifikator subject-a
+		 */
 		public function subject($id)
 		{
 			$qb = $this->loader->getEntityManager()->createQueryBuilder();
@@ -65,22 +89,30 @@
 			$sections = $query->getResult();
 			$this->loader->loadPage('subject.php', array('subject' => $subject, 'sections' => $sections), 'Sections');
 		}
-        
+                
+		/*
+		 *  section() - dohvata sve tutor-e subscribe-ovanih
+		 *  na tu sekciju i broj postova koji su oni
+		 *  do sad odradili
+		 *  @param int $id : identifikator section-a
+		 */
 		public function section($id)
 		{
-			$qb = $this->loader->getEntityManager()->createQueryBuilder();
-			$qb->select('s')->from('Section', 's')->where('s.id = :id')->setParameter('id', $id);
-			$query = $qb->getQuery();
-			$section = $query->getSingleResult();
+			$section = $this->loader->getEntityManager()->find('Section', $id);
+			$tutors = $section->getSubscribers();
 			
-			$actors = $section->getSubscribers();
-			
-			foreach($actors as $actor)
+			$numOfWorkpost = array();
+			foreach ($tutors as $tutor)
 			{
-				echo $actor->getId().'<br/>';
+				$qb = $this->loader->getEntityManager()->createQueryBuilder();
+				$qb->select('count(w.id)')->from('Workpost', 'w')->where('w.worker = :tutorid')->setParameter('tutorid', $tutor->getId());
+				$query = $qb->getQuery();
+				$workpostsCount = $query->getSingleScalarResult();
+				$numOfWorkpost[$tutor->getId()] = $workpostsCount;
 			}
 			
-			//$this->loader->loadPage('section.php', null, 'Sections');
+			$tutorsvms = $this->load->view('templates/generate-tutors.php', array('tutors' => $tutors, 'numOfWorkpost' => $numOfWorkpost), true);
+			$this->loader->loadPage('section.php', array('section' => $section), 'Sections', -1, array('assets/js/tutors.js'), $tutorsvms);
 		}
 		
 		public function post($postid)
@@ -116,9 +148,40 @@
 			$repliesvms = $this->load->view('templates/generate-replies.php', array('op' => $post->getOriginalPosterReference(), 'replies' => $replies, 'replyposter' => $replyposter, 'replyaccepted' => $replyaccepted, 'sections' => $sections), true);
 			$this->loader->loadPage('post.php', array('post' => $post,'actor' => $this->session->actor), 'Post', -1, array('assets/js/posts.js'), $repliesvms);
 		}
-		public function reqpromotion()
+                
+		public function profile($id)
 		{
-			$this->loader->loadPage('reqpromotion.php', null, 'PromotionRequest', -1, null, null);
-		}
+			$em = $this->loader->getEntityManager();
+			$result = $em->createQuery('SELECT s FROM SectionSubscription s WHERE s.actor = :id')
+						->setParameter('id', $id)
+						->getResult();
+			$sections = array();
+			foreach ($result as $res)
+			{
+				$sections[] = $em->createQuery('SELECT s FROM Section s WHERE s.id = :id')
+							  ->setParameter('id', $res->getSection())
+							  ->getSingleResult();
+			}
+
+			$reviews = $em->createQuery('SELECT a FROM ActorReview a WHERE a.reviewee = :id')
+							  ->setParameter('id', $id)
+							  ->getResult();
+			$avg = 0;
+			$count = 0;
+			foreach($reviews as $review)
+			{
+				$avg += $review->getGrade();
+				$count++;
+			}
+			
+			if ($count === 0) $avg = 0;
+			else $avg /= $count;
+			$qb = $this->loader->getEntityManager()->createQueryBuilder();
+			$qb->select('count(w.id)')->from('Workpost', 'w')->where('w.worker = :tutorid')->setParameter('tutorid', $this->session->actor->getId());
+			$query = $qb->getQuery();
+			$workpostsCount = $query->getSingleScalarResult();
+			$degree = $workpostsCount;
+			$this->loader->loadPage('profile.php', array('actor' => $this->session->actor, 'sections' => $sections, 'avg' => $avg, 'reviews' => $reviews, 'degree' => $degree), 'Profile', -1, array('assets/js/profile.js'));
+		}   
 	}
 ?>

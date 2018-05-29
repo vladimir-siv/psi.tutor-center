@@ -96,7 +96,7 @@ function register(popupid, firstname, lastname, username, password, email, birth
 		}
 		
 		$("#" + popupid + "-popup-info").append(Alert.New("success", response, true));
-                window.location.reload();
+		window.location.reload();
     });
 }
 
@@ -140,12 +140,46 @@ function createSubject(popupid, name, description)
 		}
 		
 		$("#" + popupid + "-popup-info").append(Alert.New("success", response, true));
+                window.location.reload();
 	});
 }
 
 function createSection(popupid, name, subject, description)
 {
-  $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> Invalid combination [\"" + name + "\" & \"" + subject + "\" & \"" + description + "]."));
+       $("#" + popupid + "-popup-info").html("");
+	if (name == "")
+	{
+		$("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter name!"));
+		return;
+	}
+        if (subject == "")
+        {
+                $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter name!"));
+		return;
+        }
+	if (description == "")
+	{
+		$("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter description!"));
+		return;      
+	}
+	$.ajax
+	({
+		url: "http://" + window.location.host + "/Utility/createSection",
+		method: "POST",
+		data: { name : name, subject : subject, description : description },
+		dataType: "html"
+	})
+	.done(function(response)
+	{
+		if (response.startsWith("#Error: "))
+		{
+			$("#" + popupid + "-popup-info").append(Alert.New("danger", response.substring(8), true));
+			return;
+		}
+		
+		$("#" + popupid + "-popup-info").append(Alert.New("success", response, true));
+                window.location.reload();
+	});
 }
 
 function changeAbout(popupid, description)
@@ -160,10 +194,66 @@ function changeDatails(popupid, firstname, lastname, email, birthdate)
 
 function sellTokens(popupid, accountnumber, amountTokens, amountEuro)
 {
-	alert("Pozvala se uspesno funkcija1") // poziva se prodaja tokena
+    $("#" + popupid + "-popup-info").html("");
+    if (accountnumber == "")
+    {
+        $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter account number!"));
+        return;
+    }
+    if (amountTokens == "")
+    {
+        $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter amount Tokens!"));
+        return;
+    }
+    $.ajax
+    ({
+		url: "http://" + window.location.host + "/Utility/sellTokens",
+		method: "POST",
+		data: { accountnumber : accountnumber, amountTokens: amountTokens },
+		dataType: "html"
+    })
+	.done(function(response) 
+    {
+		if (response.startsWith("#Error: "))
+		{
+			$("#" + popupid + "-popup-info").append(Alert.New("danger", response.substring(8), true));
+			return;
+		}
+		
+		$("#" + popupid + "-popup-info").append(Alert.New("success", response, true));
+		window.location.reload();
+    });
 }
 
-function buyTokens(popuid, accountnumber, amountEuro, amountTokens)
-{
-	alert("Pozvala se uspesno funkcija2") // poziva se kupovina tokena	
+function buyTokens(popupid, accountnumber, amountEuro, amountTokens)
+{	
+    $("#" + popupid + "-popup-info").html("");
+    if (accountnumber == "")
+    {
+        $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter account number!"));
+        return;
+    }
+    if (amountEuro == "")
+    {
+        $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter amount euro!"));
+        return;
+    }
+    $.ajax
+    ({
+		url: "http://" + window.location.host + "/Utility/buyTokens",
+		method: "POST",
+		data: { accountnumber : accountnumber, amountEuro: amountEuro },
+		dataType: "html"
+    })
+	.done(function(response) 
+    {
+		if (response.startsWith("#Error: "))
+		{
+			$("#" + popupid + "-popup-info").append(Alert.New("danger", response.substring(8), true));
+			return;
+		}
+		
+		$("#" + popupid + "-popup-info").append(Alert.New("success", response, true));
+		window.location.reload();
+    });
 }

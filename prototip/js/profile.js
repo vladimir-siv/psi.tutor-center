@@ -110,7 +110,7 @@ var tutorDetailsPopupFeed;
 $(document).ready(function()
 {
 	aboutTutorPopupFeed = new AboutTutorPopupFeed("changeAboutTutor");
-	aboutTutorPopupFeed.Subscribe(0);
+	aboutTutorPopupFeed.Subscribe(mainPopup);
 	tutorDetailsPopupFeed = new TutorDetailsPopupFeed("changeTutorDatails");
-	tutorDetailsPopupFeed.Subscribe(0);
+	tutorDetailsPopupFeed.Subscribe(mainPopup);
 });

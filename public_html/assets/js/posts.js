@@ -188,13 +188,42 @@ function post(type)
 		}
 	});
 	
-	for (var name in data)
-		alert("'" + name + "=" + data[name] + "'");
+	var postData = new FormData();
 	
-	for (var i = 0; i < files.length; i++)
-		alert("'+file=" + files[i].name + "'");
+	for (var name in data) postData.append(name, data[name]);
 	
-	var success = new AlertPopupFeed(Alert.New("success", "<b>Success!</b> Your post has been created.", true, "modal"));
-	success.Subscribe(alertPopup);
-	success.Show(0);
+	for (var i = 0; i < files.length; i++) postData.append('+file-' + i, files[i], files[i].name);
+	
+	$.ajax
+	({
+		url: "http://" + window.location.host + "/Utility/createPost",
+		method: "POST",
+		data: postData,
+		processData: false,
+		contentType: false,
+		dataType: "html"
+	})
+	.done(function(response)
+	{
+		if (response.startsWith("#Error: "))
+		{
+			var success = new AlertPopupFeed(Alert.New("danger", response.substring(8), true, "modal"));
+			success.Subscribe(alertPopup);
+			success.Show(0);
+		}
+		else
+		{
+			var type = "success";
+			
+			if (response.startsWith("#Warning: "))
+			{
+				type = "warning";
+				response = response.substring(10);
+			}
+			
+			var success = new AlertPopupFeed(Alert.New(type, response, true, "modal"));
+			success.Subscribe(alertPopup);
+			success.Show(0);
+		}
+	});
 }
