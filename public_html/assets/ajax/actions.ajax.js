@@ -100,10 +100,39 @@ function register(popupid, firstname, lastname, username, password, email, birth
     });
 }
 
-function sendMail(name, email, subject, message)
+function sendRequest(position, description)
 {
-	alertPopupFeed.content = Alert.New("success", "<b>Success!</b> Mail has been sent. Thank you!", true, "modal");
-	alertPopupFeed.Toggle(0);
+    if (position == "")
+    {
+        alertPopupFeed.content = Alert.New("danger", "You must enter title of request.", true, "modal");
+		alertPopupFeed.Toggle(0);
+        return;        
+    }
+    if (description == "")
+    {
+        alertPopupFeed.content = Alert.New("danger", "You must enter description of request.", true, "modal");
+		alertPopupFeed.Toggle(0);
+        return;         
+    }
+    $.ajax
+    ({
+		url: "http://" + window.location.host + "/User/requestPromotion",
+		method: "POST",
+		data: { position: position, description : description},
+		dataType: "html"
+    })
+	.done(function(response) 
+    {
+		if (response.startsWith("#Error: "))
+		{
+			alertPopupFeed.content = Alert.New("danger", response.substring(8), true, "modal");
+			alertPopupFeed.Toggle(0);
+			return;
+		}
+		alertPopupFeed.content = Alert.New("success", response, true, "modal");
+		alertPopupFeed.Toggle(0);
+		window.location.reload();
+    });
 }
 
 function toggleSeen(notificationid)
@@ -256,4 +285,8 @@ function buyTokens(popupid, accountnumber, amountEuro, amountTokens)
 		$("#" + popupid + "-popup-info").append(Alert.New("success", response, true));
 		window.location.reload();
     });
+}
+
+function deleteSubject(){
+	alert($(location).attr("href").split('/').pop());
 }

@@ -344,5 +344,10 @@
 			}
 			else '#Error: Provided data does not match any valid database search.';
 		}
+		
+		//Server sakriva kategoriju, pripadajuće oblasti i odgovarajuće postove i odgovore
+		public function deleteSubject(){
+			
+		}
 	}
 ?>

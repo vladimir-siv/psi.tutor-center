@@ -6,7 +6,7 @@
 								<img class="mr-3" src=<?php echo '"'.base_url().'assets/storage/subjects/'.$subject->getId().'/icon.png"' ?> style="width:80px">
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
-								<h1 class="mt-0 font-rammetto-one font-md" style="padding-top:10px; ">Computer Science</h1>
+								<h1 class="mt-0 font-rammetto-one font-md" style="padding-top:10px; "><?php echo $subject->getName(); ?></h1>
 							</div>
 							<div class="col-lg-3 col-md-3 hidden-sm hidden-xs text-center">
 								<img class="mr-3" src=<?php echo '"'.base_url().'assets/storage/subjects/'.$subject->getId().'/icon.png"' ?> style="width:80px">
@@ -19,6 +19,9 @@
 					   <p class="font-times-new-roman text-center">
 							<?php echo $subject->getDescription(); ?>
 					   </p>
+<?php
+					if ($enableDeleteButton) echo '<center><button class="btn btn-danger" onclick="deleteSubject()">Delete</button></center>'; 
+?>
 					</div>
 				</div>
 				<section id="section-main" class="border-boxed expanded no-margin no-padding margin-top-md">

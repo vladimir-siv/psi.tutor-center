@@ -87,7 +87,9 @@
 			$qb->select('s')->from('Section', 's')->where('s.subject = :id')->setParameter('id', $id);
 			$query = $qb->getQuery();
 			$sections = $query->getResult();
-			$this->loader->loadPage('subject.php', array('subject' => $subject, 'sections' => $sections), 'Sections');
+			$enableDeleteButton = false;
+			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'DeleteSubject')) $enableDeleteButton = true;
+			$this->loader->loadPage('subject.php', array('subject' => $subject, 'sections' => $sections, 'enableDeleteButton' => $enableDeleteButton), 'Sections');
 		}
                 
 		/*
@@ -182,6 +184,6 @@
 			$workpostsCount = $query->getSingleScalarResult();
 			$degree = $workpostsCount;
 			$this->loader->loadPage('profile.php', array('actor' => $this->session->actor, 'sections' => $sections, 'avg' => $avg, 'reviews' => $reviews, 'degree' => $degree), 'Profile', -1, array('assets/js/profile.js'));
-		}   
+		} 
 	}
 ?>

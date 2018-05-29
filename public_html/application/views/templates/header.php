@@ -39,7 +39,7 @@
 <?php } if (Privilege::has($actor->getRawRank(), 'CreatePost')) { ?>
 												<a class="cursor-pointer list-group-item list-group-item-action" href="<?php echo base_url(); ?>User/create-post">Create Post</a>
 <?php } ?>
-												<a class="cursor-pointer list-group-item list-group-item-action" href="<?php echo base_url(); ?>User/req-promotion">Submit Request</a>
+												<a class="cursor-pointer list-group-item list-group-item-action" href="<?php echo base_url(); ?>User/req_promotion">Submit Request</a>
 											</div>
 										'
 									><span class="glyphicon glyphicon-wrench"></span> Tools</button>
