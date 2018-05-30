@@ -20,7 +20,7 @@
 							<?php echo $subject->getDescription(); ?>
 					   </p>
 <?php
-					if ($enableDeleteButton) echo '<center><button class="btn btn-danger" onclick="deleteSubject()">Delete</button></center>'; 
+					if ($enableDeleteButton) echo '<center><button class="btn btn-danger" onclick="deleteSubject('.$subject->getId().')">Delete</button></center>'; 
 ?>
 					</div>
 				</div>

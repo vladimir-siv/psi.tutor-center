@@ -29,7 +29,7 @@
                  */
 		public function subjects()
 		{
-			$subjects = $this->loader->getEntityManager()->createQuery('SELECT s FROM Subject s')->getResult();
+			$subjects = $this->loader->getEntityManager()->createQuery('SELECT s FROM Subject s WHERE s.deleted = 0')->getResult();
 			$this->loader->loadPage('subjects.php', array('subjects' => $subjects), 'Subjects', 1);
 		}
 		
@@ -81,10 +81,24 @@
 			$qb = $this->loader->getEntityManager()->createQueryBuilder();
 			$qb->select('s')->from('Subject', 's')->where('s.id = :id')->setParameter('id', $id);
 			$query = $qb->getQuery();
+			$subject = null;
+			try
+			{
 			$subject = $query->getSingleResult();
-			
+			}
+			catch(Exception $e)
+			{ 
+				$data = array('heading' => '', 'message' => 'The subject you are looking doesn\'t exist.');
+				$this->loader->loadPage($page = 'errors/cli/error_general.php', $data, $title = 'Page', $active = -1, $scripts = null, $scriptAddon = null); 
+				return;
+			}
+			if($subject->getDeleted()){
+				$data = array('heading' => '', 'message' => 'The subject you are looking for has been deleted.');
+				$this->loader->loadPage($page = 'errors/cli/error_general.php', $data, $title = 'Page', $active = -1, $scripts = null, $scriptAddon = null);
+				return;
+			}
 			$qb = $this->loader->getEntityManager()->createQueryBuilder();
-			$qb->select('s')->from('Section', 's')->where('s.subject = :id')->setParameter('id', $id);
+			$qb->select('s')->from('Section', 's')->where('s.subject = :id')->andWhere('s.deleted = 0')->setParameter('id', $id);
 			$query = $qb->getQuery();
 			$sections = $query->getResult();
 			$enableDeleteButton = false;
@@ -101,6 +115,17 @@
 		public function section($id)
 		{
 			$section = $this->loader->getEntityManager()->find('Section', $id);
+			if($section==null) {
+				$data = array('heading' => '404', 'message' => 'The section you are looking for doesn\'t exist.');
+				$this->loader->loadPage($page = 'errors/cli/error_general.php', $data, $title = 'Page', $active = -1, $scripts = null, $scriptAddon = null);
+				return;
+			}
+			if($section->getDeleted()){
+				$data = array('heading' => '', 'message' => 'The section you are looking for has been deleted.');
+				$this->loader->loadPage($page = 'errors/cli/error_general.php', $data, $title = 'Page', $active = -1, $scripts = null, $scriptAddon = null);
+				return;
+			}
+
 			$tutors = $section->getSubscribers();
 			
 			$numOfWorkpost = array();
@@ -114,14 +139,25 @@
 			}
 			
 			$tutorsvms = $this->load->view('templates/generate-tutors.php', array('tutors' => $tutors, 'numOfWorkpost' => $numOfWorkpost), true);
-			$this->loader->loadPage('section.php', array('section' => $section), 'Sections', -1, array('assets/js/tutors.js'), $tutorsvms);
+			$enableDeleteButton = false;
+			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'DeleteSection')) $enableDeleteButton = true;
+			$this->loader->loadPage('section.php', array('section' => $section, 'enableDeleteButton' => $enableDeleteButton), 'Sections', -1, array('assets/js/tutors.js'), $tutorsvms);
 		}
 		
 		public function post($postid)
 		{
 			$em = $this->loader->getEntityManager();
 			$post = $em->find('Post', $postid);
-			if($post==null) return;
+			if($post==null) {
+				$data = array('heading' => '404', 'message' => 'The post you are looking for doesn\'t exist.');
+				$this->loader->loadPage($page = 'errors/cli/error_general.php', $data, $title = 'Page', $active = -1, $scripts = null, $scriptAddon = null);
+				return;
+			}
+			if($post->getDeleted()){
+				$data = array('heading' => '404', 'message' => 'The post you are looking for has been deleted.');
+				$this->loader->loadPage($page = 'errors/cli/error_general.php', $data, $title = 'Page', $active = -1, $scripts = null, $scriptAddon = null);
+				return;
+			}
 			$replies = $em->createQuery('SELECT r FROM Reply r WHERE r.deleted = false AND r.post = :id')
 							->setParameter('id', $post->getId())
 							->getResult();

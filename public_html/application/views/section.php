@@ -15,11 +15,14 @@
 						</div>
 					</div>
 				</div>
-				<div class="row font-sm margin-top-md">
+				<div class = "row font-sm">
 					<div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					   <p class="font-times-new-roman text-justify">
+					   <p class="font-times-new-roman text-center">
 							<?php echo $section->getDescription(); ?>
 					   </p>
+<?php
+					if ($enableDeleteButton) echo '<center><button class="btn btn-danger" onclick="deleteSection('.$section->getId().')">Delete</button></center>'; 
+?>
 					</div>
 				</div>
 				<div class = "row font-sm text-center font-rammetto-one">

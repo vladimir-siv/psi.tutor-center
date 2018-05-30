@@ -347,7 +347,70 @@
 		
 		//Server sakriva kategoriju, pripadajuće oblasti i odgovarajuće postove i odgovore
 		public function deleteSubject(){
-			
+			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'DeleteSubject')){
+				
+				$subjectid = $this->input->post('subjectid');
+				$em = $this->loader->getEntityManager();
+				$subject = $em->find('Subject', $subjectid);
+				
+				if ($subject != null)
+				{
+					$subject->setDeleted(true);
+					$sections = $em->createQuery('SELECT s FROM Section s WHERE s.subject = :subjectid')
+							  ->setParameter('subjectid', $subject->getId())
+							  ->getResult();
+					foreach($sections as $section){
+						$section->setDeleted(true);
+						$postssections = $em->createQuery('SELECT ps FROM PostSection ps WHERE ps.section = :sectionid')
+						->setParameter('sectionid', $section->getId())
+						->getResult();
+						foreach($postssections as $postsection){
+							$post = $em->find('Post', $postsection->getPost());
+							$post->setDeleted(true);
+							$replies = $em->createQuery('SELECT r FROM Reply r WHERE r.post = :postid')
+							->setParameter('postid', $post->getId())
+							->getResult();
+							foreach($replies as $reply){
+								$reply->setDeleted(true);
+							}
+						}
+					}
+					$em->flush();
+					echo '<b>Success!</b> You have successfully deleted subject!';
+				}
+				else echo '#Error: Data not valid.';
+			}
+			else echo '#Error: You dont have permision to delete subject.';
+		}
+		public function deleteSection(){
+			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'DeleteSection')){
+				
+				$sectionid = $this->input->post('sectionid');
+				$em = $this->loader->getEntityManager();
+				$section = $em->find('Section', $sectionid);
+				
+				if ($section != null)
+				{
+					$section->setDeleted(true);
+					$postssections = $em->createQuery('SELECT ps FROM PostSection ps WHERE ps.section = :sectionid')
+					->setParameter('sectionid', $section->getId())
+					->getResult();
+					foreach($postssections as $postsection){
+						$post = $em->find('Post', $postsection->getPost());
+						$post->setDeleted(true);
+						$replies = $em->createQuery('SELECT r FROM Reply r WHERE r.post = :postid')
+						->setParameter('postid', $post->getId())
+						->getResult();
+						foreach($replies as $reply){
+							$reply->setDeleted(true);
+						}
+					}
+					$em->flush();
+					echo '<b>Success!</b> You have successfully deleted section!';
+				}
+				else echo '#Error: Data not valid.';
+			}
+			else echo '#Error: You dont have permision to delete section.';
 		}
 	}
 ?>

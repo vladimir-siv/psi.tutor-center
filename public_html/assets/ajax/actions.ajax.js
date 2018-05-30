@@ -287,6 +287,50 @@ function buyTokens(popupid, accountnumber, amountEuro, amountTokens)
     });
 }
 
-function deleteSubject(){
-	alert($(location).attr("href").split('/').pop());
+function deleteSubject(subjectid){
+	$.ajax
+    ({
+		url: "http://" + window.location.host + "/Utility/deleteSubject",
+		method: "POST",
+		data: { subjectid: subjectid},
+		dataType: "html"
+    })
+	.done(function(response) 
+    {
+		if (response.startsWith("#Error: "))
+		{
+			alertPopupFeed.content = Alert.New("danger", response.substring(8), true, "modal");
+			alertPopupFeed.Toggle(0);
+			return;
+		}
+		alertPopupFeed.content = Alert.New("success", response, true, "modal");
+		alertPopupFeed.Toggle(0);
+    });
+}
+
+function deleteSection(sectionid){
+	$.ajax
+    ({
+		url: "http://" + window.location.host + "/Utility/deleteSection",
+		method: "POST",
+		data: { sectionid: sectionid},
+		dataType: "html"
+    })
+	.done(function(response) 
+    {
+		if (response.startsWith("#Error: "))
+		{
+			alertPopupFeed.content = Alert.New("danger", response.substring(8), true, "modal");
+			alertPopupFeed.Toggle(0);
+			return;
+		}
+		alertPopupFeed.content = Alert.New("success", response, true, "modal");
+		alertPopupFeed.Toggle(0);
+    });
+}
+
+function sendMail(name, email, subject, message)
+{
+	alertPopupFeed.content = Alert.New("success", "<b>Success!</b> Mail has been sent. Thank you!", true, "modal");
+	alertPopupFeed.Toggle(0);
 }
