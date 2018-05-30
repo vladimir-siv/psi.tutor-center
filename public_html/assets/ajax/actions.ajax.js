@@ -213,12 +213,58 @@ function createSection(popupid, name, subject, description)
 
 function changeAbout(popupid, description)
 {
-    alert("Pozvala se uspesno funkcija"); // poziva se promena about tutora
+    $("#" + popupid + "-popup-info").html("");
+    if (description == "")
+    {
+        $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must description!"));
+        return;
+    }
+    $.ajax
+    ({
+		url: "http://" + window.location.host + "/User/changeAbout",
+		method: "POST",
+		data: { description : description },
+		dataType: "html"
+    })
+	.done(function(response) 
+    {
+		if (response.startsWith("#Error: "))
+		{
+			$("#" + popupid + "-popup-info").append(Alert.New("danger", response.substring(8), true));
+			return;
+		}
+		
+		$("#" + popupid + "-popup-info").append(Alert.New("success", response, true));
+		window.location.reload();
+    });
 }
 
 function changeDatails(popupid, firstname, lastname, email, birthdate)
 {
-    alert("Pozvala se uspesno funkcija"); // poziva se promena tutor datailsa 
+    $("#" + popupid + "-popup-info").html("");
+    if (firstname == "" && lastname == "" && email == "" && birthdate == "")
+    {
+        $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must change some data or click close!"));
+        return;
+    }
+    $.ajax
+    ({
+		url: "http://" + window.location.host + "/User/changeDatails",
+		method: "POST",
+		data: { firstname : firstname, lastname : lastname, email : email, birthdate : birthdate },
+		dataType: "html"
+    })
+	.done(function(response) 
+    {
+		if (response.startsWith("#Error: "))
+		{
+			$("#" + popupid + "-popup-info").append(Alert.New("danger", response.substring(8), true));
+			return;
+		}
+		
+		$("#" + popupid + "-popup-info").append(Alert.New("success", response, true));
+		window.location.reload();
+    }); 
 }
 
 function sellTokens(popupid, accountnumber, amountTokens, amountEuro)

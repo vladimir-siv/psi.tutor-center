@@ -55,7 +55,7 @@ class DetailsPopupFeed extends PopupFeed
 	Header() 
 	{
 		return "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"close\">&times;</button>" +
-			"<h4 class=\"modal-title\"><span class=\"glyphicon glyphicon-blackboard\"></span>&emsp;Change details/h4>"; 
+			"<h4 class=\"modal-title\"><span class=\"glyphicon glyphicon-blackboard\"></span>&emsp;Change details</h4>"; 
 	}
 	
 	Body() 
@@ -110,7 +110,7 @@ var detailsPopupFeed;
 
 $(document).ready(function()
 {
-	aboutPopupFeed = new AboutPopupFeed("changeTutor");
+	aboutPopupFeed = new AboutPopupFeed("changeAbout");
 	aboutPopupFeed.Subscribe(mainPopup);
 	detailsPopupFeed = new DetailsPopupFeed("changeDatails");
 	detailsPopupFeed.Subscribe(mainPopup);

@@ -257,7 +257,7 @@
                 
                 public function buyTokens()
                 {
-                    if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'SellTokens'))
+                    if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'BuyTokens'))
                     {
                                 $this->load->library('form_validation');
 				
@@ -269,7 +269,6 @@
                                 {
                                         $accountnumber = $this->input->post('accountnumber');
                                         $amountEuro = $this->input->post('amountEuro');
-                                        
                                         $qb = $this->loader->getEntityManager()->createQueryBuilder();
                                         $qb->select('a')->from('Actor', 'a')->where('a.id = :id')->setParameter('id', $this->session->actor->getId());
                                         $query = $qb->getQuery();
