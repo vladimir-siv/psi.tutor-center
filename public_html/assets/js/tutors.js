@@ -13,7 +13,7 @@ class Tutor extends View
 	AsView()
 	{
 		return "" +
-			"<a class=\"hover-text-decor-none\" href=\"profile.html?id=" + this.id + "\">" +
+			"<a class=\"hover-text-decor-none\" href=\"profile/" + this.id + "\">" +
 				"<img class=\"rounded-oval\" src=\""+ window.location.protocol + "//" + window.location.host + "/assets/storage/users/" + this.id + "/avatar.png\" width=\"120\" height=\"120\"/><p name=\"id\" class=\"font-times-new-roman font-sm\"><b>" + this.firstname  + " " + this.lastname + "</b></p>" +
 			"</a>" +
 			"<p class=\"font-times-new-roman font-xs\"><b>Completed: " + this.completed + "</b></p>" +

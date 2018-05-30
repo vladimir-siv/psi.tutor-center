@@ -116,7 +116,7 @@
 		{
 			$section = $this->loader->getEntityManager()->find('Section', $id);
 			if($section==null) {
-				$data = array('heading' => '404', 'message' => 'The section you are looking for doesn\'t exist.');
+				$data = array('heading' => '', 'message' => 'The section you are looking for doesn\'t exist.');
 				$this->loader->loadPage($page = 'errors/cli/error_general.php', $data, $title = 'Page', $active = -1, $scripts = null, $scriptAddon = null);
 				return;
 			}
@@ -149,12 +149,12 @@
 			$em = $this->loader->getEntityManager();
 			$post = $em->find('Post', $postid);
 			if($post==null) {
-				$data = array('heading' => '404', 'message' => 'The post you are looking for doesn\'t exist.');
+				$data = array('heading' => '', 'message' => 'The post you are looking for doesn\'t exist.');
 				$this->loader->loadPage($page = 'errors/cli/error_general.php', $data, $title = 'Page', $active = -1, $scripts = null, $scriptAddon = null);
 				return;
 			}
 			if($post->getDeleted()){
-				$data = array('heading' => '404', 'message' => 'The post you are looking for has been deleted.');
+				$data = array('heading' => '', 'message' => 'The post you are looking for has been deleted.');
 				$this->loader->loadPage($page = 'errors/cli/error_general.php', $data, $title = 'Page', $active = -1, $scripts = null, $scriptAddon = null);
 				return;
 			}
@@ -194,6 +194,12 @@
 		public function profile($id)
 		{
 			$em = $this->loader->getEntityManager();
+			$actor = $em->find('Actor', $id);
+			if($actor==null) {
+				$data = array('heading' => '', 'message' => 'The actor you are looking for doesn\'t exist.');
+				$this->loader->loadPage($page = 'errors/cli/error_general.php', $data, $title = 'Page', $active = -1, $scripts = null, $scriptAddon = null);
+				return;
+			}
 			$result = $em->createQuery('SELECT s FROM SectionSubscription s WHERE s.actor = :id')
 						->setParameter('id', $id)
 						->getResult();
@@ -219,11 +225,11 @@
 			if ($count === 0) $avg = 0;
 			else $avg /= $count;
 			$qb = $this->loader->getEntityManager()->createQueryBuilder();
-			$qb->select('count(w.id)')->from('Workpost', 'w')->where('w.worker = :tutorid')->setParameter('tutorid', $this->session->actor->getId());
+			$qb->select('count(w.id)')->from('Workpost', 'w')->where('w.worker = :tutorid')->setParameter('tutorid', $actor->getId());
 			$query = $qb->getQuery();
 			$workpostsCount = $query->getSingleScalarResult();
 			$degree = $workpostsCount;
-			$this->loader->loadPage('profile.php', array('actor' => $this->session->actor, 'sections' => $sections, 'avg' => $avg, 'reviews' => $reviews, 'degree' => $degree), 'Profile', -1, array('assets/js/profile.js'));
+			$this->loader->loadPage('profile.php', array('actor' => $actor, 'sections' => $sections, 'avg' => $avg, 'reviews' => $reviews, 'degree' => $degree), 'Profile', -1, array('assets/js/profile.js'));
 		} 
 	}
 ?>

@@ -2,7 +2,7 @@
 				<div class="jumbotron no-padding-bottom font-rammetto-one text-center" style="background-color: inherit;">
 					<h1><span class="text-primary">T</span>utors</h1>
 				</div>
-				<section id="section-main" data-type="tutors" class="border-boxed expanded no-margin no-padding">
+				<section id="section-main" data-type="tutors" class="border-boxed expanded no-margin no-padding normal-line-height">
 					<div class="row solid-border-bottom border-bottom-xs border-bottom-gray edged no-margin-left no-margin-right text-center">
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 							<ul data-type="pagination" class="pagination no-margin">

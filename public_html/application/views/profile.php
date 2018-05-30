@@ -21,12 +21,13 @@
                 ?>
 	 </div>
         <div class = "text-justify font-times-new-roman">
+            <center><h2>Description:</h2></center>
             <?php
-              if ($actor->getDescription() != null)
-              {
-                  echo '<p id = "aboutTutor">'.$actor->getDescription().'</p>';
-                  echo '<center><button class = "btn rounded-md btn-info font-rammetto-one" onclick = "aboutPopupFeed.Toggle(0);">Change</button></center>';
-              }
+                if ($actor->getDescription() != null)
+                {
+                    echo '<center><p class= "font-sm text-center font-times-new-roman" id = "aboutTutor">'.$actor->getDescription().'</p></center>';
+                }
+                if($actor->getId()==$this->session->actor->getId()) echo '<center><button class = "btn rounded-md btn-info font-rammetto-one" onclick = "aboutPopupFeed.Toggle(0);">Change</button></center>';
             ?>
         </div>					   
         </div>
@@ -76,8 +77,10 @@
                     ?>
 
             </table>
-            <center><button class = "btn rounded-md btn-info font-rammetto-one" onclick = "detailsPopupFeed.Toggle(0);">Change</button></center>
-       </div>					   
+            <?php
+            if($actor->getId()==$this->session->actor->getId()) echo '<center><button class = "btn rounded-md btn-info font-rammetto-one" onclick = "detailsPopupFeed.Toggle(0);">Change</button></center>';
+            ?>
+        </div>					   
 </div>    
 <div id = "tutor-review" class = "row">
     <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
