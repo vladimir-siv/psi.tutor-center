@@ -1,6 +1,6 @@
 class Reply extends View
 {
-	constructor(id, userid, username, message, postedOn, isOP)
+	constructor(id, userid, username, message, postedOn, isOP, enableDeleteButton)
 	{
 		super();
 		this.id = id;
@@ -9,6 +9,7 @@ class Reply extends View
 		this.message = message;
 		this.postedOn = postedOn;
 		this.isOP = isOP;
+		this.enableDeleteButton = enableDeleteButton;
 	}
 	
 	AsView()
@@ -26,7 +27,7 @@ class Reply extends View
 					"</div>" +
 					"<div class=\"col-lg-10 col-md-10 col-sm-8 col-xs-4\">" +
 						"<div class=\"border-boxed expanded solid-border border-xs border-gray no-border-left no-border-right rounded-xs padding-xs\">" +
-							this.message +
+							this.message + 
 						"</div>" +
 					"</div>" +
 					"<div class=\"col-lg-1 col-md-1 col-sm-2 col-xs-4 text-left\">" +
@@ -35,6 +36,7 @@ class Reply extends View
 							this.username +
 						"</a>" +
 						"<p class=\"font-times-new-roman\">Posted on: <i>" + this.postedOn + "</i></p>" +
+						(this.enableDeleteButton ? "<button class=\"btn btn-danger btn-md font-xxs\" onclick=\"deleteReply(" + this.id + ")\">Delete</button>" : "") +
 					"</div>" +
 				"</div>" +
 			"</article>";
@@ -47,6 +49,7 @@ class Reply extends View
 							this.username +
 						"</a>" +
 						"<p class=\"font-times-new-roman\">Posted on: <i>" + this.postedOn + "</i></p>" +
+						(this.enableDeleteButton ? "<button class=\"btn btn-danger btn-md font-xxs\" onclick=\"deleteReply(" + this.id + ")\">Delete</button>" : "") +
 					"</div>" +
 					"<div class=\"col-lg-10 col-md-10 col-sm-8 col-xs-4\">" +
 						"<div class=\"border-boxed expanded solid-border border-xs border-gray no-border-left no-border-right rounded-xs padding-xs\">" +

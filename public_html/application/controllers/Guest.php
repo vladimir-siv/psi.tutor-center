@@ -183,8 +183,12 @@
 					$replyaccepted[$reply->getId()] = Qapost::isReplyAccepted($post, $reply);
 				}
 			}
-			$repliesvms = $this->load->view('templates/generate-replies.php', array('op' => $post->getOriginalPosterReference(), 'replies' => $replies, 'replyposter' => $replyposter, 'replyaccepted' => $replyaccepted, 'sections' => $sections), true);
-			$this->loader->loadPage('post.php', array('post' => $post,'actor' => $this->session->actor), 'Post', -1, array('assets/js/posts.js'), $repliesvms);
+			$enableDeleteButton = false;
+			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'DeleteReply')) $enableDeleteButton = true;
+			$repliesvms = $this->load->view('templates/generate-replies.php', array('op' => $post->getOriginalPosterReference(), 'replies' => $replies, 'replyposter' => $replyposter, 'replyaccepted' => $replyaccepted, 'sections' => $sections, 'enableDeleteButton' => $enableDeleteButton), true);
+			$enableDeleteButton = false;
+			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'DeletePost')) $enableDeleteButton = true;	
+			$this->loader->loadPage('post.php', array('post' => $post,'actor' => $this->session->actor, 'enableDeleteButton' => $enableDeleteButton), 'Post', -1, array('assets/js/posts.js'), $repliesvms);
 		}
                 
 		public function profile($id)

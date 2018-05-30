@@ -329,6 +329,48 @@ function deleteSection(sectionid){
     });
 }
 
+function deletePost(postid){
+	$.ajax
+    ({
+		url: "http://" + window.location.host + "/Utility/deletePost",
+		method: "POST",
+		data: { postid: postid},
+		dataType: "html"
+    })
+	.done(function(response) 
+    {
+		if (response.startsWith("#Error: "))
+		{
+			alertPopupFeed.content = Alert.New("danger", response.substring(8), true, "modal");
+			alertPopupFeed.Toggle(0);
+			return;
+		}
+		alertPopupFeed.content = Alert.New("success", response, true, "modal");
+		alertPopupFeed.Toggle(0);
+    });
+}
+
+function deleteReply(replyid){
+	$.ajax
+    ({
+		url: "http://" + window.location.host + "/Utility/deleteReply",
+		method: "POST",
+		data: { replyid: replyid},
+		dataType: "html"
+    })
+	.done(function(response) 
+    {
+		if (response.startsWith("#Error: "))
+		{
+			alertPopupFeed.content = Alert.New("danger", response.substring(8), true, "modal");
+			alertPopupFeed.Toggle(0);
+			return;
+		}
+		alertPopupFeed.content = Alert.New("success", response, true, "modal");
+		alertPopupFeed.Toggle(0);
+    });
+}
+
 function sendMail(name, email, subject, message)
 {
 	alertPopupFeed.content = Alert.New("success", "<b>Success!</b> Mail has been sent. Thank you!", true, "modal");

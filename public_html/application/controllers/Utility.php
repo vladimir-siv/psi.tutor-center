@@ -380,7 +380,7 @@
 				}
 				else echo '#Error: Data not valid.';
 			}
-			else echo '#Error: You dont have permision to delete subject.';
+			else echo '#Error: You don\'t have permission to delete subject.';
 		}
 		public function deleteSection(){
 			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'DeleteSection')){
@@ -410,7 +410,47 @@
 				}
 				else echo '#Error: Data not valid.';
 			}
-			else echo '#Error: You dont have permision to delete section.';
+			else echo '#Error: You don\'t have permission to delete section.';
+		}
+		public function deletePost(){
+			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'DeletePost')){
+				
+				$postid = $this->input->post('postid');
+				$em = $this->loader->getEntityManager();
+				$post = $em->find('Post', $postid);
+				
+				if ($post != null)
+				{
+					$post->setDeleted(true);
+					$replies = $em->createQuery('SELECT r FROM Reply r WHERE r.post = :postid')
+					->setParameter('postid', $post->getId())
+					->getResult();
+					foreach($replies as $reply){
+						$reply->setDeleted(true);
+					}
+					$em->flush();
+					echo '<b>Success!</b> You have successfully deleted post!';
+				}
+				else echo '#Error: Data not valid.';
+			}
+			else echo '#Error: You don\'t have permission to delete section.';
+		}
+		public function deleteReply(){
+			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'DeleteReply')){
+				
+				$replyid = $this->input->post('replyid');
+				$em = $this->loader->getEntityManager();
+				$reply = $em->find('Reply', $replyid);
+				
+				if ($reply != null)
+				{
+					$reply->setDeleted(true);
+					$em->flush();
+					echo '<b>Success!</b> You have successfully deleted reply!';
+				}
+				else echo '#Error: Data not valid.';
+			}
+			else echo '#Error: You don\'t have permission to delete reply.';
 		}
 	}
 ?>

@@ -25,6 +25,9 @@
                             <button id="post-release" type="button" class="btn btn-warning btn-sm font-xs"><i class="fa fa-unlock-alt"></i> Release</button>
                             <button id="post-submit-tokens" type="button" class="btn btn-success btn-sm font-xs" onclick="submitTokensPopupFeed.Toggle(0);"><i class="fa fa-money"></i> Submit Tokens</button>
                             <button id="post-review" type="button" class="btn btn-warning btn-sm font-xs" onclick="reviewPopupFeed.Toggle(0);"><i class="fa fa-star"></i> Review</button>
+<?php
+	if ($enableDeleteButton) echo '<button class="btn btn-danger btn-sm font-xs" onclick="deletePost('.$post->getId().')">Delete</button>'; 
+?>
                             <br>
                             <button id="attach" type="button" class="btn btn-info" onclick="$('#attach-files').click();"><i class="fa fa-file-zip-o"></i> Attach file(s)...</button>
                             <input id="attach-files" type="file" style="display: none;" multiple>
