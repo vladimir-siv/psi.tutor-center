@@ -29,7 +29,7 @@
 										</div>
 									'
 								><span class="glyphicon glyphicon-wrench"></span> Tools</button>
-								<a class="btn btn-xs btn-link btn-link-light" href="<?php echo base_url(); ?>Guest/profile?id=<?php echo $actor->getId(); ?>"><span class="glyphicon glyphicon-user"></span> Profile</a>
+								<a class="btn btn-xs btn-link btn-link-light" href="<?php echo base_url(); ?>Guest/profile/<?php echo $actor->getId(); ?>"><span class="glyphicon glyphicon-user"></span> Profile</a>
 								<a class="btn btn-xs btn-link btn-link-light" onclick="logout();"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
 							</div>
 <?php } else { ?>

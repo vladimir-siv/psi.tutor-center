@@ -3,8 +3,23 @@
         <p class="font-times-new-roman" style = "font-size : 50px"><?php echo $actor->getFirstName().' '.$actor->getLastName() ?></p>
 </div>
 <div class = "row">
-     <div class = "col-lg-6 col-md-6 col-sm-12 col-xs-12">
-	<div class = "font-md text-center font-times-new-roman">
+    <div class = "col-lg-6 col-md-6 col-sm-12 col-xs-12">
+		<div class = "text-center font-times-new-roman" style="font-size:20px;">
+				<?php
+				if ($actor->getRawRank() == 2) echo '<h2>About user:</h2>';
+                    else if ($actor->getRawRank() == 3) echo '<h2>About tutor:</h2>';
+                    else if ($actor->getRawRank() == 4) echo '<h2>About moderator:</h2>';
+                    else if ($actor->getRawRank() == 5) echo '<h2>About administrator:</h2>';
+				  if ($actor->getDescription() != null)
+				  {
+					  echo '<p id = "aboutTutor">'.$actor->getDescription().'</p>';
+				  }
+				  else echo '<br/><br/>';
+				if(isset($this->session->actor) && $actor->getId() == $this->session->actor->getId())
+				echo '<center><button class = "btn rounded-md btn-info font-rammetto-one" onclick = "aboutPopupFeed.Toggle(0);">Change</button></center>';
+				?>
+		</div>	
+		<div class = "font-md text-center font-times-new-roman">
                
                 <?php
                     if ($actor->getRawRank() != 2) echo '<h2>Online tutoring section:</h2>';
@@ -16,29 +31,15 @@
                     }
                   }
                   else echo '<br/><br/>';
-                  if ($actor->getRawRank() == 2) echo '<h2>About user:</h2>';
-                    else if ($actor->getRawRank() == 3) echo '<h2>About tutor:</h2>';
-                    else if ($actor->getRawRank() == 4) echo '<h2>About moderator:</h2>';
-                    else if ($actor->getRawRank() == 5) echo '<h2>About administrator:</h2>';
                 ?>
-	 </div>
-        <div class = "text-justify font-times-new-roman">
+		</div>		   
+    </div>
+    <div class = "col-lg-6 col-md-6 col-sm-12 col-xs-12 font-times-new-roman text-center" style = "font-size: 25px">
             <?php
-              if ($actor->getDescription() != null)
-              {
-                  echo '<p id = "aboutTutor">'.$actor->getDescription().'</p>';
-              }
-              else echo '<br/><br/>';
-            ?>
-            <center><button class = "btn rounded-md btn-info font-rammetto-one" onclick = "aboutPopupFeed.Toggle(0);">Change</button></center>
-        </div>					   
-        </div>
-      <div class = "col-lg-6 col-md-6 col-sm-12 col-xs-12 font-times-new-roman text-center" style = "font-size: 25px">
-            <?php
-               if ($actor->getRawRank() == Rank::User) echo '<h2>About user:</h2>';
-                else if ($actor->getRawRank() == Rank::Tutor) echo '<h2>About tutor:</h2>';
-                else if ($actor->getRawRank() == Rank::Moderator) echo '<h2>About moderator:</h2>';
-                else if ($actor->getRawRank() == Rank::Administrator) echo '<h2>About administrator:</h2>';
+               if ($actor->getRawRank() == Rank::User) echo '<h2>User details:</h2>';
+                else if ($actor->getRawRank() == Rank::Tutor) echo '<h2>Tutor details:</h2>';
+                else if ($actor->getRawRank() == Rank::Moderator) echo '<h2>Moderator details:</h2>';
+                else if ($actor->getRawRank() == Rank::Administrator) echo '<h2>Administrator details:</h2>';
             ?>
             <table class = "table table-hover text-center font-times-new-roman " >
                <tr>
@@ -79,7 +80,10 @@
                     ?>
 
             </table>
-            <center><button class = "btn rounded-md btn-info font-rammetto-one" onclick = "detailsPopupFeed.Toggle(0);">Change</button></center>
+            <?php
+            if(isset($this->session->actor) && $actor->getId()==$this->session->actor->getId())
+            echo '<center><button class = "btn rounded-md btn-info font-rammetto-one" onclick = "detailsPopupFeed.Toggle(0);">Change</button></center>';
+            ?>
        </div>					   
 </div>    
 <div id = "tutor-review" class = "row">
