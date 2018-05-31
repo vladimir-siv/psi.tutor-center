@@ -351,6 +351,7 @@ function deleteSubject(subjectid){
 		}
 		alertPopupFeed.content = Alert.New("success", response, true, "modal");
 		alertPopupFeed.Toggle(0);
+                window.location.href = "Guest/index";
     });
 }
 
@@ -372,6 +373,7 @@ function deleteSection(sectionid){
 		}
 		alertPopupFeed.content = Alert.New("success", response, true, "modal");
 		alertPopupFeed.Toggle(0);
+                window.location.href = "Guest/index";
     });
 }
 
