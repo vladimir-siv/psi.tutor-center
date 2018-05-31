@@ -56,7 +56,7 @@
 <?php 
     foreach($sections as $section)
     {
-        echo '<a href="section.php?id='. $section->getId() . '" class="hover-text-decor-none bg-lightblue padding-left-xs padding-right-xs"><span class="bg-secondary">'. $section->getName().'</span></a>&nbsp;';
+        echo '<a href="'.base_url().'User/section/'. $section->getId() . '" class="hover-text-decor-none bg-lightblue padding-left-xs padding-right-xs"><span class="bg-secondary">'. $section->getName().'</span></a>&nbsp;';
     }
 ?>
                     </div>

@@ -230,6 +230,26 @@
 			$workpostsCount = $query->getSingleScalarResult();
 			$degree = $workpostsCount;
 			$this->loader->loadPage('profile.php', array('actor' => $actor, 'sections' => $sections, 'avg' => $avg, 'reviews' => $reviews, 'degree' => $degree), 'Profile', -1, array('assets/js/profile.js'));
+		}
+		public function promotions()
+		{
+			$em = $this->loader->getEntityManager();
+			$promotionrequests = $em->createQuery('SELECT pr FROM PromotionRequest pr')
+						->getResult();
+			$actors = array();
+			foreach($promotionrequests as $promotionrequest){
+				$actors[$promotionrequest->getActor()] = $em->find('Actor', $promotionrequest->getActor());
+			}
+			$this->loader->loadPage('promotions.php', array('promotionrequests' => $promotionrequests, 'actors' => $actors), 'PromotionRequests', -1, null);
+		}
+		public function request($reqid)
+		{
+			$em = $this->loader->getEntityManager();
+			$promotionrequest = $em->find('PromotionRequest', $reqid);
+			if($promotionrequest!=null){
+				$actor = $em->find('Actor', $promotionrequest->getActor());
+				$this->loader->loadPage('request.php', array('promotionrequest' => $promotionrequest, 'actor' => $actor), 'PromotionRequest', -1, null);
+			}
 		} 
 	}
 ?>

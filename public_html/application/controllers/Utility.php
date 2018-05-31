@@ -496,5 +496,39 @@
 			}
 			else echo '#Error: You don\'t have permission to delete reply.';
 		}
+		public function acceptPromotion(){
+			if (isset($this->session->actor) && $this->session->actor->getRawRank()==5){
+				
+				$reqid = $this->input->post('reqid');
+				$em = $this->loader->getEntityManager();
+				$promotionrequest = $em->find('PromotionRequest', $reqid);
+				
+				if ($promotionrequest != null)
+				{
+					$promotionrequest->setAccepted(1);
+					$em->flush();
+					echo '<b>Success!</b> You have successfully accepted promotion request!';
+				}
+				else echo '#Error: Data not valid.';
+			}
+			else echo '#Error: You don\'t have permission to accept promotion request.';
+		}
+		public function rejectPromotion(){
+			if (isset($this->session->actor) && $this->session->actor->getRawRank()==5){
+				
+				$reqid = $this->input->post('reqid');
+				$em = $this->loader->getEntityManager();
+				$promotionrequest = $em->find('PromotionRequest', $reqid);
+				
+				if ($promotionrequest != null)
+				{
+					$promotionrequest->setAccepted(0);
+					$em->flush();
+					echo '<b>Success!</b> You have successfully rejected promotion request!';
+				}
+				else echo '#Error: Data not valid.';
+			}
+			else echo '#Error: You don\'t have permission to rejected promotion request.';
+		}
 	}
 ?>

@@ -419,6 +419,50 @@ function deleteReply(replyid){
     });
 }
 
+function acceptPromotion(reqid){
+	$.ajax
+    ({
+		url: "http://" + window.location.host + "/Utility/acceptPromotion",
+		method: "POST",
+		data: { reqid: reqid},
+		dataType: "html"
+    })
+	.done(function(response) 
+    {
+		if (response.startsWith("#Error: "))
+		{
+			alertPopupFeed.content = Alert.New("danger", response.substring(8), true, "modal");
+			alertPopupFeed.Toggle(0);
+			return;
+		}
+		alertPopupFeed.content = Alert.New("success", response, true, "modal");
+		alertPopupFeed.Toggle(0);
+		window.location.reload();
+    });
+}
+
+function rejectPromotion(reqid){
+	$.ajax
+    ({
+		url: "http://" + window.location.host + "/Utility/rejectPromotion",
+		method: "POST",
+		data: { reqid: reqid},
+		dataType: "html"
+    })
+	.done(function(response) 
+    {
+		if (response.startsWith("#Error: "))
+		{
+			alertPopupFeed.content = Alert.New("danger", response.substring(8), true, "modal");
+			alertPopupFeed.Toggle(0);
+			return;
+		}
+		alertPopupFeed.content = Alert.New("success", response, true, "modal");
+		alertPopupFeed.Toggle(0);
+		window.location.reload();
+    });
+}
+
 function sendMail(name, email, subject, message)
 {
 	alertPopupFeed.content = Alert.New("success", "<b>Success!</b> Mail has been sent. Thank you!", true, "modal");
