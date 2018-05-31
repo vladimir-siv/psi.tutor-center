@@ -27,6 +27,7 @@
                   {
                     foreach($sections as $section)
                     {
+                       if ($section->getDeleted() == 0)
                        echo '<a href = "'.base_url().'Guest\section\\'.$section->getId().'" class = "btn rounded-md btn-info font-rammetto-one">'.$section->getName().'</a>&nbsp;&nbsp;';  
                     }
                   }

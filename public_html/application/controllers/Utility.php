@@ -142,6 +142,22 @@
 					$name = $this->input->post('name');
 					$description = $this->input->post('description');
 					
+                                        $subjects = Subject::findByName($name);
+                                        if (count($subjects) == 1)
+                                        {
+                                            if ($subjects[0]->getDeleted() != 1) 
+                                            {
+                                                echo '#Error: Subject with this name exist\'s!';
+                                                return;
+                                            }
+                                            $em = $this->loader->getEntityManager();
+                                            $subjects[0]->setDeleted(0);
+                                            $subjects[0]->setDescription($description);
+                                            $em->flush();
+                                            echo 'Success!';
+                                            return;
+                                        }
+                                        
 					$subject = Subject::New
 					(
 						$name,
@@ -192,12 +208,22 @@
                                         }
                                         if (count($subjects) != 1)
                                         {
-                                            echo '#Error: More then oone subject with that name exist!';
+                                            echo '#Error: More then one subject with that name exist!';
                                             return;
                                         }
-                                        if (count(Section::findByName($name)) != 0)
+                                        $sections = Section::findByName($name);
+                                        if (count($sections) == 1)
                                         {
-                                            echo '#Error: Section with this name exist!';
+                                             if ($sections[0]->getDeleted() != 1 || $sections[0]->getSubject() != $subjects[0]->getId()) 
+                                            {
+                                                echo '#Error: Section with this name exist\'s!';
+                                                return;
+                                            }
+                                            $em = $this->loader->getEntityManager();
+                                            $sections[0]->setDeleted(0);
+                                            $sections[0]->setDescription($description);
+                                            $em->flush();
+                                            echo 'Success!';
                                             return;
                                         }
                                         

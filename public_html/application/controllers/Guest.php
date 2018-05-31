@@ -188,7 +188,7 @@
 			$repliesvms = $this->load->view('templates/generate-replies.php', array('op' => $post->getOriginalPosterReference(), 'replies' => $replies, 'replyposter' => $replyposter, 'replyaccepted' => $replyaccepted, 'sections' => $sections, 'enableDeleteButton' => $enableDeleteButton), true);
 			$enableDeleteButton = false;
 			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'DeletePost')) $enableDeleteButton = true;	
-			$this->loader->loadPage('post.php', array('post' => $post,'actor' => $this->session->actor, 'enableDeleteButton' => $enableDeleteButton), 'Post', -1, array('assets/js/posts.js'), $repliesvms);
+			$this->loader->loadPage('post.php', array('post' => $post,'actor' => $this->session->actor, 'enableDeleteButton' => $enableDeleteButton), 'Post', -1, array('assets/js/posts.js', 'assets/js/reviews.js'), $repliesvms);
 		}
                 
 		public function profile($id)

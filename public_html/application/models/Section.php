@@ -32,7 +32,7 @@ class Section extends Proxy
 	 */
 	public static function searchSubjectSection($subject, $section, $format = null)
 	{
-		$sections = self::$_em->createQuery('SELECT sc FROM Section sc WHERE sc.subject in (SELECT sb.id FROM Subject sb WHERE sb.name LIKE :subject) AND sc.name LIKE :section')
+		$sections = self::$_em->createQuery('SELECT sc FROM Section sc WHERE sc.subject in (SELECT sb.id FROM Subject sb WHERE sb.name LIKE :subject AND sb.deleted = 0) AND sc.name LIKE :section AND sc.deleted = 0')
 						->setParameter('subject', '%'.$subject.'%')
 						->setParameter('section', '%'.$section.'%')
 						->getResult();
