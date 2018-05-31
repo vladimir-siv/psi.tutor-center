@@ -23,6 +23,7 @@
 			$this->loader->loadPage('index.php', null, 'Home Page', 0);
 		}
 		
+               
                 /*
                  * subjects() - dohvata sve predmete i salje ih stranici subjects.php
                  * koju i otvara
@@ -33,6 +34,18 @@
 			$this->loader->loadPage('subjects.php', array('subjects' => $subjects), 'Subjects', 1);
 		}
 		
+                public function users()
+                {
+                        $qb = $this->loader->getEntityManager()->createQueryBuilder();
+			$qb->select('a')->from('Actor', 'a')->where('a.actorrank = 2');
+			$query = $qb->getQuery();
+			$users = $query->getResult();
+
+			$usersvms = $this->load->view('templates/generate-users.php', array('users' => $users), true);
+			$this->loader->loadPage('users.php', null, 'Users', 5, array('assets/js/users.js'), $usersvms);
+                }
+                
+                
                 /*
                  *  tutors() - dohvata sve tutore i broj domacih koji su oni uradili i 
                  *  salje ih stranici subjects.php koju i otvara

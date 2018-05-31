@@ -104,7 +104,7 @@
 			
 			if ($actor === null)
 			{
-				echo '#Error: Username or password is not valid!';
+				echo '#Error: Username or password is not valid or you are banned!';
 				return;
 			}
 			
@@ -530,5 +530,36 @@
 			}
 			else echo '#Error: You don\'t have permission to rejected promotion request.';
 		}
+		
+		public function banUser()
+                {
+                      if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'BanUser'))
+                      {
+                          	$em = $this->loader->getEntityManager();
+                                $user = $em->createQuery('SELECT a FROM Actor a WHERE a.id = :id')
+                                ->setParameter('id', $this->input->post('id'))
+                                ->getSingleResult();
+                                $user->setBanned(1);
+                                $em->flush();
+                                echo 'Success!';
+                      }
+                      else echo '#Error: Error!';
+                }
+                
+                public function unbanUser()
+                {
+                      if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'BanUser'))
+                      {
+                          	$em = $this->loader->getEntityManager();
+                                $user = $em->createQuery('SELECT a FROM Actor a WHERE a.id = :id')
+                                ->setParameter('id', $this->input->post('id'))
+                                ->getSingleResult();
+                                $user->setBanned(0);
+                                $em->flush();
+                                echo 'Success!';
+                      }
+                      else echo '#Error: Error!';
+                }
+
 	}
 ?>

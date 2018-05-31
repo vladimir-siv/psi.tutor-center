@@ -22,7 +22,8 @@ class Actor extends Proxy
 		$actors = parent::$_em->getRepository(Actor::class)->findBy(array
 		(
 			'username' => $username,
-			'password' => MD5($password)
+			'password' => MD5($password),
+                        'banned' => 0
 		));
 		
 		if ($actors == NULL || count($actors) > 1) return NULL;
