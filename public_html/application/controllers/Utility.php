@@ -451,5 +451,24 @@
 			}
 			else echo '#Error: You don\'t have permission to delete reply.';
 		}
+		public function createReply(){
+			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'Reply')){
+				$replymsg = $this->input->post('replymsg');
+				$postid = $this->input->post('postid');
+				$replierid = $this->input->post('replierid');
+				$reply = array
+				(
+					'message' => $replymsg,
+					'postedon' => new \DateTime('now'),
+					'deleted' => 0,
+					'post' => $postid,
+					'actor' => $replierid
+				);
+				$replies = array($reply);
+				$this->loader->insertReplies($replies);
+				echo 'You have successfuly replied to post.';
+			}
+			else echo '#Error: You don\'t have permission to delete reply.';
+		}
 	}
 ?>

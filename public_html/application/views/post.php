@@ -92,7 +92,7 @@
                             </div>
                             <div class="col-lg-10 col-md-10 col-sm-8 col-xs-4">
                                 <div class="border-boxed expanded solid-border border-xs border-gray no-border-left no-border-right rounded-xs padding-xs" style="line-height: 0;">
-                                    <textarea class="border-boxed expanded padding-xs" style="line-height: 20px; height: 100px; resize: none;" onkeydown="return onReplyKeydown(this, event);"></textarea>
+                                    <textarea class="border-boxed expanded padding-xs" style="line-height: 20px; height: 100px; resize: none;" onkeydown="<?php echo 'onReplyKeydown(this, event, '.$post->getId().', '.$this->session->actor->getId().')'; ?>"></textarea>
                                 </div>
                             </div>
                             <div class="col-lg-1 col-md-1 col-sm-2 col-xs-4 text-left">

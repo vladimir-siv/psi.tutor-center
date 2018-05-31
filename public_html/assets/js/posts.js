@@ -135,16 +135,30 @@ function remove(id)
 	alert("removing " + id + "...");
 }
 
-function onReplyKeydown(sender, e)
+function onReplyKeydown(sender, e, postid, replierid)
 {
 	if (!e.shiftKey && (e.keyCode == 13 || e.which == 13))
 	{
-		alert(sender.value);
-		return false;
+		$.ajax
+		({
+			url: "http://" + window.location.host + "/Utility/createReply",
+			method: "POST",
+			data: { replymsg: sender.value, postid: postid, replierid: replierid},
+			dataType: "html"
+		})
+		.done(function(response) 
+		{
+			if (response.startsWith("#Error: "))
+			{
+				alertPopupFeed.content = Alert.New("danger", response.substring(8), true, "modal");
+				alertPopupFeed.Toggle(0);
+				return;
+			}
+			alertPopupFeed.content = Alert.New("success", response, true, "modal");
+			alertPopupFeed.Toggle(0);
+			window.location.reload();
+		});
 	}
-	
-	//if (sender.value.length >= 10) return false;
-	return true;
 }
 
 function submit(popupid, tokens)
