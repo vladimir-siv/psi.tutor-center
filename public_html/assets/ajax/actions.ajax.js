@@ -351,7 +351,7 @@ function deleteSubject(subjectid){
 		}
 		alertPopupFeed.content = Alert.New("success", response, true, "modal");
 		alertPopupFeed.Toggle(0);
-                window.location.href = "Guest/index";
+                window.location.href = "http://" + window.location.host + "/Guest/index";
     });
 }
 
@@ -373,7 +373,7 @@ function deleteSection(sectionid){
 		}
 		alertPopupFeed.content = Alert.New("success", response, true, "modal");
 		alertPopupFeed.Toggle(0);
-                window.location.href = "Guest/index";
+                window.location.href = "http://" + window.location.host + "/Guest/index";
     });
 }
 
@@ -399,7 +399,7 @@ function deletePost(postid){
 }
 
 function deleteReply(replyid){
-	$.ajax
+    $.ajax
     ({
 		url: "http://" + window.location.host + "/Utility/deleteReply",
 		method: "POST",
@@ -423,4 +423,50 @@ function sendMail(name, email, subject, message)
 {
 	alertPopupFeed.content = Alert.New("success", "<b>Success!</b> Mail has been sent. Thank you!", true, "modal");
 	alertPopupFeed.Toggle(0);
+}
+
+function banUser(id)
+{
+   $.ajax
+    ({
+		url: "http://" + window.location.host + "/Utility/banUser",
+		method: "POST",
+		data: { id : id },
+		dataType: "html"
+    })
+	.done(function(response) 
+    {
+		if (response.startsWith("#Error: "))
+		{
+			alertPopupFeed.content = Alert.New("danger", response.substring(8), true, "modal");
+			alertPopupFeed.Toggle(0);
+			return;
+		}
+		alertPopupFeed.content = Alert.New("success", response, true, "modal");
+		alertPopupFeed.Toggle(0);
+                window.location.reload();
+    });
+}
+
+function unbanUser(id)
+{
+   $.ajax
+    ({
+		url: "http://" + window.location.host + "/Utility/unbanUser",
+		method: "POST",
+		data: { id : id },
+		dataType: "html"
+    })
+	.done(function(response) 
+    {
+		if (response.startsWith("#Error: "))
+		{
+			alertPopupFeed.content = Alert.New("danger", response.substring(8), true, "modal");
+			alertPopupFeed.Toggle(0);
+			return;
+		}
+		alertPopupFeed.content = Alert.New("success", response, true, "modal");
+		alertPopupFeed.Toggle(0);
+                window.location.reload();
+    });
 }

@@ -87,6 +87,23 @@
             ?>
        </div>					   
 </div>    
+<div id ="ban" class ="row">
+    <div class ="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <?php
+           if (isset($this->session->actor) && $this->session->actor->getRawRank() == Rank::Administrator && $actor->getRawRank() != Rank::Administrator)
+           {
+              if ($actor->getBanned() == 0)
+              {
+                echo '<center><button class ="btn rounded-md btn-danger font-rammetto-one" onclick = "banUser('.$actor->getId().')">BAN USER</button></center>';
+              }
+              else 
+              {
+                  echo '<center><button class ="btn rounded-md btn-info font-rammetto-one" onclick = "unbanUser('.$actor->getId().')">UNBAN USER</button></center>';
+              }
+           }
+        ?>
+    </div>
+</div>
 <div id = "tutor-review" class = "row">
     <div class = "col-lg-12 col-md-12 col-sm-12 col-xs-12">
            <table class = "table table-bordered table-striped table-dark">
