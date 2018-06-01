@@ -502,10 +502,11 @@
 				$reqid = $this->input->post('reqid');
 				$em = $this->loader->getEntityManager();
 				$promotionrequest = $em->find('PromotionRequest', $reqid);
-				
+				$actor = $em->find('Actor', $promotionrequest->getActor());
 				if ($promotionrequest != null)
 				{
 					$promotionrequest->setAccepted(1);
+					$actor->setActorRank($actor->getActorRank()+1);
 					$em->flush();
 					echo '<b>Success!</b> You have successfully accepted promotion request!';
 				}

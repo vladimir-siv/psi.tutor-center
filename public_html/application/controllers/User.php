@@ -31,12 +31,26 @@
 				$description = $this->input->post('description');
 				if ($this->form_validation->run())
 				{
+                    $em = $this->loader->getEntityManager();
+                    if($this->session->actor->getRawRank()==Rank::Administrator)
+                    {
+                        echo '#Error: You have already acquired maximum rank.';
+                        return;
+                    }
+                    $existing_request = $em->createQuery('SELECT pr FROM PromotionRequest pr WHERE pr.actor = :actorid AND pr.accepted IS NULL')
+                            ->setParameter('actorid', $this->session->actor->getId())
+                            ->getResult();
+                    if($existing_request != null)
+                    {
+                        echo '#Error: You have already posted request which is awaiting review.';
+                        return;
+                    }
 					$request = array
 					(
 					'title' => $position,
 					'description' => $description,
 					'submittedon' => new \DateTime('now'),
-					'accepted' => 0,
+					'accepted' => null,
 					'actor' => $this->session->actor->getId()
 					);
 					$this->loader->insertPromotionRequests(array($request));
