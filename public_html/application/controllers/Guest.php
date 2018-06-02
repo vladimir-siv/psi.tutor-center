@@ -263,6 +263,17 @@
 				$actor = $em->find('Actor', $promotionrequest->getActor());
 				$this->loader->loadPage('request.php', array('promotionrequest' => $promotionrequest, 'actor' => $actor), 'PromotionRequest', -1, null);
 			}
+		}
+		public function posts()
+		{
+			$em = $this->loader->getEntityManager();
+			$posts = $em->createQuery('SELECT p FROM Post p WHERE p.deleted = 0 ORDER BY p.postedon DESC')
+						->getResult();
+			foreach($posts as $post){
+				$actors[$post->getId()] = $em->find('Actor', $post->getOriginalposter());
+			}
+			$postsvms = $this->load->view('templates/generate-posts.php', array('posts' => $posts, 'actors' => $actors), true);
+			$this->loader->loadPage('posts.php', null, 'Posts', -1, array('assets/js/partialpost.js'), $postsvms);
 		} 
 	}
 ?>

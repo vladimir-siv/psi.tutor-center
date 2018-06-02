@@ -82,7 +82,7 @@ class WorkPost extends Proxy
 	{
 		$workpost = parent::$_em->createQuery('SELECT w from Workpost w WHERE w.id = :postid')
 					->setParameter('postid', $post->getId())
-					->getResult();
+					->getSingleResult();
 		
 		return $workpost->getDescription();
     }
