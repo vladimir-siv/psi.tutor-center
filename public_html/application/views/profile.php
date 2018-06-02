@@ -1,6 +1,21 @@
 <div class="jumbotron no-padding-bottom text-center text-secondary" style = "background-color:inherit">
-        <img class="rounded-oval" src="<?php echo base_url().'assets\storage\users\\'.$actor->getId().'\avatar.png'; ?>" width="120" height="120"/>
-        <p class="font-times-new-roman" style = "font-size : 50px"><?php echo $actor->getFirstName().' '.$actor->getLastName() ?></p>
+<?php if (isset($this->session->actor) && $actor->getId() === $this->session->actor->getId()) { ?>
+		<img class="rounded-oval" src="<?php echo base_url().'assets/storage/users/'.$actor->getId().'/avatar.png'; ?>" width="120" height="120" onclick="$('#attach-profile-pic').click();"/>
+		<input id="attach-profile-pic" type="file" style="display: none;">
+		<script type="text/javascript">
+			$("#attach-profile-pic").change(function(event)
+			{
+				var files = [];
+				$.each($("input#attach-profile-pic").prop("files"), function(index, file) { files.push(file); });
+				
+				if (files.length === 1) changeProfilePic(files[0]);
+				//else Alert.New("You must select one file");
+			});
+		</script>
+<?php } else { ?>
+		<img class="rounded-oval" src="<?php echo base_url().'assets/storage/users/'.$actor->getId().'/avatar.png'; ?>" width="120" height="120"/>
+<?php } ?>
+		<p class="font-times-new-roman" style = "font-size : 50px"><?php echo $actor->getFirstName().' '.$actor->getLastName() ?></p>
 </div>
 <div class = "row">
     <div class = "col-lg-6 col-md-6 col-sm-12 col-xs-12">

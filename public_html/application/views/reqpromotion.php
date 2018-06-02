@@ -26,9 +26,9 @@
                     });
                 </script>
                 <div>
-                <input id="sendreq" type="button" class="form-control font-times-new-roman" name="sendreq" value="Send!" onclick="sendRequest($('#promo-form #position')[0].value, $('#promo-form #description')[0].value);">
+					<input id="sendreq" type="button" class="form-control font-times-new-roman" name="sendreq" value="Send!" onclick="sendRequest($('#promo-form #position')[0].value, $('#promo-form #description')[0].value);">
                 </div>
-                </form>
+			</form>
         </div>
     </div>
 </section>

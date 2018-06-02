@@ -511,6 +511,48 @@ function unbanUser(id)
 		}
 		alertPopupFeed.content = Alert.New("success", response, true, "modal");
 		alertPopupFeed.Toggle(0);
-                window.location.reload();
+		window.location.reload();
     });
+}
+
+function changeProfilePic(pic)
+{
+	var postData = new FormData();
+	
+	postData.append('+profile-pic', pic, pic.name);
+	
+	$.ajax
+	({
+		url: "http://" + window.location.host + "/User/changeProfilePic",
+		method: "POST",
+		data: postData,
+		processData: false,
+		contentType: false,
+		dataType: "html"
+	})
+	.done(function(response)
+	{
+		if (response.startsWith("#Error: "))
+		{
+			var success = new AlertPopupFeed(Alert.New("danger", response.substring(8), true, "modal"));
+			success.Subscribe(alertPopup);
+			success.Show(0);
+		}
+		else
+		{
+			var type = "success";
+			
+			if (response.startsWith("#Warning: "))
+			{
+				type = "warning";
+				response = response.substring(10);
+			}
+			
+			var success = new AlertPopupFeed(Alert.New(type, response, true, "modal"));
+			success.Subscribe(alertPopup);
+			success.Show(0);
+			
+			if (type === "success") window.location.reload(true);
+		}
+	});
 }
