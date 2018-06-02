@@ -324,9 +324,46 @@
 				
 				if ($this->form_validation->run())
 				{
-					// Create post here
-					$postid = 1;
+					$em = $this->loader->getEntityManager();
+					$sections = array();
+					$post = null;
+					$sectionidarray = explode(",", $this->input->post('section'));
+					foreach($sectionidarray as $sectionid){
+						$section = $em->find('Section', $sectionid);
+						$sections[] = $section;
+					}
+					if($this->input->post('post-type')==='QA')
+					{
+						$post = array
+						(
+						'type' => 'qapost',
+						'title' => $this->input->post('post-title'),
+						'postedon' => new \DateTime('now'),
+						'originalposter' => $this->session->actor->getId(),
+						'description' => $this->input->post('post-description'),
+						'acceptedanswer' => null,
+						'postsections' => $sections
+						);
+					}
+					else if($this->input->post('post-type')==='Work')
+					{
+						$post = array
+						(
+						'type' => 'workpost',
+						'title' => $this->input->post('post-title'),
+						'postedon' => new \DateTime('now'),
+						'originalposter' => $this->session->actor->getId(),
+						'description' => $this->input->post('post-description'),
+						'worker' => null,
+						'comittedtokens' => 0,
+						'workeraccepted' => 0,
+						'postsections' => $sections
+						);
+					}
 					
+					$posts = array($post);
+					$insertedpost = $this->loader->insertPosts($posts);
+					$postid = $insertedpost[0][0]->getId();
 					$this->load->helper(array('form', 'url'));
 					$this->load->library('upload', array
 					(
@@ -334,7 +371,9 @@
 						'allowed_types'	=> 'txt|doc|docx|pdf|jpg|png',
 						'max_size'		=> 102400
 					));
-					
+
+					if(!is_dir(FCPATH.'assets/storage/posts/'.$postid.'/')) mkdir(FCPATH.'assets/storage/posts/'.$postid.'/', 0777, TRUE);
+
 					$uploadedall = true;
 					
 					foreach ($_FILES as $id => $file)
