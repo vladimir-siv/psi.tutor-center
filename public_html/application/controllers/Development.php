@@ -117,6 +117,7 @@
 			(
 				'type' => 'workpost',
 				'title' => 'SampleTitleWorkpost',
+				'postedon' => new \DateTime('now'),
 				'originalposter' => 3,
 				'description' => 'SampleDescriptionWorkpost',
 				'worker' => 1,

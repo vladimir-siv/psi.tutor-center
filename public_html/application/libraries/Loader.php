@@ -390,6 +390,7 @@
 		 */
 		public function insertPosts($posts)
 		{
+			$insertedposts = array();
 			foreach ($posts as $post)
 			{
 				$currentpost = Post::New($post['title'], $post['postedon'], $post['originalposter'], '1', '0');
@@ -400,12 +401,14 @@
 					$qapost = Qapost::New($post['description'], $currentpost->getId(), $post['acceptedanswer']);
 					$this->em->persist($qapost);
 					$this->em->flush();
+					$insertedposts[] = array($currentpost, $qapost);
 				}
 				else if($post['type']==='workpost')
 				{
 					$workpost = Workpost::New($post['description'], $post['comittedtokens'], $post['workeraccepted'], $currentpost->getId(), $post['worker']);
 					$this->em->persist($workpost);
 					$this->em->flush();
+					$insertedposts[] = array($currentpost, $workpost);
 				}
 				foreach($post['postsections'] as $section)
 				{
@@ -414,6 +417,7 @@
 					$this->em->flush();
 				}
 			}
+			return $insertedposts;
 		}
 
 		/*
