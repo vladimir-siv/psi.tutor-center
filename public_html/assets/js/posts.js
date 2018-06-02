@@ -91,11 +91,11 @@ class SubmitTokensPopupFeed extends PopupFeed
 			"</div>";
 	}
 	Footer()
-	{
+	{ 
 		return "" +
 			"<div class=\"row\">" +
 				"<div class=\"col-lg-2 col-md-2 col-sm-2 col-xs-4\">" +
-					"<button type=\"button\" class=\"btn btn-primary btn-sm btn-block\" onclick=\"" + this.callback + "('" + this.popups[this.current].id + "', $('#" + this.popups[this.current].id + " #submit-amount')[0].value);\">Submit</button>" +
+					"<button type=\"button\" class=\"btn btn-primary btn-sm btn-block\" onclick=\"" + this.callback + "('" + this.popups[this.current].id + "', " + this.postID +", $('#" + this.popups[this.current].id + " #submit-amount')[0].value);\">Submit</button>" +
 				"</div>" +
 				"<div class=\"col-lg-8 col-md-8 col-sm-8 col-xs-4\"></div>" +
 				"<div class=\"col-lg-2 col-md-2 col-sm-2 col-xs-4\">" +
@@ -107,6 +107,11 @@ class SubmitTokensPopupFeed extends PopupFeed
 	{
 		return "";
 	}
+        
+        setPostID(id)
+        {
+            this.postID = id;
+        }
 }
 
 var replies, isActorOP, isActorModerator, acceptedAnswer; // injected by server
@@ -161,9 +166,32 @@ function onReplyKeydown(sender, e, postid, replierid)
 	}
 }
 
-function submit(popupid, tokens)
+function submit(popupid, postID, tokens)
 {
-	$("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> Invalid number of tokens [\"" + tokens + "\"]."));
+    $("#" + popupid + "-popup-info").html("");
+    if (tokens == "")
+    {
+        $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter tokens!"));
+        return;
+    }
+    $.ajax
+    ({
+		url: "http://" + window.location.host + "/Utility/submitTokensToWorkPost",
+		method: "POST",
+		data: { tokens : tokens, postid : postID },
+		dataType: "html"
+    })
+	.done(function(response) 
+    {
+		if (response.startsWith("#Error: "))
+		{
+			$("#" + popupid + "-popup-info").append(Alert.New("danger", response.substring(8), true));
+			return;
+		}
+		
+		$("#" + popupid + "-popup-info").append(Alert.New("success", response, true));
+		window.location.reload();
+    });
 }
 
 function post(type)

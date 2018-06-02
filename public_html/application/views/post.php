@@ -23,8 +23,8 @@
                         <div id="post-controls" class="border-boxed expanded">
                             <button id="post-lock" type="button" class="btn btn-primary btn-sm font-xs"><i class="fa fa-key"></i> Lock</button>
                             <button id="post-release" type="button" class="btn btn-warning btn-sm font-xs"><i class="fa fa-unlock-alt"></i> Release</button>
-                            <button id="post-submit-tokens" type="button" class="btn btn-success btn-sm font-xs" onclick="submitTokensPopupFeed.Toggle(0);"><i class="fa fa-money"></i> Submit Tokens</button>
-                            <button id="post-review" type="button" class="btn btn-warning btn-sm font-xs" onclick="reviewPopupFeed.Toggle(0);"><i class="fa fa-star"></i> Review</button>
+                            <button id="post-submit-tokens" type="button" class="btn btn-success btn-sm font-xs" onclick="submitTokensPopupFeed.setPostID(<?php echo $post->getId(); ?>);submitTokensPopupFeed.Toggle(0);"><i class="fa fa-money"></i> Submit Tokens</button>
+                            <button id="post-review" type="button" class="btn btn-warning btn-sm font-xs" onclick="reviewPopupFeed.setPostID(<?php echo $post->getId(); ?>);reviewPopupFeed.Toggle(0);"><i class="fa fa-star"></i> Review</button>
 <?php
 	if ($enableDeleteButton) echo '<button class="btn btn-danger btn-sm font-xs" onclick="deletePost('.$post->getId().')">Delete</button>'; 
 ?>

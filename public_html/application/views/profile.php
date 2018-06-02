@@ -86,7 +86,8 @@
                          echo '<tr>';
                          echo '<td>Degree:</td>';
                          echo '<td>';
-                         for($count = 0; $count < $avg - 1; $count++)
+                         
+                         for($count = 0; $count <= $avg - 1; $count++)
                          { 
                              echo '<span class="glyphicon glyphicon-star text-warning"></span>';
                          }							
@@ -124,12 +125,12 @@
            <table class = "table table-bordered table-striped table-dark">
                  <?php 
                  if ($reviews == null) echo '<br/><br/>';
+                 echo '<h2>Tutor-review:</h2>';
                  foreach($reviews as $review)
                  {
-                     echo '<h2>Tutor-review:</h2>';
                      echo '<tr>';
                      echo '<td style = "width:15%">Degree:<br/>';
-                     for($count = 0; $count < $review->getGrade() - 1; $count++)
+                     for($count = 0; $count <= $review->getGrade() - 1; $count++)
                      { 
                         echo '<span class="glyphicon glyphicon-star text-warning"></span>';
                      }
