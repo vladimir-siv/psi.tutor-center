@@ -391,7 +391,7 @@
 						'originalposter' => $this->session->actor->getId(),
 						'description' => $this->input->post('post-description'),
 						'worker' => null,
-						'comittedtokens' => 0,
+						'comittedtokens' => null,
 						'workeraccepted' => 0,
 						'postsections' => $sections
 						);

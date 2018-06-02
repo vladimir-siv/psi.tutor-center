@@ -274,7 +274,7 @@
 				$actors[$post->getId()] = $em->find('Actor', $post->getOriginalposter());
 			}
 			$postsvms = $this->load->view('templates/generate-posts.php', array('posts' => $posts, 'actors' => $actors), true);
-			$this->loader->loadPage('posts.php', null, 'Posts', -1, array('assets/js/partialpost.js'), $postsvms);
+			$this->loader->loadPage('posts.php', null, 'Posts', 7, array('assets/js/partialpost.js'), $postsvms);
 		} 
 	}
 ?>

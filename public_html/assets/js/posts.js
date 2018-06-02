@@ -249,9 +249,9 @@ function lockWorkPost(postid)
 {
 	$.ajax
 	({
-		url: "http://" + window.location.host + "/Utility/lockPost",
+		url: "http://" + window.location.host + "/Utility/lockWorkPost",
 		method: "POST",
-		data: { postid : postid }
+		data: { postid : postid },
 		dataType: "html"
 	})
 	.done(function(response)
@@ -283,9 +283,9 @@ function releaseWorkPost(postid)
 {
 	$.ajax
 	({
-		url: "http://" + window.location.host + "/Utility/releasePost",
+		url: "http://" + window.location.host + "/Utility/releaseWorkPost",
 		method: "POST",
-		data: { postid : postid }
+		data: { postid : postid },
 		dataType: "html"
 	})
 	.done(function(response)

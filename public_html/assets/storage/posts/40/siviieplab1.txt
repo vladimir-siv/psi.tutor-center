@@ -1,0 +1,98 @@
+public ActionResult Test()
+		{
+			using (var context = new ShopDB())
+			{
+				var query =
+					from customer in context.Customer
+					join joined in
+						from orderitem in context.OrderItem.Include(o => o.Order)
+						group orderitem by new { orderitem.Order.Id, orderitem.Order.CustomerId } into groupres
+						select new { Id = groupres.Key.Id, CustomerId = groupres.Key.CustomerId, TotalPrice = groupres.Sum(o => o.UnitPrice * o.Quantity), TotalProducts = groupres.Sum(o => o.Quantity) }
+					on customer.Id equals joined.CustomerId
+					group joined by new { customer.Id, customer.FirstName, customer.LastName } into groupres
+					orderby groupres.Key.Id
+					select new Test { Id = groupres.Key.Id, FirstName = groupres.Key.FirstName, LastName = groupres.Key.LastName, TotalPrice = (double)groupres.Sum(c => c.TotalPrice), TotalAmount = (double)groupres.Sum(c => c.TotalProducts) };
+
+				return View(query.ToList());
+			}
+		}
+		
+		
+Test.cshtml
+
+@model IEnumerable<MVCappT.Models.Test>
+
+@{
+    ViewBag.Title = "Test";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalAmount)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalAmount)
+        </td>
+    </tr>
+    }
+	
+	
+	
+	namespace MVCappT.Models
+{
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
+	
+    public partial class Test
+    {
+        public int Id { get; set; }
+
+        [Required]
+        [StringLength(40)]
+        public string FirstName { get; set; }
+
+        [Required]
+        [StringLength(40)]
+        public string LastName { get; set; }
+
+        public double TotalPrice { get; set; }
+
+        public double TotalAmount { get; set; }
+    }
+}

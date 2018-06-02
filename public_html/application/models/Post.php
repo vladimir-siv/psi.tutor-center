@@ -267,7 +267,7 @@ class Post extends Proxy
     public function getOriginalPosterId()
 	{
         if (parent::refsAreLoaded()) return $this->originalposter->getId();
-		else return $this->originalposter->getId();
+		else return $this->originalposter;
     }
     
     /*
