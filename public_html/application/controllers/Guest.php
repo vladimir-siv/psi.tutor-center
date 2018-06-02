@@ -114,6 +114,7 @@
 			$qb->select('s')->from('Section', 's')->where('s.subject = :id')->andWhere('s.deleted = 0')->setParameter('id', $id);
 			$query = $qb->getQuery();
 			$sections = $query->getResult();
+                        
 			$enableDeleteButton = false;
 			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'DeleteSubject')) $enableDeleteButton = true;
 			$this->loader->loadPage('subject.php', array('subject' => $subject, 'sections' => $sections, 'enableDeleteButton' => $enableDeleteButton), 'Sections');
@@ -253,7 +254,7 @@
 			foreach($promotionrequests as $promotionrequest){
 				$actors[$promotionrequest->getActor()] = $em->find('Actor', $promotionrequest->getActor());
 			}
-			$this->loader->loadPage('promotions.php', array('promotionrequests' => $promotionrequests, 'actors' => $actors), 'PromotionRequests', -1, null);
+			$this->loader->loadPage('promotions.php', array('promotionrequests' => $promotionrequests, 'actors' => $actors), 'PromotionRequests', 6, null);
 		}
 		public function request($reqid)
 		{

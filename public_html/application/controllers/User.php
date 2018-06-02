@@ -21,7 +21,7 @@
 		public function requestPromotion()
 		{
 			if (isset($this->session->actor)){
-				// TODO: REGEX sa cirilicnim slovima
+
 				$this->load->library('form_validation');
 				
 				$this->form_validation->set_rules('position', 'Position', 'required');
@@ -167,6 +167,53 @@
 				}
 				else echo '#Error: <b>Error!</b> Profile picture could not be uploaded!';
 			}
+		}
+                
+                public function changeSubjectPic()
+		{
+			if (isset($this->session->actor) && $this->session->actor->getRawRank() == Rank::Administrator)
+			{
+				if (isset($_FILES['+subject-pic']))
+				{
+					$this->load->helper(array('form', 'url'));
+					$this->load->library('upload', array
+					(
+						'upload_path'	=> FCPATH.'assets/storage/subjects/'.$this->input->post('id').'/',
+						'allowed_types'	=> 'png',
+						'max_size'		=> 102400,
+						'file_name'		=> 'icon.png',
+						'overwrite'		=> true
+					));
+					
+					if ($this->upload->do_upload('+subject-pic')) echo '<b>Success!</b> Your profile picture has been changed!';
+					else echo '#Error: <b>Error!</b> Profile picture could not be uploaded!';
+				}
+				else echo '#Error: <b>Error!</b> Profile picture could not be uploaded!';
+			}
+		}
+                
+                public function changeSectionPic()
+		{
+			if (isset($this->session->actor) && $this->session->actor->getRawRank() == Rank::Administrator)
+			{
+				if (isset($_FILES['+section-pic']))
+				{
+					$this->load->helper(array('form', 'url'));
+					$this->load->library('upload', array
+					(
+						'upload_path'	=> FCPATH.'assets/storage/subjects/'.$this->input->post('id1').'/sections/'.$this->input->post('id2').'/',
+						'allowed_types'	=> 'png',
+                                                'max_size'		=> 102400,
+                                                'file_name'		=> 'icon.png',
+                                                'overwrite'		=> true
+					));
+					
+					if ($this->upload->do_upload('+section-pic')) echo '<b>Success!</b> Your profile picture has been changed!';
+					else echo '#Error: <b>Error!</b> Profile picture could not be uploaded!';
+				}
+				else echo '#Error: <b>Error!</b> Profile picture could not be uploaded!';
+			}
+                        else echo '#Error: Error';
 		}
 	}
 ?>

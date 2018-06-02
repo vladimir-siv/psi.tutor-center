@@ -11,6 +11,20 @@
 			return copy($src, $dest.'\avatar.png');
 		}
 		
+                private function createFolderSubject($id)
+                {
+			$src= FCPATH.'assets\res\icon.png';
+			$dest=FCPATH.'assets\storage\subjects\\'.$id;
+			return copy($src, $dest.'\icon.png');                    
+                }
+                
+                private function createFolderSection($subject, $section)
+                {
+			$src= FCPATH.'assets\res\icon.png';
+			$dest=FCPATH.'assets\storage\subjects\\'.$subject.'\sections\\'.$section;
+			return copy($src, $dest.'\icon.png');                    
+                }
+                
 		public function __construct()
 		{
 			parent::__construct();
@@ -79,7 +93,6 @@
 					$em->flush();
 					if (mkdir(FCPATH.'assets\storage\users\\'.$actor->getId()) == false)
 					{
-						echo FCPATH.'assets\storage\users\\'.$actor->getId();
 						echo '#Error: We don\'t create folder';
 						return;
 					}
@@ -129,7 +142,6 @@
                  */
 		public function createSubject()
 		{
-                        // UNIMPLEMENTED: nedostaje da se doda u popup slika i kreiranje fajla u odgovarajucem folederu
 			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'CreateSubject'))
 			{
 				$this->load->library('form_validation');
@@ -137,11 +149,11 @@
 				$this->form_validation->set_rules('name', 'Name', 'required');
 				$this->form_validation->set_rules('description', 'Description', 'required');
 				
-				if ($this->form_validation->run())
+			       if ($this->form_validation->run())
 				{
 					$name = $this->input->post('name');
 					$description = $this->input->post('description');
-					
+                                       
                                         $subjects = Subject::findByName($name);
                                         if (count($subjects) == 1)
                                         {
@@ -163,15 +175,30 @@
 						$name,
 						$description
 					);
-					
-					try
+                                        
+                                        try
 					{
 						$em = $this->loader->getEntityManager();
 						$em->persist($subject);
 						$em->flush();
-						echo 'Success!';
 					}
 					catch (Exception $ex) { echo '#Error: Could not create the subject.'; }
+                                        
+                                        if (mkdir(FCPATH.'assets/storage/subjects/'.$subject->getId()) === false)
+                                        {
+                                                echo '#Error: We don\'t create folder';
+                                                return;
+                                        }
+                                        if (mkdir(FCPATH.'assets\storage\subjects\\'.$subject->getId().'\sections') === false)
+                                        {
+                                               echo '#Error: We don\'t create folder1';
+                                               return;
+                                        }
+                                        if ($this->createFolderSubject($subject->getId()) === false)
+                                        {
+                                                echo 'We don\'t create image';
+                                        }
+                                        echo 'Success!';
 				}
 				else echo '#Error: Data not valid.';
 			}
@@ -185,7 +212,6 @@
                  */
 		public function createSection()
 		{
-                    // UNIMPLEMENTED: nedostaje da se doda u popup slika i kreiranje fajla u odgovarajucem folederu
                     if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'CreateSection'))
                     {
                                 $this->load->library('form_validation');
@@ -238,9 +264,19 @@
 						$em = $this->loader->getEntityManager();
 						$em->persist($section);
 						$em->flush();
-						echo 'Success!';
 					}
 					catch (Exception $ex) { echo '#Error: Could not create the subject.'; }
+                                        
+                                        if (mkdir(FCPATH.'assets/storage/subjects/'.$subjects[0]->getId().'/sections/'.$section->getId()) === false)
+                                        {
+                                                echo '#Error: We don\'t create folder';
+                                                return;
+                                        }
+                                        if ($this->createFolderSection($subjects[0]->getId(), $section->getId()) === false)
+                                        {
+                                                echo 'We don\'t create image';
+                                        }
+                                        echo 'Success!';
                                 }
                                 else echo '#Error: Data is not valid.';                      
                     }

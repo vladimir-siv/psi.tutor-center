@@ -556,3 +556,89 @@ function changeProfilePic(pic)
 		}
 	});
 }
+
+
+function changeSubjectPic(pic, id)
+{
+	var postData = new FormData();
+	
+	postData.append('+subject-pic', pic, pic.name);
+	postData.append('id', id);
+	$.ajax
+	({
+		url: "http://" + window.location.host + "/User/changeSubjectPic",
+		method: "POST",
+		data: postData,
+		processData: false,
+		contentType: false,
+		dataType: "html"
+	})
+	.done(function(response)
+	{
+		if (response.startsWith("#Error: "))
+		{
+			var success = new AlertPopupFeed(Alert.New("danger", response.substring(8), true, "modal"));
+			success.Subscribe(alertPopup);
+			success.Show(0);
+		}
+		else
+		{
+			var type = "success";
+			
+			if (response.startsWith("#Warning: "))
+			{
+				type = "warning";
+				response = response.substring(10);
+			}
+			
+			var success = new AlertPopupFeed(Alert.New(type, response, true, "modal"));
+			success.Subscribe(alertPopup);
+			success.Show(0);
+			
+			if (type === "success") window.location.reload(true);
+		}
+	});
+}
+
+function changeSectionPic(pic, subject, section)
+{
+	var postData = new FormData();
+	
+	postData.append('+section-pic', pic, pic.name);
+	postData.append('id1', subject);
+        postData.append('id2', section)
+	$.ajax
+	({
+		url: "http://" + window.location.host + "/User/changeSectionPic",
+		method: "POST",
+		data: postData,
+		processData: false,
+		contentType: false,
+		dataType: "html"
+	})
+	.done(function(response)
+	{
+		if (response.startsWith("#Error: "))
+		{
+			var success = new AlertPopupFeed(Alert.New("danger", response.substring(8), true, "modal"));
+			success.Subscribe(alertPopup);
+			success.Show(0);
+		}
+		else
+		{
+			var type = "success";
+			
+			if (response.startsWith("#Warning: "))
+			{
+				type = "warning";
+				response = response.substring(10);
+			}
+			
+			var success = new AlertPopupFeed(Alert.New(type, response, true, "modal"));
+			success.Subscribe(alertPopup);
+			success.Show(0);
+			
+			if (type === "success") window.location.reload(true);
+		}
+	});
+}
