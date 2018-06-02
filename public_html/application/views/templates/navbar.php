@@ -16,7 +16,12 @@
                                                 ?>
                                                 <li <?php if ($active === 3) echo 'class="active"';?>><a href="<?php echo base_url(); ?>Guest/library"><i class="glyphicon glyphicon-briefcase"> Library</i></a></li>
 						<li <?php if ($active === 4) echo 'class="active"';?>><a href="<?php echo base_url(); ?>Guest/about"><i class="glyphicon glyphicon-info-sign"> About</i></a></li>
-                            
+                                                <?php if (isset($this->session->actor) && $this->session->actor->getRawRank() >= Rank::Moderator)
+                                                      {
+                                                        echo '<li '; if ($active === 6) echo 'class="active"'; echo '>';
+                                                        echo '<a href="'; echo base_url(); echo 'Guest/promotions"><i class="glyphicon glyphicon-arrow-up"> Promotions</i></a></li>';
+                                                      }
+                                                ?>
 					</ul>
 				</div>
 			</nav>

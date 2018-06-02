@@ -3,14 +3,27 @@
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div class="media">
 							<div class="col-lg-3 col-md-3 hidden-sm hidden-xs text-center"> 
-								<img class="mr-3" src=<?php echo '"'.base_url().'assets/storage/subjects/'.$subject->getId().'/icon.png"' ?> style="width:80px">
+								<img class="mr-3" src=<?php echo '"'.base_url().'assets/storage/subjects/'.$subject->getId().'/icon.png"' ?> style="width:80px"
+                                                                     <?php if (isset($this->session->actor) && $this->session->actor->getRawRank() == Rank::Administrator) echo 'onclick="$(\'#attach-subject-pic\').click();"'; ?>>
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
 								<h1 class="mt-0 font-rammetto-one font-md" style="padding-top:10px; "><?php echo $subject->getName(); ?></h1>
 							</div>
 							<div class="col-lg-3 col-md-3 hidden-sm hidden-xs text-center">
-								<img class="mr-3" src=<?php echo '"'.base_url().'assets/storage/subjects/'.$subject->getId().'/icon.png"' ?> style="width:80px">
+								<img class="mr-3" src=<?php echo '"'.base_url().'assets/storage/subjects/'.$subject->getId().'/icon.png"' ?> style="width:80px"
+                                                                      <?php if (isset($this->session->actor) && $this->session->actor->getRawRank() == Rank::Administrator) echo 'onclick="$(\'#attach-subject-pic\').click();"'; ?>>
 							</div>
+                                                    <input id="attach-subject-pic" type="file" style="display: none;">
+                                                    <script type="text/javascript">
+                                                            $("#attach-subject-pic").change(function(event)
+                                                            {
+                                                                    var files = [];
+                                                                    $.each($("input#attach-subject-pic").prop("files"), function(index, file) { files.push(file); });
+
+                                                                    if (files.length === 1) changeSubjectPic(files[0], <?php echo $subject->getId(); ?>);
+                                                                    //else Alert.New("You must select one file");
+                                                            });
+                                                    </script>
 						</div>
 					</div>
 				</div>

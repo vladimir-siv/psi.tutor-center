@@ -22,7 +22,7 @@
                         var s = "";
                         for (var i = 0; i < names.length; i++)
                             s += names[i] + "; ";
-                        $("#name-of-folders").html(s);
+                        $("#name-of-folders").html(s); 
                     });
                 </script>
                 <div>

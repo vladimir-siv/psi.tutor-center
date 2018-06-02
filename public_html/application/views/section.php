@@ -4,14 +4,27 @@
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div class="media">
 							<div class="col-lg-3 col-md-3 hidden-sm hidden-xs text-center">
-								<img class="mr-3" src="<?php echo base_url(); ?>assets/storage/subjects/<?php echo $section->getSubject()->getId(); ?>/sections/<?php echo $section->getId(); ?>/icon.png" style="width:80px">
+								<img class="mr-3" src="<?php echo base_url(); ?>assets/storage/subjects/<?php echo $section->getSubject()->getId(); ?>/sections/<?php echo $section->getId(); ?>/icon.png" style="width:80px"
+                                                                     <?php if (isset($this->session->actor) && $this->session->actor->getRawRank() == Rank::Administrator) echo 'onclick="$(\'#attach-section-pic\').click();"'; ?> >
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
 								<h1 class="mt-0 font-rammetto-one font-md" style="padding-top:10px;"><?php echo $section->getName(); ?></h1>
 							</div>
 							<div class="col-lg-3 col-md-3 hidden-sm hidden-xs text-center">
-								<img class="mr-3" src="<?php echo base_url(); ?>assets/storage/subjects/<?php echo $section->getSubject()->getId(); ?>/sections/<?php echo $section->getId(); ?>/icon.png" style="width:80px">
+								<img class="mr-3" src="<?php echo base_url(); ?>assets/storage/subjects/<?php echo $section->getSubject()->getId(); ?>/sections/<?php echo $section->getId(); ?>/icon.png" style="width:80px"
+                                                                     <?php if (isset($this->session->actor) && $this->session->actor->getRawRank() == Rank::Administrator) echo 'onclick="$(\'#attach-section-pic\').click();"'; ?>>
 							</div>
+                                                        <input id="attach-section-pic" type="file" style="display: none;">
+                                                        <script type="text/javascript">
+                                                            $("#attach-section-pic").change(function(event)
+                                                            {
+                                                                    var files = [];
+                                                                    $.each($("input#attach-section-pic").prop("files"), function(index, file) { files.push(file); });
+
+                                                                    if (files.length === 1) changeSectionPic(files[0], <?php echo $section->getSubject()->getId(); ?>, <?php echo $section->getId(); ?>);
+                                                                    //else Alert.New("You must select one file");
+                                                            });
+                                                        </script>
 						</div>
 					</div>
 				</div>
