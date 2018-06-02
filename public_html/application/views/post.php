@@ -1,6 +1,7 @@
 <?php
     defined('BASEPATH') OR exit('No direct script access allowed');
     require_once 'application/models/Entities.php';
+	$workpost = $post->getWorkpost();
 ?>
                 <div class="border-boxed expanded padding-bottom-md" style="background-color: inherit;">
                     <h1 id="post-title" class="font-rammetto-one font-lg text-center padding-top-sm padding-bottom-sm">
@@ -20,15 +21,21 @@
     if($description!=null) echo $description;
 ?>
                         </p>
+<?php if (isset($workpost)) { ?>
                         <div id="post-controls" class="border-boxed expanded">
-                            <button id="post-lock" type="button" class="btn btn-primary btn-sm font-xs"><i class="fa fa-key"></i> Lock</button>
-                            <button id="post-release" type="button" class="btn btn-warning btn-sm font-xs"><i class="fa fa-unlock-alt"></i> Release</button>
+	<?php if (!isset($workpost->getWorker()) && isset($this->session->actor) && $this->session->actor->getRawRank() >= Rank::Tutor) { ?>
+                            <button id="post-lock" type="button" class="btn btn-primary btn-sm font-xs" onclick="lockWorkPost(<?php echo $post->getId(); ?>);"><i class="fa fa-key"></i> Lock</button>
+	<?php } if (isset($workpost->getWorker()) && isset($this->session->actor) && ($this->session->actor->getId() === $post->getOriginalPosterId() || $this->session->actor->getRawRank() >= Rank::Tutor)) { ?>
+                            <button id="post-release" type="button" class="btn btn-warning btn-sm font-xs" onclick="releaseWorkPost(<?php echo $post->getId(); ?>);"><i class="fa fa-unlock-alt"></i> Release</button>
+	<?php } if (isset($workpost->getWorker()) && isset($this->session->actor) && $this->session->actor->getId() === $post->getOriginalPosterId()) { ?>
                             <button id="post-submit-tokens" type="button" class="btn btn-success btn-sm font-xs" onclick="submitTokensPopupFeed.Toggle(0);"><i class="fa fa-money"></i> Submit Tokens</button>
-                            <button id="post-review" type="button" class="btn btn-warning btn-sm font-xs" onclick="reviewPopupFeed.Toggle(0);"><i class="fa fa-star"></i> Review</button>
-<?php
-	if ($enableDeleteButton) echo '<button class="btn btn-danger btn-sm font-xs" onclick="deletePost('.$post->getId().')">Delete</button>'; 
-?>
+    <?php } if (!$post->getActive()) { ?>
+							<button id="post-review" type="button" class="btn btn-warning btn-sm font-xs" onclick="reviewPopupFeed.Toggle(0);"><i class="fa fa-star"></i> Review</button>
+	<?php } if ($enableDeleteButton) { ?>
+							<button class="btn btn-danger btn-sm font-xs" onclick="deletePost(<?php echo $post->getId(); ?>)">Delete</button>
+	<?php } ?>
                             <br>
+	<?php if (isset($workpost->getWorker()) && isset($this->session->actor) && isset($workpost->getComittedtokens()) && $workpost->getWorkerId() === $this->session->actor->getId()) { ?>
                             <button id="attach" type="button" class="btn btn-info" onclick="$('#attach-files').click();"><i class="fa fa-file-zip-o"></i> Attach file(s)...</button>
                             <input id="attach-files" type="file" style="display: none;" multiple>
                             <p id="attached-files-display" class="font-times-new-roman font-xs"></p>
@@ -43,14 +50,16 @@
                                     $("#post-controls #attached-files-display").html(filenames.substring(0, filenames.length - 3));
                                 });
                             </script>
+	<?php } ?>
                             <p id="post-info" class="font-times-new-roman font-xs">
-                                Locked by: &lt;none&gt;
+                                Locked by: <?php echo isset($workpost->getWorker()) ? '&lt;none&gt;' : $workpost->getWorkerReference()->getUsername(); ?>
                                 <br>
-                                Submitted tokens: 0.00t
+                                Submitted tokens: <?php $t = $workpost->getComittedtokens(); echo (isset($t) ? $t : '0.00').'t'; ?>
                                 <br>
-                                Attached files: &lt;none&gt;
+                                Attached files: <?php echo '&lt; '.implode(' | ', glob('assets/storage/posts/'.$post->getId().'/*.*')).' &gt;'; ?>
                             </p>
                         </div>
+<?php } ?>
                     </div>
                     <div class="border-boxed expanded font-rammetto-one font-xs text-align-left padding-xs" style="line-height: 200%;">
 <?php 

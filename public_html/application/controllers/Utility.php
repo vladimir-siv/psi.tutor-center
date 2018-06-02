@@ -561,6 +561,81 @@
                       }
                       else echo '#Error: Error!';
                 }
-
+		
+		public function lockWorkPost()
+		{
+			if (isset($this->session->actor))
+			{
+				$this->load->library('form_validation');
+				
+				$this->form_validation->set_rules('postid', 'Post ID', 'required');
+				
+				if ($this->form_validation->run())
+				{
+					$em = $this->loader->getEntityManager();
+					
+					$wpost = $em->find('Workpost', $this->input->post('postid'));
+					
+					if (isset($wpost))
+					{
+						$post = $em->find('Post', $wpost->getId());
+						
+						if ($post->getOriginalPosterId() != $this->session->actor->getId() && Privilege::has($this->session->actor->getRawRank(), 'LockPost'))
+						{
+							if ($wpost->getWorker() === null)
+							{
+								$wpost->setWorker($this->session->actor->getId());
+								$em->flush();
+								echo 'The post is locked successfully.';
+							}
+							else echo '#Warning: The post is already locked. Be aware that it might get unlocked soon.';
+						}
+						else echo '#Error: You cannot lock the post.';
+					}
+					else echo '#Error: Invalid post.';
+				}
+				else echo '#Error: Post id not provided.';
+			}
+		}
+		
+		public function releaseWorkPost()
+		{
+			if (isset($this->session->actor))
+			{
+				$this->load->library('form_validation');
+				
+				$this->form_validation->set_rules('postid', 'Post ID', 'required');
+				
+				if ($this->form_validation->run())
+				{
+					$em = $this->loader->getEntityManager();
+					
+					$wpost = $em->find('Workpost', $this->input->post('postid'));
+					
+					if (isset($wpost))
+					{
+						$post = $em->find('Post', $wpost->getId());
+						
+						if ($post->getOriginalPosterId() === $this->session->actor->getId() || $wpost->getWorkerId() === $this->session->actor->getId())
+						{
+							$op = $post->getOriginalPosterReference();
+							$tokens = $wpost->getComittedtokens();
+							$tokens += $op->getTokens();
+							$op->setTokens($tokens);
+							
+							$wpost->setWorker(null);
+							$wpost->setComittedtokens(null);
+							$wpost->setWorkeraccepted(false);
+							
+							$em->flush();
+							echo 'The post has been released.';
+						}
+						else echo '#Error: You cannot lock the post.';
+					}
+					else echo '#Error: Invalid post.';
+				}
+				else echo '#Error: Post id not provided.';
+			}
+		}
 	}
 ?>

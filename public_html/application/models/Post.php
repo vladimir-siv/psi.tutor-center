@@ -95,16 +95,6 @@ class Post extends Proxy
         $instance->originalposter = $originalposter;
 		return $instance;
     }
-    
-    /*
-	 * getOriginalPosterReference($post) - dohvata op za dati post
-	 *	@return: \Actor
-	 */
-    public function getOriginalPosterReference()
-	{
-        if (parent::refsAreLoaded()) return $this->originalposter;
-		else return parent::$_em->find('Actor', $this->originalposter);
-    }
 
     /**
      * Get id
@@ -269,6 +259,35 @@ class Post extends Proxy
     {
         return $this->section;
     }
+	
+    /*
+	 * getOriginalPosterId() - dohvata id op-a za dati post
+	 *	@return: \Actor
+	 */
+    public function getOriginalPosterId()
+	{
+        if (parent::refsAreLoaded()) return $this->originalposter->getId();
+		else return $this->originalposter->getId();
+    }
+    
+    /*
+	 * getOriginalPosterReference() - dohvata op za dati post
+	 *	@return: \Actor
+	 */
+    public function getOriginalPosterReference()
+	{
+        if (parent::refsAreLoaded()) return $this->originalposter;
+		else return parent::$_em->find('Actor', $this->originalposter);
+    }
+	
+    /*
+	 * getWorkpost() - dohvata referencu na workpost
+	 *	@return: \Workpost
+	 */
+	public function getWorkpost()
+	{
+		return parent::$_em->find('Workpost', $this->id);
+	}
     
 	/* ============== PROXY ============== */
 	

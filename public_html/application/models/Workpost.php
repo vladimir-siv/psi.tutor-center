@@ -9,6 +9,15 @@
 class WorkPost extends Proxy
 {
     /**
+     * @var integer
+     *
+     * @Id
+     * @Column(name="ID", type="integer", nullable=false)
+     * @GeneratedValue(strategy="NONE")
+     */
+    private $id;
+	
+    /**
      * @var string
      *
      * @Column(name="Description", type="string", length=64, nullable=false)
@@ -28,15 +37,6 @@ class WorkPost extends Proxy
      * @Column(name="WorkerAccepted", type="boolean", nullable=false)
      */
     private $workeraccepted = '0';
-
-    /**
-     * @var integer
-     *
-     * @Id
-     * @Column(name="ID", type="integer", nullable=false)
-     * @GeneratedValue(strategy="NONE")
-     */
-    private $id;
 
     /**
      * @var integer
@@ -110,7 +110,7 @@ class WorkPost extends Proxy
     {
         return $this->description;
     }
-
+	
     /**
      * Set comittedtokens
      *
@@ -121,10 +121,10 @@ class WorkPost extends Proxy
     public function setComittedtokens($comittedtokens)
     {
         $this->comittedtokens = $comittedtokens;
-
+		
         return $this;
     }
-
+	
     /**
      * Get comittedtokens
      *
@@ -206,7 +206,27 @@ class WorkPost extends Proxy
     {
         return $this->worker;
     }
-
+	
+	/*
+	 * getWorkerReference() - dohvata worker-a
+	 *	@return: \Actor
+	 */
+    public function getWorkerReference()
+	{
+		if (parent::refsAreLoaded()) return $this->worker;
+		else return parent::$_em->find('Actor', $this->worker);
+    }
+	
+	/*
+	 * getWorkerReference() - dohvata worker-a
+	 *	@return: \Actor
+	 */
+    public function getWorkerId()
+	{
+		if (parent::refsAreLoaded()) return $this->worker->getId();
+		else return $this->worker;
+    }
+	
     /* ============== PROXY ============== */
 	
 	public function loadReferences()
