@@ -100,9 +100,9 @@ function register(popupid, firstname, lastname, username, password, email, birth
     });
 }
 
-function sendRequest(position, description)
+function sendRequest(position, description, files)
 {
-    if (position == "")
+	if (position == "")
     {
         alertPopupFeed.content = Alert.New("danger", "You must enter title of request.", true, "modal");
 		alertPopupFeed.Toggle(0);
@@ -114,25 +114,46 @@ function sendRequest(position, description)
 		alertPopupFeed.Toggle(0);
         return;         
     }
-    $.ajax
-    ({
+	
+	var postData = new FormData();
+	
+	postData.append("position", position);
+	postData.append("description", description);
+	
+	$.each(files.prop("files"), function(index, file) { postData.append('+file-' + index, file, file.name); });
+	
+	$.ajax
+	({
 		url: "http://" + window.location.host + "/User/requestPromotion",
 		method: "POST",
-		data: { position: position, description : description},
+		data: postData,
+		processData: false,
+		contentType: false,
 		dataType: "html"
-    })
-	.done(function(response) 
-    {
+	})
+	.done(function(response)
+	{
 		if (response.startsWith("#Error: "))
 		{
-			alertPopupFeed.content = Alert.New("danger", response.substring(8), true, "modal");
-			alertPopupFeed.Toggle(0);
-			return;
+			var success = new AlertPopupFeed(Alert.New("danger", response.substring(8), true, "modal"));
+			success.Subscribe(alertPopup);
+			success.Show(0);
 		}
-		alertPopupFeed.content = Alert.New("success", response, true, "modal");
-		alertPopupFeed.Toggle(0);
-		window.location.reload();
-    });
+		else
+		{
+			var type = "success";
+			
+			if (response.startsWith("#Warning: "))
+			{
+				type = "warning";
+				response = response.substring(10);
+			}
+			
+			var success = new AlertPopupFeed(Alert.New(type, response, true, "modal"));
+			success.Subscribe(alertPopup);
+			success.Show(0);
+		}
+	});
 }
 
 function toggleSeen(notificationid)

@@ -248,7 +248,7 @@
 		public function promotions()
 		{
 			$em = $this->loader->getEntityManager();
-			$promotionrequests = $em->createQuery('SELECT pr FROM PromotionRequest pr')
+			$promotionrequests = $em->createQuery('SELECT pr FROM PromotionRequest pr ORDER BY pr.submittedon DESC')
 						->getResult();
 			$actors = array();
 			foreach($promotionrequests as $promotionrequest){

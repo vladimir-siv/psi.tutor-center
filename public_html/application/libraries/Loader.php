@@ -442,12 +442,15 @@
 		 */
 		public function insertPromotionRequests($requests)
 		{
+			$insertedrequests = array();
 			foreach ($requests as $request)
 			{
 				$currentrequest = PromotionRequest::New($request['title'], $request['description'], $request['submittedon'], $request['accepted'], $request['actor']);
 				$this->em->persist($currentrequest);
 				$this->em->flush();
+				$insertedrequests[] = $currentrequest;
 			}
+			return $insertedrequests;
 		}
 		
 		/*

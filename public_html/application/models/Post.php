@@ -85,7 +85,7 @@ class Post extends Proxy
      *	@param bool $deleted: inicijalno obrisano stanje
 	 *	@return: Actor
 	 */
-	public static function New($title, $postedon, $originalposter, $active = '1', $deleted = '0')
+	public static function New($title, $postedon, $originalposter, $active, $deleted)
 	{
 		$instance = new Post();
 		$instance->title = $title;
