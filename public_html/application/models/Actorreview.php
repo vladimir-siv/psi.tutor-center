@@ -45,7 +45,17 @@ class ActorReview extends Proxy
      */
     private $reviewee;
 
-     public function __construct()
+    public static function New($grade, $description, $reviewer, $reviewee)
+    {
+        $instance = new Actorreview();
+        $instance->grade = $grade;
+        $instance->description = $description;
+        $instance->reviewer = $reviewer;
+        $instance->reviewee = $reviewee;
+        return $instance;
+    }
+    
+    public function __construct()
     {
         parent::__construct();
         $this->section = new \Doctrine\Common\Collections\ArrayCollection();

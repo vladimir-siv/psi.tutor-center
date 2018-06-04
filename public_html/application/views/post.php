@@ -33,12 +33,13 @@
                         <div id="post-controls" class="border-boxed expanded">
 	<?php if ($workpost->getWorker()===null && isset($this->session->actor) && $this->session->actor->getId()!=$post->getOriginalPosterId() && $this->session->actor->getRawRank() >= Rank::Tutor) { ?>
                             <button id="post-lock" type="button" class="btn btn-primary btn-sm font-xs" onclick="lockWorkPost(<?php echo $post->getId(); ?>);"><i class="fa fa-key"></i> Lock</button>
+                            <button id="post-submit-tokens" type="button" class="btn btn-success btn-sm font-xs" onclick="submitTokensPopupFeed.setPostID(<?php echo $post->getId(); ?>);submitTokensPopupFeed.Toggle(0);"><i class="fa fa-money"></i> Submit Tokens</button>
 	<?php } if ($workpost->getWorker()!=null && isset($this->session->actor) && ($this->session->actor->getId() === $post->getOriginalPosterId() || $this->session->actor->getRawRank() >= Rank::Tutor)) { ?>
                             <button id="post-release" type="button" class="btn btn-warning btn-sm font-xs" onclick="releaseWorkPost(<?php echo $post->getId(); ?>);"><i class="fa fa-unlock-alt"></i> Release</button>
 	<?php } if ($workpost->getWorker()!=null && isset($this->session->actor) && $this->session->actor->getId() === $post->getOriginalPosterId()) { ?>
                             <button id="post-submit-tokens" type="button" class="btn btn-success btn-sm font-xs" onclick="submitTokensPopupFeed.Toggle(0);"><i class="fa fa-money"></i> Submit Tokens</button>
     <?php } if (!$post->getActive()) { ?>
-							<button id="post-review" type="button" class="btn btn-warning btn-sm font-xs" onclick="reviewPopupFeed.Toggle(0);"><i class="fa fa-star"></i> Review</button>
+							<button id="post-review" type="button" class="btn btn-warning btn-sm font-xs" onclick="reviewPopupFeed.setPostID(<?php echo $post->getId(); ?>); reviewPopupFeed.Toggle(0);"><i class="fa fa-star"></i> Review</button>
 	<?php } if ($enableDeleteButton) { ?>
 							<button class="btn btn-danger btn-sm font-xs" onclick="deletePost(<?php echo $post->getId(); ?>)">Delete</button>
 	<?php } ?>

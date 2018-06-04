@@ -712,5 +712,83 @@
 				else echo '#Error: Post id not provided.';
 			}
 		}
+		
+ 		public function review()
+                {
+                    if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'Review'))
+                    {
+                        $this->load->library('form_validation');
+			
+			$this->form_validation->set_rules('grade', 'Grade', 'required');
+			$this->form_validation->set_rules('description', 'Description', 'required');
+                        
+			$grade = $this->input->post('grade');
+			$description = $this->input->post('description');
+                        $id = $this->input->post('postID');
+                        $qb = $this->loader->getEntityManager()->createQueryBuilder();
+                        $qb->select('w')->from('Workpost', 'w')->where('w.id = :id')->setParameter('id', $id);
+                        $query = $qb->getQuery();
+                        $workpost = $query->getSingleResult();
+                        
+			if ($this->form_validation->run() && preg_match("/^\d$/", $grade) == true && $grade >= 1 && $grade <= 5)
+			{
+				$review = Actorreview::New
+				(
+					$grade,
+                                        $description,
+                                        $this->session->actor->getId(),
+                                        $workpost->getWorker()      
+				);
+				
+				try
+				{       
+                                        $em = $this->loader->getEntityManager();
+					$em->persist($review);
+					$em->flush();
+                                        echo 'Success';
+				}
+				catch (Exception $ex) { echo '#Error: Date not valid'; }
+			}
+			else echo '#Error: Data not valid.';
+                    }
+                }
+                
+                public function submitTokensToWorkPost()
+		{
+			if (isset($this->session->actor))
+			{
+				$this->load->library('form_validation');
+				
+				$this->form_validation->set_rules('tokens', 'Tokens', 'required');
+				
+				if ($this->form_validation->run() && preg_match("/^\d+$/", $this->input->post('tokens')) == true)
+				{
+					$em = $this->loader->getEntityManager();
+					
+					$wpost = $em->find('Workpost', $this->input->post('postid'));
+					
+					if (isset($wpost))
+					{
+						$post = $em->find('Post', $wpost->getId());
+						
+						//if ($post->getOriginalPosterId() === $this->session->actor->getId())
+						{
+							$op = $post->getOriginalPosterReference();
+							$tokens = $this->input->post('tokens');
+                                                        if ($op->getTokens() >= $tokens)
+                                                        {
+                                                            $op->setTokens($op->getTokens() - $tokens);
+                                                            $wpost->setComittedtokens($this->input->post('tokens'));
+                                                            $em->flush();
+                                                            echo 'Success!';
+                                                        }
+                                                        else echo '#Error: You dont\' have enough tokens!';
+                                                }
+					}
+					else echo '#Error: Invalid post.';
+				}
+				else echo '#Error: Invalid data.';
+			}
+		}
 	}
 ?>

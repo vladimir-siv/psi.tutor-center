@@ -28,7 +28,7 @@ class ReviewPopupFeed extends PopupFeed
 		return "" +
 			"<div class=\"row\">" +
 				"<div class=\"col-lg-2 col-md-2 col-sm-2 col-xs-4\">" +
-					"<button type=\"button\" class=\"btn btn-primary btn-sm btn-block\" onclick=\"" + this.callback + "('" + this.popups[this.current].id + "', $('#" + this.popups[this.current].id + " #review-grade')[0].value, $('#" + this.popups[this.current].id + " #review-description')[0].value);\">Submit</button>" +
+					"<button type=\"button\" class=\"btn btn-primary btn-sm btn-block\" onclick=\"" + this.callback + "('" + this.popups[this.current].id + "', " + this.postID + ", $('#" + this.popups[this.current].id + " #review-grade')[0].value, $('#" + this.popups[this.current].id + " #review-description')[0].value);\">Submit</button>" +
 				"</div>" +
 				"<div class=\"col-lg-8 col-md-8 col-sm-8 col-xs-4\"></div>" +
 				"<div class=\"col-lg-2 col-md-2 col-sm-2 col-xs-4\">" +
@@ -40,6 +40,11 @@ class ReviewPopupFeed extends PopupFeed
 	{
 		return "";
 	}
+        
+        setPostID(id)
+        {
+            this.postID = id;
+        }
 }
 
 var reviewPopupFeed;
@@ -50,7 +55,35 @@ $(document).ready(function()
 	reviewPopupFeed.Subscribe(mainPopup);
 });
 
-function review(popupid, grade, description)
+function review(popupid, postID, grade, description)
 {
-	alert("'" + grade + ":" + description + "'");
+    $("#" + popupid + "-popup-info").html("");
+    if (grade == "")
+    {
+        $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter grade!"));
+        return;
+    }
+    if (description == "")
+    {
+        $("#" + popupid + "-popup-info").append(Alert.New("danger", "<b>Error.</b> You must enter description!"));
+        return;
+    }
+    $.ajax
+    ({
+		url: "http://" + window.location.host + "/Utility/review",
+		method: "POST",
+		data: { grade : grade, description : description, postID : postID },
+		dataType: "html"
+    })
+	.done(function(response) 
+    {
+		if (response.startsWith("#Error: "))
+		{
+			$("#" + popupid + "-popup-info").append(Alert.New("danger", response.substring(8), true));
+			return;
+		}
+		
+		$("#" + popupid + "-popup-info").append(Alert.New("success", response, true));
+		window.location.reload();
+    }); 
 }
