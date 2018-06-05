@@ -541,9 +541,15 @@
 				$replyid = $this->input->post('replyid');
 				$em = $this->loader->getEntityManager();
 				$reply = $em->find('Reply', $replyid);
-				
 				if ($reply != null)
 				{
+					$post = $em->find('Post', $reply->getPost());
+					if(Qapost::isReplyAccepted($post, $reply)){
+						$qapost = $em->createQuery('SELECT qap from Qapost qap WHERE qap.id = :postid')
+                    	->setParameter('postid', $post->getId())
+						->getSingleResult();
+						$qapost->setAcceptedanswer(null);
+					}
 					$reply->setDeleted(true);
 					$em->flush();
 					echo '<b>Success!</b> You have successfully deleted reply!';
