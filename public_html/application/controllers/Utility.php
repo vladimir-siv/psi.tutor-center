@@ -552,6 +552,24 @@
 			}
 			else echo '#Error: You don\'t have permission to delete reply.';
 		}
+		public function acceptReply(){
+			$postid = $this->input->post('postid');
+			$replyid = $this->input->post('replyid');
+			$em = $this->loader->getEntityManager();
+			$reply = $em->find('Reply', $replyid);
+			$qapost = $em->find('Qapost', $postid);
+			$post = $em->find('Post', $postid);
+			if (isset($this->session->actor) && $this->session->actor->getId()==$post->getOriginalposter()){
+				if ($reply != null && $qapost != null)
+				{
+					$qapost->setAcceptedanswer($replyid);
+					$em->flush();
+					echo '<b>Success!</b> You have successfully accepted reply!';
+				}
+				else echo '#Error: Data not valid.';
+			}
+			else echo '#Error: You don\'t have permission to accept reply.';
+		}
 		public function createReply(){
 			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'Reply')){
 				$replymsg = $this->input->post('replymsg');

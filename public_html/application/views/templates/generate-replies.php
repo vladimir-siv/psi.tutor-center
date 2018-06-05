@@ -10,7 +10,7 @@ replies =
 		$count = 0;
 		foreach ($replies as $reply)
 		{
-			echo 'new Reply('.$reply->getId().', '. $replyposter[$reply->getId()]->getId().', "'.$replyposter[$reply->getId()]->getUsername().'", "'.$reply->getMessage().'", "'.$reply->getPostedon()->format('d.m.Y.').'", '.($op->getId()===$replyposter[$reply->getId()]->getId()?'true':'false').', '.($enableDeleteButton?'true':'false').')';
+			echo 'new Reply('.$reply->getId().', '. $replyposter[$reply->getId()]->getId().', "'.$replyposter[$reply->getId()]->getUsername().'", "'.$reply->getMessage().'", "'.$reply->getPostedon()->format('d.m.Y.').'", '.($op->getId()===$replyposter[$reply->getId()]->getId()?'true':'false').', '.($enableDeleteButton?'true':'false').', '.(isset($this->session->actor) && $this->session->actor->getId()==$op->getId() && $acceptedreply==null?'true':'false').', '.$post->getId().')';
 			$count++; 
 			if($count !== count($replies)) echo ', ';
 		}
@@ -18,9 +18,8 @@ replies =
 ?>
 ];
 
-<?php if(isset($actor) && $actor!==null){?>
-	isActorOP = <?php echo $actor->getId()===$op->getId()?'true':'false';?>;
-	isActorModerator = <?php echo $actor->getRawRank()>=Rank::Moderator?'true':'false';?>;
+<?php if(isset($this->session->actor) && $this->session->actor!==null){?>
+	isActorOP = <?php echo $this->session->actor->getId()===$op->getId()?'true':'false';?>;
+	isActorModerator = <?php echo $this->session->actor->getRawRank()>=Rank::Moderator?'true':'false';?>;
+	acceptedAnswer = <?php echo $acceptedreply != null ? $acceptedreply : 'null';?>;
 <?php } ?>
-
-<!--acceptedAnswer = 4;-->

@@ -663,3 +663,25 @@ function changeSectionPic(pic, subject, section)
 		}
 	});
 }
+
+function acceptReply(replyid, postid){
+    $.ajax
+    ({
+		url: "http://" + window.location.host + "/Utility/acceptReply",
+		method: "POST",
+		data: { replyid: replyid, postid: postid},
+		dataType: "html"
+    })
+	.done(function(response) 
+    {
+		if (response.startsWith("#Error: "))
+		{
+			alertPopupFeed.content = Alert.New("danger", response.substring(8), true, "modal");
+			alertPopupFeed.Toggle(0);
+			return;
+		}
+		alertPopupFeed.content = Alert.New("success", response, true, "modal");
+		alertPopupFeed.Toggle(0);
+		window.location.reload();
+    });
+}

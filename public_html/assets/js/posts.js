@@ -1,6 +1,6 @@
 class Reply extends View
 {
-	constructor(id, userid, username, message, postedOn, isOP, enableDeleteButton)
+	constructor(id, userid, username, message, postedOn, isOP, enableDeleteButton, enableAcceptButton, postid)
 	{
 		super();
 		this.id = id;
@@ -10,6 +10,8 @@ class Reply extends View
 		this.postedOn = postedOn;
 		this.isOP = isOP;
 		this.enableDeleteButton = enableDeleteButton;
+		this.enableAcceptButton = enableAcceptButton;
+		this.postid = postid;
 	}
 	
 	AsView()
@@ -23,7 +25,6 @@ class Reply extends View
 							:
 							(isActorOP && typeof acceptedAnswer === "undefined" ? "<img src=\"res/accept.png\" class=\"cursor-pointer opacity-3 opacity-hover-9 valign-top margin-bottom-sm\" width=\"50\" height=\"50\" onclick=\"accept(" + this.id + ");\">" : "")
 						) +
-						(isActorModerator ? "<img src=\"res/reject.png\" class=\"cursor-pointer opacity-3 opacity-hover-9 valign-top margin-bottom-sm\" width=\"50\" height=\"50\" onclick=\"remove(" + this.id + ");\">" : "") +
 					"</div>" +
 					"<div class=\"col-lg-10 col-md-10 col-sm-8 col-xs-4\">" +
 						"<div class=\"border-boxed expanded solid-border border-xs border-gray no-border-left no-border-right rounded-xs padding-xs\">" +
@@ -50,6 +51,7 @@ class Reply extends View
 						"</a>" +
 						"<p class=\"font-times-new-roman\">Posted on: <i>" + this.postedOn + "</i></p>" +
 						(this.enableDeleteButton ? "<button class=\"btn btn-danger btn-md font-xxs\" onclick=\"deleteReply(" + this.id + ")\">Delete</button>" : "") +
+						(acceptedAnswer == null && this.enableAcceptButton ? "<button class=\"btn btn-success btn-md font-xxs\" onclick=\"acceptReply(" + this.id + ", " + this.postid + ")\">Accept</button>" : "") +
 					"</div>" +
 					"<div class=\"col-lg-10 col-md-10 col-sm-8 col-xs-4\">" +
 						"<div class=\"border-boxed expanded solid-border border-xs border-gray no-border-left no-border-right rounded-xs padding-xs\">" +
@@ -58,11 +60,10 @@ class Reply extends View
 					"</div>" +
 					"<div class=\"col-lg-1 col-md-1 col-sm-2 col-xs-4 text-left\">" +
 						(this.id === acceptedAnswer ?
-							"<img src=\"res/accept.png\" class=\"valign-top margin-bottom-sm\" width=\"50\" height=\"50\">"
+							"<img src=\"" + window.location.protocol + "//" + window.location.host + "/assets/res/accept.png\" class=\"valign-top margin-bottom-sm\" width=\"50\" height=\"50\">"
 							:
 							(isActorOP && typeof acceptedAnswer === "undefined" ? "<img src=\"res/accept.png\" class=\"cursor-pointer opacity-3 opacity-hover-9 valign-top margin-bottom-sm\" width=\"50\" height=\"50\" onclick=\"accept(" + this.id + ");\">" : "")
 						) +
-						(isActorModerator ? "<img src=\"res/reject.png\" class=\"cursor-pointer opacity-3 opacity-hover-9 valign-top margin-bottom-sm\" width=\"50\" height=\"50\" onclick=\"remove(" + this.id + ");\">" : "") +
 					"</div>" +
 				"</div>" +
 			"</article>";
@@ -125,7 +126,6 @@ $(document).ready(function()
 	if (typeof replies !== "undefined")
 		for (var i = 0; i < replies.length; i++)
 			mainSection[0].innerHTML += replies[i].AsView();
-	
 	submitTokensPopupFeed = new SubmitTokensPopupFeed("submit");
 	submitTokensPopupFeed.Subscribe(mainPopup);
 });

@@ -155,7 +155,7 @@ class QAPost extends Proxy
      *
      * @return QAPost
      */
-    public function setAcceptedanswer(\Reply $acceptedanswer = null)
+    public function setAcceptedanswer($acceptedanswer = null)
     {
         $this->acceptedanswer = $acceptedanswer;
 
