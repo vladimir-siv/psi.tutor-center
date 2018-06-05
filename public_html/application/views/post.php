@@ -31,23 +31,21 @@
                         </p>
 <?php if (isset($workpost)) { ?>
                         <div id="post-controls" class="border-boxed expanded">
-	<?php if ($workpost->getWorker()===null && isset($this->session->actor) && $this->session->actor->getId()!=$post->getOriginalPosterId() && $this->session->actor->getRawRank() >= Rank::Tutor) { ?>
+	<?php if ($workpost->getWorker()===null && isset($this->session->actor) && $this->session->actor->getId()!=$post->getOriginalPosterId() && $this->session->actor->getRawRank() >= Rank::Tutor && $post->getActive()) { ?>
                             <button id="post-lock" type="button" class="btn btn-primary btn-sm font-xs" onclick="lockWorkPost(<?php echo $post->getId(); ?>);"><i class="fa fa-key"></i> Lock</button>
-                            <button id="post-submit-tokens" type="button" class="btn btn-success btn-sm font-xs" onclick="submitTokensPopupFeed.setPostID(<?php echo $post->getId(); ?>);submitTokensPopupFeed.Toggle(0);"><i class="fa fa-money"></i> Submit Tokens</button>
-	<?php } if ($workpost->getWorker()!=null && isset($this->session->actor) && ($this->session->actor->getId() === $post->getOriginalPosterId() || $this->session->actor->getRawRank() >= Rank::Tutor)) { ?>
+	<?php } if ($workpost->getWorker()!=null && isset($this->session->actor) && ($this->session->actor->getId() === $post->getOriginalPosterId() || $this->session->actor->getRawRank() >= Rank::Tutor) && $post->getActive()) { ?>
                             <button id="post-release" type="button" class="btn btn-warning btn-sm font-xs" onclick="releaseWorkPost(<?php echo $post->getId(); ?>);"><i class="fa fa-unlock-alt"></i> Release</button>
-	<?php } if ($workpost->getWorker()!=null && isset($this->session->actor) && $this->session->actor->getId() === $post->getOriginalPosterId()) { ?>
-                            <button id="post-submit-tokens" type="button" class="btn btn-success btn-sm font-xs" onclick="submitTokensPopupFeed.Toggle(0);"><i class="fa fa-money"></i> Submit Tokens</button>
-    <?php } if (!$post->getActive()) { ?>
+	<?php } if ($workpost->getWorker()!=null && isset($this->session->actor) && $this->session->actor->getId() === $post->getOriginalPosterId() && $post->getActive()) { ?>
+        <button id="post-submit-tokens" type="button" class="btn btn-success btn-sm font-xs" onclick="submitTokensPopupFeed.setPostID(<?php echo $post->getId(); ?>);submitTokensPopupFeed.Toggle(0);"><i class="fa fa-money"></i> Submit Tokens</button>
+    <?php } if (isset($this->session->actor) && !$post->getActive() && $this->session->actor->getId()==$post->getOriginalposter()) { ?>
 							<button id="post-review" type="button" class="btn btn-warning btn-sm font-xs" onclick="reviewPopupFeed.setPostID(<?php echo $post->getId(); ?>); reviewPopupFeed.Toggle(0);"><i class="fa fa-star"></i> Review</button>
 	<?php } if ($enableDeleteButton) { ?>
 							<button class="btn btn-danger btn-sm font-xs" onclick="deletePost(<?php echo $post->getId(); ?>)">Delete</button>
 	<?php } ?>
                             <br>
-	<?php if ($workpost->getWorker()!=null && isset($this->session->actor) && $workpost->getComittedtokens()!=null && $workpost->getWorkerId() === $this->session->actor->getId()) { ?>
-                            <button id="attach" type="button" class="btn btn-info" onclick="$('#attach-files').click();"><i class="fa fa-file-zip-o"></i> Attach file(s)...</button>
+	<?php if ($post->getActive() && $workpost->getWorker()!=null && isset($this->session->actor) && $workpost->getComittedtokens()!=null && $workpost->getWorkerId() === $this->session->actor->getId()) { ?>
+                            <button id="attach" type="button" class="btn btn-info" onclick="$('#attach-files').click();"><i class="fa fa-file-zip-o"></i> Attach file(s)</button>
                             <input id="attach-files" type="file" style="display: none;" multiple>
-                            <p id="attached-files-display" class="font-times-new-roman font-xs"></p>
                             <script type="text/javascript">
                                 $("#post-controls #attach-files").change(function(event)
                                 {
@@ -57,6 +55,42 @@
                                     for (var i = 0; i < names.length; i++)
                                         filenames += names[i] + " | ";
                                     $("#post-controls #attached-files-display").html(filenames.substring(0, filenames.length - 3));
+
+                                    var postData = new FormData();
+	                                $.each($('#attach-files').prop("files"), function(index, file) { postData.append('+file-' + index, file, file.name); });
+                                    postData.append("workpostid", <?php echo $workpost->getId(); ?>);
+                                    $.ajax
+                                    ({
+                                        url: "http://" + window.location.host + "/User/attachWorkerFiles",
+                                        method: "POST",
+                                        data: postData,
+                                        processData: false,
+                                        contentType: false,
+                                        dataType: "html"
+                                    })
+                                    .done(function(response)
+                                    {
+                                        if (response.startsWith("#Error: "))
+                                        {
+                                            var success = new AlertPopupFeed(Alert.New("danger", response.substring(8), true, "modal"));
+                                            success.Subscribe(alertPopup);
+                                            success.Show(0);
+                                        }
+                                        else
+                                        {
+                                            var type = "success";
+                                            
+                                            if (response.startsWith("#Warning: "))
+                                            {
+                                                type = "warning";
+                                                response = response.substring(10);
+                                            }
+                                            
+                                            var success = new AlertPopupFeed(Alert.New(type, response, true, "modal"));
+                                            success.Subscribe(alertPopup);
+                                            success.Show(0);
+                                        }
+                                    });
                                 });
                             </script>
 	<?php } ?>

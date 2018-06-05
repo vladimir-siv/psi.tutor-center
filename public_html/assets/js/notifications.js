@@ -27,7 +27,7 @@ var notifications = [];
 function viewNotifications()
 {
 	var notif = "";
-	for (var i = 0; i < notifications.length; i++)
+	for (var i = notifications.length - 1; i >= 0; i--)
 		notif += notifications[i].AsView();
 	
 	return "" +

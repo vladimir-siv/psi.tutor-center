@@ -16,7 +16,7 @@
 								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-3 text-center">
 								</div>
 								<div class="col-lg-7 col-md-7 col-sm-7 col-xs-9 text-left">
-									<button id="notifications-2" type="button" class="btn btn-md btn-link btn-link-light" data-toggle="popover" data-html="true" data-placement="bottom" data-trigger="focus"><span class="glyphicon glyphicon-pushpin"></span> Noty (1)</button>
+									<button id="notifications-2" type="button" class="btn btn-md btn-link btn-link-light" data-toggle="popover" data-html="true" data-placement="bottom" data-trigger="focus"><span class="glyphicon glyphicon-pushpin"></span> Noty </button>
 									<a class="btn btn-md btn-link btn-link-light" href="<?php echo base_url(); ?>Guest/profile/<?php echo $actor->getId(); ?>"><span class="glyphicon glyphicon-user"></span> Profile</a>
 								</div>
 							</div>

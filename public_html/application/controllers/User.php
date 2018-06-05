@@ -53,8 +53,30 @@
 					'accepted' => null,
 					'actor' => $this->session->actor->getId()
 					);
-					$this->loader->insertPromotionRequests(array($request));
-					echo 'Success';
+					$insertedrequest = $this->loader->insertPromotionRequests(array($request));
+					$requestid = $insertedrequest[0]->getId();
+					$this->load->helper(array('form', 'url'));
+					$this->load->library('upload', array
+					(
+						'upload_path'	=> FCPATH.'assets/storage/requests/'.$requestid.'/',
+						'allowed_types'	=> 'txt|doc|docx|pdf|jpg|png',
+						'max_size'		=> 102400
+					));
+
+					if(!is_dir(FCPATH.'assets/storage/requests/'.$requestid.'/')) mkdir(FCPATH.'assets/storage/requests/'.$requestid.'/', 0777, TRUE);
+
+					$uploadedall = true;
+					
+					foreach ($_FILES as $id => $file)
+					{
+						if (!$this->upload->do_upload($id))
+						{
+							$uploadedall = false;
+						}
+					}
+					
+					if ($uploadedall) echo '<b>Success!</b> Your promotion request has been sent!';
+					else echo '#Warning: <b>Success!</b> Your promotion request has been sent, but some of the files could not be uploaded!';
 				}
 				else echo '#Error: Data not valid.';
 			}
@@ -192,7 +214,7 @@
 			}
 		}
                 
-                public function changeSectionPic()
+        public function changeSectionPic()
 		{
 			if (isset($this->session->actor) && $this->session->actor->getRawRank() == Rank::Administrator)
 			{
@@ -214,6 +236,65 @@
 				else echo '#Error: <b>Error!</b> Profile picture could not be uploaded!';
 			}
                         else echo '#Error: Error';
+		}
+		public function attachWorkerFiles()
+		{
+			if (isset($this->session->actor)){
+				$workpostid = $this->input->post('workpostid');
+				$em = $this->loader->getEntityManager();
+				$workpost = $em->find('Workpost', $workpostid);
+				$post = $em->find('Post', $workpostid);
+				$worker = $em->find('Actor', $workpost->getWorker());
+				if($workpost == null || $post == null)
+				{
+					echo '#Error: Data not valid.';
+					return;
+				}
+				if(!$post->getActive())
+				{
+					echo '#Error: Post is not active anymore.';
+					return;
+				}
+				$workpost->setWorkeraccepted('1');
+				$worker->setTokens($worker->getTokens() + ActorBalanceMetrix::LOW_TRANSFER_RATE * $workpost->getComittedtokens());
+				$notification = array
+				(
+						'title' => 'Tokens earned',
+						'content' => 'Thank you. Tokens have been transfered to your account.',
+						'actorid' => $worker->getId()
+				);
+				$this->loader->insertNotification($notification['title'], $notification['content'], $notification['actorid']);
+				$post->setActive('0');
+				$em->flush();
+				$this->load->helper(array('form', 'url'));
+				$this->load->library('upload', array
+				(
+					'upload_path'	=> FCPATH.'assets/storage/posts/'.$workpostid.'/',
+					'allowed_types'	=> 'txt|doc|docx|pdf|jpg|png',
+					'max_size'		=> 102400
+				));
+
+				if(!is_dir(FCPATH.'assets/storage/posts/'.$workpostid.'/')) mkdir(FCPATH.'assets/storage/posts/'.$workpostid.'/', 0777, TRUE);
+
+				$uploadedall = true;
+				
+				foreach ($_FILES as $id => $file)
+				{
+					if (!$this->upload->do_upload($id))
+					{
+						$uploadedall = false;
+					}
+				}
+				$notification = array
+				(
+						'title' => 'Worker attached files to your post',
+						'content' => 'Review <a href=\"'.base_url().'Guest/post/'.$workpostid.'\">post</a>.',
+						'actorid' => $post->getOriginalposter()
+				);
+				$this->loader->insertNotification($notification['title'], $notification['content'], $notification['actorid']);
+				if ($uploadedall) echo '<b>Success!</b> Your files have been uploaded!';
+				else echo '#Warning: <b>Success!</b> Some of the files could not be uploaded!';
+			}
 		}
 	}
 ?>

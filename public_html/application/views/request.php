@@ -1,3 +1,13 @@
+<?php 
+function generateLinks($files){
+        $edited = array();
+        foreach($files as $file){
+            $link = '<a href="'.base_url().$file.'" target="_blank">'.substr($file, strrpos($file, '/') + 1).'</a>';
+            $edited[] = $link;
+        }
+        return $edited;
+    }
+?>
 <div class="jumbotron no-padding-bottom font-rammetto-one text-center" style="background-color: inherit;">
     <h1><span class="text-primary">P</span>romotion request</h1>
 </div>
@@ -31,11 +41,7 @@
             echo ' Submitted on: '. $promotionrequest->getSubmittedon()->format('d.m.Y.');
         ?>
             <p class="no-margin no-padding margin-top-xs">
-                Attachments:
-                <a class="btn btn-primary btn-sm hover-text-decor-none" href="storage/requests/1/diploma1.docx" target="_blank">diploma1.docx</a>
-                <a class="btn btn-primary btn-sm hover-text-decor-none" href="storage/requests/1/diploma2.docx" target="_blank">diploma2.docx</a>
-                <a class="btn btn-primary btn-sm hover-text-decor-none" href="storage/requests/1/diploma3.docx" target="_blank">diploma3.docx</a>
-                <a class="btn btn-primary btn-sm hover-text-decor-none" href="storage/requests/1/diploma4.docx" target="_blank">diploma4.docx</a>
+                Attached files: <?php echo '&lt; '.implode(' | ', generateLinks(glob('assets/storage/requests/'.$promotionrequest->getId().'/*.*'))).' &gt;'; ?>
             </p>
         </div>
         <div class="row margin-top-md padding-left-sm padding-right-sm">

@@ -282,67 +282,67 @@
                     }
                 }
 				
-                public function sellTokens()
-                {
-                    if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'SellTokens'))
-                    {
-                                $this->load->library('form_validation');
-				
-				$this->form_validation->set_rules('accountnumber', 'Acountnumber', 'required');
-                                $this->form_validation->set_rules('amountTokens', 'AmountTokens', 'required');
-                                
-                                if ($this->form_validation->run() && preg_match("/^\d+$/", $this->input->post('accountnumber')) == true
-                                                      && preg_match("/^\d+$/", $this->input->post('amountTokens')) == true)
-                                {
-                                        $accountnumber = $this->input->post('accountnumber');
-                                        $amountTokens = $this->input->post('amountTokens');
-                                        
-                                        $qb = $this->loader->getEntityManager()->createQueryBuilder();
-                                        $qb->select('a')->from('Actor', 'a')->where('a.id = :id')->setParameter('id', $this->session->actor->getId());
-                                        $query = $qb->getQuery();
-                                        $actor = $query->getSingleResult();
-                                        $tokens = $actor->getTokens();
-                                        if ($amountTokens > $tokens)
-                                        {
-                                            echo '#Error: Not enough tokens!';
-                                            return;
-                                        }
-                                        $tokens -= $amountTokens;
-                                        $em = $this->loader->getEntityManager();
-                                        $actor->setTokens($tokens);
-                                        $em->flush();
-                                        echo 'Success!';
-                                }
-                                else echo '#Error: Data is not valid.';
-                    }
-                }
-                
-                public function buyTokens()
-                {
-                    if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'BuyTokens'))
-                    {
-                                $this->load->library('form_validation');
-				
-				$this->form_validation->set_rules('accountnumber', 'Acountnumber', 'required');
-                                $this->form_validation->set_rules('amountEuro', 'AmountEuro', 'required');
-                                
-                                if ($this->form_validation->run() && preg_match("/^\d+$/", $this->input->post('accountnumber')) == true
-                                                      && preg_match("/^\d+$/", $this->input->post('amountEuro')) == true)
-                                {
-                                        $accountnumber = $this->input->post('accountnumber');
-                                        $amountEuro = $this->input->post('amountEuro');
-                                        $qb = $this->loader->getEntityManager()->createQueryBuilder();
-                                        $qb->select('a')->from('Actor', 'a')->where('a.id = :id')->setParameter('id', $this->session->actor->getId());
-                                        $query = $qb->getQuery();
-                                        $actor = $query->getSingleResult();
-                                        $tokens = $actor->getTokens();
-                                        $tokens += $amountEuro * ActorBalanceMetrix::TOKEN_RATE;
-                                        $em = $this->loader->getEntityManager();
-                                        $actor->setTokens($tokens);
-                                        $em->flush();
-                                        echo 'Success!';
-                                }
-                                else echo '#Error: Data is not valid.';
+		public function sellTokens()
+		{
+			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'SellTokens'))
+			{
+						$this->load->library('form_validation');
+		
+		$this->form_validation->set_rules('accountnumber', 'Acountnumber', 'required');
+						$this->form_validation->set_rules('amountTokens', 'AmountTokens', 'required');
+						
+						if ($this->form_validation->run() && preg_match("/^\d+$/", $this->input->post('accountnumber')) == true
+												&& preg_match("/^\d+$/", $this->input->post('amountTokens')) == true)
+						{
+								$accountnumber = $this->input->post('accountnumber');
+								$amountTokens = $this->input->post('amountTokens');
+								
+								$qb = $this->loader->getEntityManager()->createQueryBuilder();
+								$qb->select('a')->from('Actor', 'a')->where('a.id = :id')->setParameter('id', $this->session->actor->getId());
+								$query = $qb->getQuery();
+								$actor = $query->getSingleResult();
+								$tokens = $actor->getTokens();
+								if ($amountTokens > $tokens)
+								{
+									echo '#Error: Not enough tokens!';
+									return;
+								}
+								$tokens -= $amountTokens;
+								$em = $this->loader->getEntityManager();
+								$actor->setTokens($tokens);
+								$em->flush();
+								echo 'Success!';
+						}
+						else echo '#Error: Data is not valid.';
+			}
+		}
+		
+		public function buyTokens()
+		{
+			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'BuyTokens'))
+			{
+						$this->load->library('form_validation');
+		
+		$this->form_validation->set_rules('accountnumber', 'Acountnumber', 'required');
+						$this->form_validation->set_rules('amountEuro', 'AmountEuro', 'required');
+						
+						if ($this->form_validation->run() && preg_match("/^\d+$/", $this->input->post('accountnumber')) == true
+												&& preg_match("/^\d+$/", $this->input->post('amountEuro')) == true)
+						{
+								$accountnumber = $this->input->post('accountnumber');
+								$amountEuro = $this->input->post('amountEuro');
+								$qb = $this->loader->getEntityManager()->createQueryBuilder();
+								$qb->select('a')->from('Actor', 'a')->where('a.id = :id')->setParameter('id', $this->session->actor->getId());
+								$query = $qb->getQuery();
+								$actor = $query->getSingleResult();
+								$tokens = $actor->getTokens();
+								$tokens += $amountEuro * ActorBalanceMetrix::TOKEN_RATE;
+								$em = $this->loader->getEntityManager();
+								$actor->setTokens($tokens);
+								$em->flush();
+								echo 'Success!';
+						}
+						else echo '#Error: Data is not valid.';
 			}
 		}
 		
@@ -541,9 +541,15 @@
 				$replyid = $this->input->post('replyid');
 				$em = $this->loader->getEntityManager();
 				$reply = $em->find('Reply', $replyid);
-				
 				if ($reply != null)
 				{
+					$post = $em->find('Post', $reply->getPost());
+					if(Qapost::isReplyAccepted($post, $reply)){
+						$qapost = $em->createQuery('SELECT qap from Qapost qap WHERE qap.id = :postid')
+                    	->setParameter('postid', $post->getId())
+						->getSingleResult();
+						$qapost->setAcceptedanswer(null);
+					}
 					$reply->setDeleted(true);
 					$em->flush();
 					echo '<b>Success!</b> You have successfully deleted reply!';
@@ -552,11 +558,38 @@
 			}
 			else echo '#Error: You don\'t have permission to delete reply.';
 		}
+		public function acceptReply(){
+			$postid = $this->input->post('postid');
+			$replyid = $this->input->post('replyid');
+			$em = $this->loader->getEntityManager();
+			$reply = $em->find('Reply', $replyid);
+			$qapost = $em->find('Qapost', $postid);
+			$post = $em->find('Post', $postid);
+			if (isset($this->session->actor) && $this->session->actor->getId()==$post->getOriginalposter()){
+				if ($reply != null && $qapost != null)
+				{
+					$qapost->setAcceptedanswer($replyid);
+					$em->flush();
+					$notification = array
+					(
+						'title' => 'Reply accepted',
+						'content' => 'Review <a href=\"'.base_url().'Guest/post/'.$postid.'\">post</a>.',
+						'actorid' => $reply->getActor()
+					);
+					$this->loader->insertNotification($notification['title'], $notification['content'], $notification['actorid']);
+					echo '<b>Success!</b> You have successfully accepted reply!';
+				}
+				else echo '#Error: Data not valid.';
+			}
+			else echo '#Error: You don\'t have permission to accept reply.';
+		}
 		public function createReply(){
 			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'Reply')){
 				$replymsg = $this->input->post('replymsg');
 				$postid = $this->input->post('postid');
 				$replierid = $this->input->post('replierid');
+				$em = $this->loader->getEntityManager();
+				$post = $em->find('Post', $postid);
 				$reply = array
 				(
 					'message' => $replymsg,
@@ -567,6 +600,13 @@
 				);
 				$replies = array($reply);
 				$this->loader->insertReplies($replies);
+				$notification = array
+				(
+					'title' => 'Someone replied to your post',
+					'content' => 'Review <a href=\"'.base_url().'Guest/post/'.$postid.'\">post</a>.',
+					'actorid' => $post->getOriginalposter()
+				);
+				if($replierid!=$post->getOriginalposter()) $this->loader->insertNotification($notification['title'], $notification['content'], $notification['actorid']);
 				echo 'You have successfuly replied to post.';
 			}
 			else echo '#Error: You don\'t have permission to delete reply.';
@@ -583,6 +623,13 @@
 					$promotionrequest->setAccepted(1);
 					$actor->setActorRank($actor->getActorRank()+1);
 					$em->flush();
+					$notification = array
+					(
+						'title' => 'Promotion accepted',
+						'content' => 'You have been promoted. Congratulations!',
+						'actorid' => $actor->getId()
+					);
+					$this->loader->insertNotification($notification['title'], $notification['content'], $notification['actorid']);
 					echo '<b>Success!</b> You have successfully accepted promotion request!';
 				}
 				else echo '#Error: Data not valid.';
@@ -595,11 +642,18 @@
 				$reqid = $this->input->post('reqid');
 				$em = $this->loader->getEntityManager();
 				$promotionrequest = $em->find('PromotionRequest', $reqid);
-				
+				$actor = $em->find('Actor', $promotionrequest->getActor());
 				if ($promotionrequest != null)
 				{
 					$promotionrequest->setAccepted(0);
 					$em->flush();
+					$notification = array
+					(
+						'title' => 'Promotion rejected',
+						'content' => 'Your promotion request has been rejected.',
+						'actorid' => $actor->getId()
+					);
+					$this->loader->insertNotification($notification['title'], $notification['content'], $notification['actorid']);
 					echo '<b>Success!</b> You have successfully rejected promotion request!';
 				}
 				else echo '#Error: Data not valid.';
@@ -622,20 +676,20 @@
                       else echo '#Error: Error!';
                 }
                 
-                public function unbanUser()
-                {
-                      if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'BanUser'))
-                      {
-                          	$em = $this->loader->getEntityManager();
-                                $user = $em->createQuery('SELECT a FROM Actor a WHERE a.id = :id')
-                                ->setParameter('id', $this->input->post('id'))
-                                ->getSingleResult();
-                                $user->setBanned(0);
-                                $em->flush();
-                                echo 'Success!';
-                      }
-                      else echo '#Error: Error!';
-                }
+		public function unbanUser()
+		{
+				if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'BanUser'))
+				{
+					$em = $this->loader->getEntityManager();
+						$user = $em->createQuery('SELECT a FROM Actor a WHERE a.id = :id')
+						->setParameter('id', $this->input->post('id'))
+						->getSingleResult();
+						$user->setBanned(0);
+						$em->flush();
+						echo 'Success!';
+				}
+				else echo '#Error: Error!';
+		}
 		
 		public function lockWorkPost()
 		{
@@ -661,6 +715,13 @@
 							{
 								$wpost->setWorker($this->session->actor->getId());
 								$em->flush();
+								$notification = array
+								(
+									'title' => 'Your post has been locked',
+									'content' => 'Review <a href=\"'.base_url().'Guest/post/'.$this->input->post('postid').'\">post</a>.',
+									'actorid' => $post->getOriginalposter()
+								);
+								$this->loader->insertNotification($notification['title'], $notification['content'], $notification['actorid']);
 								echo 'The post is locked successfully.';
 							}
 							else echo '#Warning: The post is already locked. Be aware that it might get unlocked soon.';
@@ -697,7 +758,14 @@
 							$tokens = $wpost->getComittedtokens();
 							$tokens += $op->getTokens();
 							$op->setTokens($tokens);
-							
+							$actor = $this->session->actor->getId() == $post->getOriginalPosterId() ? $wpost->getWorkerId() : $post->getOriginalPosterId();
+							$notification = array
+							(
+								'title' => 'Post has been unlocked',
+								'content' => 'Review <a href=\"'.base_url().'Guest/post/'.$this->input->post('postid').'\">post</a>.',
+								'actorid' => $actor
+							);
+							$this->loader->insertNotification($notification['title'], $notification['content'], $notification['actorid']);
 							$wpost->setWorker(null);
 							$wpost->setComittedtokens(null);
 							$wpost->setWorkeraccepted(false);
@@ -745,7 +813,14 @@
                                         $em = $this->loader->getEntityManager();
 					$em->persist($review);
 					$em->flush();
-                                        echo 'Success';
+					$notification = array
+					(
+						'title' => 'You have been reviewed',
+						'content' => 'Go to your profile to see review.',
+						'actorid' => $workpost->getWorker()
+					);
+					$this->loader->insertNotification($notification['title'], $notification['content'], $notification['actorid']);
+                    echo 'Success';
 				}
 				catch (Exception $ex) { echo '#Error: Date not valid'; }
 			}
@@ -753,7 +828,7 @@
                     }
                 }
                 
-                public function submitTokensToWorkPost()
+        public function submitTokensToWorkPost()
 		{
 			if (isset($this->session->actor))
 			{
@@ -779,7 +854,14 @@
                                                         {
                                                             $op->setTokens($op->getTokens() - $tokens);
                                                             $wpost->setComittedtokens($this->input->post('tokens'));
-                                                            $em->flush();
+															$em->flush();
+															$notification = array
+															(
+																'title' => 'OP has submmited tokens',
+																'content' => 'Review <a href=\"'.base_url().'Guest/post/'.$post->getId().'\">post</a>.',
+																'actorid' => $wpost->getWorker()
+															);
+															$this->loader->insertNotification($notification['title'], $notification['content'], $notification['actorid']);
                                                             echo 'Success!';
                                                         }
                                                         else echo '#Error: You dont\' have enough tokens!';
