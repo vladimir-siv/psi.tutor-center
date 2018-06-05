@@ -214,7 +214,7 @@
 			}
 		}
                 
-                public function changeSectionPic()
+        public function changeSectionPic()
 		{
 			if (isset($this->session->actor) && $this->session->actor->getRawRank() == Rank::Administrator)
 			{
@@ -257,6 +257,13 @@
 				}
 				$workpost->setWorkeraccepted('1');
 				$worker->setTokens($worker->getTokens() + ActorBalanceMetrix::LOW_TRANSFER_RATE * $workpost->getComittedtokens());
+				$notification = array
+				(
+						'title' => 'Tokens earned',
+						'content' => 'Thank you. Tokens have been transfered to your account.',
+						'actorid' => $worker->getId()
+				);
+				$this->loader->insertNotification($notification['title'], $notification['content'], $notification['actorid']);
 				$post->setActive('0');
 				$em->flush();
 				$this->load->helper(array('form', 'url'));
@@ -278,7 +285,13 @@
 						$uploadedall = false;
 					}
 				}
-				
+				$notification = array
+				(
+						'title' => 'Worker attached files to your post',
+						'content' => 'Review <a href=\"'.base_url().'Guest/post/'.$workpostid.'\">post</a>.',
+						'actorid' => $post->getOriginalposter()
+				);
+				$this->loader->insertNotification($notification['title'], $notification['content'], $notification['actorid']);
 				if ($uploadedall) echo '<b>Success!</b> Your files have been uploaded!';
 				else echo '#Warning: <b>Success!</b> Some of the files could not be uploaded!';
 			}

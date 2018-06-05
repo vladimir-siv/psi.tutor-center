@@ -54,13 +54,13 @@ class WorkPost extends Proxy
     }
 
     /*
-	 * New() - kreira novi qapost
+	 * New() - kreira novi workpost
 	 *	@param string $description: opis workposta
      *	@param integer $comittedtokens: kolicina tokena koju korisnik placa workeru
      *	@param bool $workeraccepted: da li je worker prihvatio da radi na workpostu
 	 *	@param integer $id: id posta
      *	@param integer $worker: id workera koji dobija tokene na kraju uradjenog workposta
-	 *	@return: Actor
+	 *	@return: Workpost
 	 */
 	public static function New($description, $comittedtokens, $workeraccepted, $id, $worker)
 	{

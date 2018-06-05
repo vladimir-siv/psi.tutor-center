@@ -85,19 +85,24 @@
 				{
 					$scripts[] = 'assets/js/administration.js';
 				}
-				
+				$notifications = $this->em->createQuery('SELECT n FROM Notification n WHERE n.actor = :actorid')
+					->setParameter('actorid', $this->controller->session->actor->getId())
+					->getResult();
 				// load some notifications
-				$notifications =
-					'notifications =
-					[
-						new Notification(1, "Notification 1", "<p>Notif 1 content</p>", true),
-						new Notification(2, "Notification 2", "<p>Notif 2 content</p>", false),
-						new Notification(3, "Notification 3", "<p>Notif 3 content</p>", true),
-						new Notification(4, "Notification 4", "<p>Notif 4 content</p>", true)
-					]';
-				
-				if ($scriptAddon === null) $scriptAddon = $notifications;
-				else $scriptAddon .= $notifications;
+				$notificationsstring = 'notifications = [';
+				if($notifications != null)
+				{
+					$count = 0;
+					foreach ($notifications as $notification)
+					{
+						$notificationsstring = $notificationsstring.'new Notification('.$notification->getId().', "'.$notification->getTitle().'", "'.$notification->getContent().'", '.($notification->getSeen()=='1'? 'true' : 'false').')';
+						$count++; 
+						if($count !== count($notifications)) $notificationsstring .= ', ';
+					}
+				}
+				$notificationsstring = $notificationsstring.']';
+				if ($scriptAddon === null) $scriptAddon = $notificationsstring;
+				else $scriptAddon .= $notificationsstring;
 			}
 			$this->controller->load->view('templates/head.php', array('title' => $title, 'scripts' => $scripts, 'scriptAddon' => $scriptAddon));
 		}
@@ -451,6 +456,20 @@
 				$insertedrequests[] = $currentrequest;
 			}
 			return $insertedrequests;
+		}
+
+		/*
+		 * insertNotification() - insert-uje notifikaciju
+		 *	@param string $title: naslov notifikacije
+		 *  @param string $content: sadrzaj notifikacije
+		 *	@param integer $actorid: id actora kom je upucena notifikacija
+		 *	@return void
+		 */
+		public function insertNotification($title, $content, $actorid)
+		{
+			$notification = Notification::New($title, $content, $actorid);
+			$this->em->persist($notification);
+			$this->em->flush();
 		}
 		
 		/*

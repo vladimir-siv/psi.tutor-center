@@ -10,7 +10,7 @@ replies =
 		$count = 0;
 		foreach ($replies as $reply)
 		{
-			echo 'new Reply('.$reply->getId().', '. $replyposter[$reply->getId()]->getId().', "'.$replyposter[$reply->getId()]->getUsername().'", "'.$reply->getMessage().'", "'.$reply->getPostedon()->format('d.m.Y.').'", '.($op->getId()===$replyposter[$reply->getId()]->getId()?'true':'false').', '.($enableDeleteButton?'true':'false').', '.(isset($this->session->actor) && $this->session->actor->getId()==$op->getId() && $acceptedreply==null?'true':'false').', '.$post->getId().')';
+			echo 'new Reply('.$reply->getId().', '. $replyposter[$reply->getId()]->getId().', "'.$replyposter[$reply->getId()]->getUsername().'", "'.$reply->getMessage().'", "'.$reply->getPostedon()->format('d.m.Y.').'", '.($op->getId()===$replyposter[$reply->getId()]->getId()?'true':'false').', '.($enableDeleteButton?'true':'false').', '.(isset($this->session->actor) && $this->session->actor->getId()==$op->getId() && $acceptedreply==null && Qapost::checkIfPostIsQA($post)?'true':'false').', '.$post->getId().')';
 			$count++; 
 			if($count !== count($replies)) echo ', ';
 		}

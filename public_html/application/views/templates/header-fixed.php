@@ -9,7 +9,7 @@
 <?php if (isset($actor) && $actor != null) { ?>
 							<div class="col-lg-5 col-md-6 col-sm-2 col-xs-2 text-center"></div>
 							<div class="col-lg-4 col-md-4 col-sm-8 col-xs-8 text-center">
-								<button id="notifications-1" type="button" class="btn btn-xs btn-link btn-link-light" data-toggle="popover" data-html="true" data-placement="bottom" data-trigger="focus"><span class="glyphicon glyphicon-pushpin"></span> Noty (0)</button>
+								<button id="notifications-1" type="button" class="btn btn-xs btn-link btn-link-light" data-toggle="popover" data-html="true" data-placement="bottom" data-trigger="focus"><span class="glyphicon glyphicon-pushpin"></span> Noty</button>
 								<button type="button" class="btn btn-xs btn-link btn-link-light" data-toggle="popover" data-html="true" data-placement="bottom" data-trigger="focus"
 									data-content=
 									'
