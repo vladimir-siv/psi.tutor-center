@@ -1,0 +1,42 @@
+!utility zahteva proveru da li korisnik moze da uradi datu akciju (aktivnost) [OSIM DIJALOGA, tj POPUPOVA!]
+
+===ajax===
+<clientpage>: <controller>::<method>
+
+library: guest::searchSections()
+about: guest::mail()
+create-post: utility::createPost()
+req-promotion: user::requestPromotion()
+post: utility::reply()
+post: utility::lockPost()
+post: utility::releasePost()
+post: utility::submitTokens()
+post: utility::workerAccepted()
+post: utility::deletePost()
+post: utility::deleteReply()
+view-promotion: admin::confirmPromotion() //accept|decline
+profile: tutor::changeAbout()
+profile: tutor::changeDetails()
+profile: utility:banUser() //or unban
+subject: utility::deleteSubject()
+section: utility::deleteSection()
+section: tutor::subscribe()
+
+RegisterDialog: utility::register()
+LoginDialog: utility::login()
+BuyTokensDialog: utility::buyTokens()
+SellTokensDialog: utility::sellTokens()
+CreateSubjectDialog: utility::createSubject()
+CreateSectionDialog: utility::createSection()
+SubmitTokensDialog: utility::submitTokens()
+ReviewDialog: utility::review()
+AboutTutorDialog: utility::changeTutorAbout()
+TutorDetailsDialog: utility::changeTutorDetails()
+
+===push===
+<clientpage>: <controller>::<method>
+
+header: user::getNotifications()
+post: utility::getReplies()
+promotions: admin::getPromotions()
+NOTYETIMPLEMENTED: section: utility::getPosts()

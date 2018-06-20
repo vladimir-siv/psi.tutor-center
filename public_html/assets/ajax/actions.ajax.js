@@ -158,7 +158,17 @@ function sendRequest(position, description, files)
 
 function toggleSeen(notificationid)
 {
-	alert("'" + notificationid + "'");
+	$.ajax
+    ({
+		url: "http://" + window.location.host + "/Utility/toggleSeen",
+		method: "POST",
+		data: { notificationid : notificationid },
+		dataType: "html"
+    })
+	.done(function(response)
+	{
+		window.location.reload();
+	});
 }
 
 function createSubject(popupid, name, description)
@@ -664,7 +674,8 @@ function changeSectionPic(pic, subject, section)
 	});
 }
 
-function acceptReply(replyid, postid){
+function acceptReply(replyid, postid)
+{
     $.ajax
     ({
 		url: "http://" + window.location.host + "/Utility/acceptReply",
@@ -684,4 +695,28 @@ function acceptReply(replyid, postid){
 		alertPopupFeed.Toggle(0);
 		window.location.reload();
     });
+}
+
+function subscribeTutor(section)
+{
+    $.ajax
+    ({
+		url: "http://" + window.location.host + "/Utility/subscribeTutor",
+		method: "POST",
+		data: { section: section },
+		dataType: "html"
+    })
+	.done(function(response)
+    {
+		if (response.startsWith("#Error: "))
+		{
+			alertPopupFeed.content = Alert.New("danger", response.substring(8), true, "modal");
+			alertPopupFeed.Toggle(0);
+			return;
+		}
+		
+		alertPopupFeed.content = Alert.New("success", response, true, "modal");
+		alertPopupFeed.Toggle(0);
+		window.location.reload();
+	});
 }

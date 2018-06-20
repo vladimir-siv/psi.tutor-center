@@ -31,11 +31,11 @@
                         </p>
 <?php if (isset($workpost)) { ?>
                         <div id="post-controls" class="border-boxed expanded">
-	<?php if ($workpost->getWorker()===null && isset($this->session->actor) && $this->session->actor->getId()!=$post->getOriginalPosterId() && $this->session->actor->getRawRank() >= Rank::Tutor && $post->getActive()) { ?>
+	<?php if ($workpost->getWorker()===null && isset($this->session->actor) && $this->session->actor->getId()!==$post->getOriginalPosterId() && $this->session->actor->getRawRank() >= Rank::Tutor && $post->getActive()) { ?>
                             <button id="post-lock" type="button" class="btn btn-primary btn-sm font-xs" onclick="lockWorkPost(<?php echo $post->getId(); ?>);"><i class="fa fa-key"></i> Lock</button>
-	<?php } if ($workpost->getWorker()!=null && isset($this->session->actor) && ($this->session->actor->getId() === $post->getOriginalPosterId() || $this->session->actor->getRawRank() >= Rank::Tutor) && $post->getActive()) { ?>
+	<?php } if ($workpost->getWorker()!==null && isset($this->session->actor) && ($this->session->actor->getId() === $post->getOriginalPosterId() || $workpost->getWorkerId() === $this->session->actor->getId()) && $post->getActive()) { ?>
                             <button id="post-release" type="button" class="btn btn-warning btn-sm font-xs" onclick="releaseWorkPost(<?php echo $post->getId(); ?>);"><i class="fa fa-unlock-alt"></i> Release</button>
-	<?php } if ($workpost->getWorker()!=null && isset($this->session->actor) && $this->session->actor->getId() === $post->getOriginalPosterId() && $post->getActive()) { ?>
+	<?php } if ($workpost->getWorker()!==null && isset($this->session->actor) && $this->session->actor->getId() === $post->getOriginalPosterId() && $post->getActive()) { ?>
         <button id="post-submit-tokens" type="button" class="btn btn-success btn-sm font-xs" onclick="submitTokensPopupFeed.setPostID(<?php echo $post->getId(); ?>);submitTokensPopupFeed.Toggle(0);"><i class="fa fa-money"></i> Submit Tokens</button>
     <?php } if (isset($this->session->actor) && !$post->getActive() && $this->session->actor->getId()==$post->getOriginalposter()) { ?>
 							<button id="post-review" type="button" class="btn btn-warning btn-sm font-xs" onclick="reviewPopupFeed.setPostID(<?php echo $post->getId(); ?>); reviewPopupFeed.Toggle(0);"><i class="fa fa-star"></i> Review</button>
@@ -43,7 +43,7 @@
 							<button class="btn btn-danger btn-sm font-xs" onclick="deletePost(<?php echo $post->getId(); ?>)">Delete</button>
 	<?php } ?>
                             <br>
-	<?php if ($post->getActive() && $workpost->getWorker()!=null && isset($this->session->actor) && $workpost->getComittedtokens()!=null && $workpost->getWorkerId() === $this->session->actor->getId()) { ?>
+	<?php if ($post->getActive() && $workpost->getWorker()!==null && isset($this->session->actor) && $workpost->getComittedtokens()!==null && $workpost->getWorkerId() === $this->session->actor->getId()) { ?>
                             <button id="attach" type="button" class="btn btn-info" onclick="$('#attach-files').click();"><i class="fa fa-file-zip-o"></i> Attach file(s)</button>
                             <input id="attach-files" type="file" style="display: none;" multiple>
                             <script type="text/javascript">

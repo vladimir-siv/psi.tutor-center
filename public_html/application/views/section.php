@@ -1,4 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<?php require_once 'application/models/Entities.php'; ?>
 <?php $section->reloadbase(); $wereLoaded = $section->refsAreLoaded(); $section->loadReferences(); ?>
 				<div class="row margin-top-md">
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -12,19 +13,19 @@
 							</div>
 							<div class="col-lg-3 col-md-3 hidden-sm hidden-xs text-center">
 								<img class="mr-3" src="<?php echo base_url(); ?>assets/storage/subjects/<?php echo $section->getSubject()->getId(); ?>/sections/<?php echo $section->getId(); ?>/icon.png" style="width:80px"
-                                                                     <?php if (isset($this->session->actor) && $this->session->actor->getRawRank() == Rank::Administrator) echo 'onclick="$(\'#attach-section-pic\').click();"'; ?>>
+								<?php if (isset($this->session->actor) && $this->session->actor->getRawRank() == Rank::Administrator) echo 'onclick="$(\'#attach-section-pic\').click();"'; ?>>
 							</div>
-                                                        <input id="attach-section-pic" type="file" style="display: none;">
-                                                        <script type="text/javascript">
-                                                            $("#attach-section-pic").change(function(event)
-                                                            {
-                                                                    var files = [];
-                                                                    $.each($("input#attach-section-pic").prop("files"), function(index, file) { files.push(file); });
+							<input id="attach-section-pic" type="file" style="display: none;">
+							<script type="text/javascript">
+								$("#attach-section-pic").change(function(event)
+								{
+										var files = [];
+										$.each($("input#attach-section-pic").prop("files"), function(index, file) { files.push(file); });
 
-                                                                    if (files.length === 1) changeSectionPic(files[0], <?php echo $section->getSubject()->getId(); ?>, <?php echo $section->getId(); ?>);
-                                                                    //else Alert.New("You must select one file");
-                                                            });
-                                                        </script>
+										if (files.length === 1) changeSectionPic(files[0], <?php echo $section->getSubject()->getId(); ?>, <?php echo $section->getId(); ?>);
+										//else Alert.New("You must select one file");
+								});
+							</script>
 						</div>
 					</div>
 				</div>
@@ -34,7 +35,14 @@
 							<?php echo $section->getDescription(); ?>
 					   </p>
 <?php
-					if ($enableDeleteButton) echo '<center><button class="btn btn-danger" onclick="deleteSection('.$section->getId().')">Delete</button></center>'; 
+					if ($enableDeleteButton) echo '<center><button class="btn btn-danger" onclick="deleteSection('.$section->getId().')">Delete</button></center>';
+					
+					if (isset($this->session->actor) && $this->session->actor->getRawRank() >= Rank::Tutor)
+					{
+						if ($this->session->actor->isSubscribed($section->getId()))
+							echo '<center><button class="btn btn-primary" onclick="subscribeTutor('.$section->getId().')">Unsubscribe</button></center>';
+						else echo '<center><button class="btn btn-primary" onclick="subscribeTutor('.$section->getId().')">Subscribe</button></center>';
+					}
 ?>
 					</div>
 				</div>

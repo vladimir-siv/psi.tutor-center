@@ -282,12 +282,18 @@
 			$degree = $workpostsCount;
 			$this->loader->loadPage('profile.php', array('actor' => $actor, 'sections' => $sections, 'avg' => $avg, 'reviews' => $reviews, 'degree' => $degree), 'Profile', -1, array('assets/js/profile.js'));
 		}
-
+		
 		/*
 		* promotions() - otvara stranicu promotions.php
 		*/      
 		public function promotions()
 		{
+			if (!isset($this->session->actor) || $this->session->actor->getRawRank() < Rank::Administrator)
+			{
+				show_404();
+				return;
+			}
+			
 			$em = $this->loader->getEntityManager();
 			//$promotionrequests = $em->createQuery('SELECT pr FROM PromotionRequest pr ORDER BY pr.submittedon DESC')
 			//						->getResult();

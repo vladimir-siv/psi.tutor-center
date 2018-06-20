@@ -1,0 +1,97 @@
+profile.php proveriti da li su sekcije ok, deleted...
+
+Subject::getAll($withDeleted = false) -> dohvata sve Subject-e
+{
+	return parent::$_em->createQuery('SELECT s FROM Subject s WHERE s.deleted = :deleted')
+						->setParameter('deleted', $withDeleted)
+						->getResult();
+}
+
+
+Subject::getAllSections($subjectid, $withDeleted = false) -> dohvata sve Section-e za zadati Subject sa subjectid
+{
+	return parent::$_em->createQuery('SELECT s FROM Section s WHERE s.subject = :id AND s.deleted = :deleted')
+						->setParameter('id', $subjectid)
+						->setParameter('deleted', $withDeleted)
+						->getResult();
+}
+
+Actor::getAllUsers() -> dohvata sve Actor-e sa actorrank = 2
+{
+	return parent::$_em->createQuery('SELECT a FROM Actor a WHERE a.actorrank = 2')->getResult();
+}
+
+Actor::getAllTutors() -> dohvata sve Actor-e sa actorrank > 2
+{
+	return parent::$_em->createQuery('SELECT a FROM Actor a WHERE a.actorrank > 2')->getResult();
+}
+
+Actor::workpostsCount($actorid) -> dohvata broj Workpost-ova odradjenih od strane Actor-a sa actorid
+{
+	return parent::$_em->createQuery('SELECT count(w.id) FROM Workpost w WHERE w.worker = :tutorid')
+						->setParameter('tutorid', $tutorid)
+						->getSingleScalarResult();
+}
+
+Actor::getAllSubscriptions($actorid) -> dohvata sve Subscription-e od Actor-a sa zadatim id
+{
+	return parent::$_em->createQuery('SELECT s FROM SectionSubscription s WHERE s.actor = :id')
+						->setParameter('id', $actorid)
+						->getResult();
+}
+
+Actor::getAllReviews($actorid) -> dohvata Review-ove od Actor-a sa zadatim id
+{
+	return parent::$_em->createQuery('SELECT a FROM ActorReview a WHERE a.reviewee = :id')
+						->setParameter('id', $actorid)
+						->getResult();
+}
+
+Section::get($id, $withDeleted = false) -> dohvata Sekciju sa zadatim id
+{
+	return parent::$_em->createQuery('SELECT s FROM Section s WHERE s.id = :sectionid AND s.deleted = :deleted')
+						->setParameter('sectionid', $id)
+						->setParameter('deleted', $withDeleted)
+						->getSingleResult();
+}
+
+PromotionRequest::getAllDesc() -> dohvata sve PromotionRequest-ove po opadajucem poretku datuma
+{
+	return parent::$_em->createQuery('SELECT pr FROM PromotionRequest pr ORDER BY pr.submittedon DESC')
+						->getResult();
+}	
+
+PromotionRequest::getAwaitingRequest($actorid) -> dohvata PromotionRequest od Actor-a sa zadatim actorid koji jos uvek nije prihvacen/odbijen
+{
+	return parent::$_em->createQuery('SELECT pr FROM PromotionRequest pr WHERE pr.actor = :actorid AND pr.accepted IS NULL')
+                            ->setParameter('actorid', $actorid)
+                            ->getResult();
+}			
+
+Post::getAll($withDeleted = false) -> dohvata sve Post-ove po opadajucem poretku datuma
+{
+	return parent::$_em->createQuery('SELECT p FROM Post p WHERE p.deleted = :deleted ORDER BY p.postedon DESC')
+						->setParameter('deleted', $withDeleted)
+						->getResult();
+}
+
+Post::getAllPostSections($postid) -> dohvata sve PostSectione-e za zadati Post sa postid
+{
+	return parent::$_em->createQuery('SELECT ps FROM PostSection ps WHERE ps.post = :postid')
+						->setParameter('postid', $postid)
+						->getResult();
+}	
+
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						

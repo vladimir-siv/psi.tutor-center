@@ -46,7 +46,7 @@ class Actor extends Proxy
 	 */
 	public static function workpostsCount($actorid)
 	{
-		return parent::$_em->createQuery('SELECT count(w.id) FROM Workpost w WHERE w.worker = :actorid')
+		return parent::$_em->createQuery('SELECT count(w.id) FROM Workpost w WHERE w.worker = :actorid AND w.workeraccepted = true')
 							->setParameter('actorid', $actorid)
 							->getSingleScalarResult();
 	}
@@ -506,6 +506,32 @@ class Actor extends Proxy
 		else return $this->actorrank;
 	}
 	
+    /**
+     * Checks if actor is subscribed to a section
+     * @param integer $sectionid: section id
+     * @return integer
+     */
+	public function isSubscribed($sectionid)
+	{
+		return parent::$_em->createQuery('SELECT count(s.actor) FROM SectionSubscription s WHERE s.actor = :actor AND s.section = :section')
+							->setParameter('actor', $this->getId())
+							->setParameter('section', $sectionid)
+							->getSingleScalarResult();
+	}
+	
+	/**
+     * Gets the full subscription object
+     * @param integer $sectionid: section id
+     * @return SectionSubscription
+     */
+	public function getSubscription($sectionid)
+	{
+		return parent::$_em->createQuery('SELECT s FROM SectionSubscription s WHERE s.actor = :actor AND s.section = :section')
+							->setParameter('actor', $this->getId())
+							->setParameter('section', $sectionid)
+							->getResult();
+	}
+	
 	/* ============== PROXY ============== */
 	
 	public function loadReferences()
@@ -529,6 +555,6 @@ class Actor extends Proxy
 abstract class ActorBalanceMetrix
 {
 	const TOKEN_RATE = 1;
-        const HIGH_TRANSFER_RATE = 0.8;
-        const LOW_TRANSFER_RATE = 0.55;
+	const HIGH_TRANSFER_RATE = 0.8;
+	const LOW_TRANSFER_RATE = 0.55;
 }

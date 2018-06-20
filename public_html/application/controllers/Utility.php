@@ -496,6 +496,61 @@
 		}
 		
 		/*
+		 *	subscribeTutor() - subscribe-uje tutora na datu oblast
+		 */
+		public function subscribeTutor()
+		{
+			if (isset($this->session->actor) && $this->session->actor->getRawRank() >= Rank::Tutor)
+			{
+				try
+				{
+					$em = $this->loader->getEntityManager();
+					$subscription = $this->session->actor->getSubscription($this->input->post('section'));
+					
+					if (count($subscription) > 0)
+					{
+						$em->remove($subscription[0]);
+						echo 'Successfully unsubscribed!';
+					}
+					else
+					{
+						$subscription = SectionSubscription::New($this->session->actor->getId(), $this->input->post('section'));
+						$em->persist($subscription);
+						echo 'Successfully subscribed!';
+					}
+					
+					$em->flush();
+				}
+				catch (Exception $ex) { echo '#Error: Unknown internal error.'; }
+			}
+		}
+		
+		/*
+		 *	toggleSeen() - togluje sina
+		 */
+		public function toggleSeen()
+		{
+			if (isset($this->session->actor))
+			{
+				
+				$this->load->library('form_validation');
+				
+				$this->form_validation->set_rules('notificationid', 'notificationid', 'required');
+
+				if($this->form_validation->run())
+				{
+					$em = $this->loader->getEntityManager();
+					$notification = $em->find('Notification', $this->input->post('notificationid'));
+					if($notification != null && $notification->getActor() == $this->session->actor->getId())
+					{
+						$notification->setSeen(!$notification->getSeen());
+						$em->flush();
+					}
+				}
+			}
+		}
+		
+		/*
 		 *	deleteSubject() - logicki brise kategoriju
 		 */
 		public function deleteSubject()
