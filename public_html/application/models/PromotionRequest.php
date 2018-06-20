@@ -8,6 +8,32 @@
  */
 class PromotionRequest extends Proxy
 {
+	/* ================= STATIC ================= */
+	
+	/*
+	 * getAllDesc() - dohvata sve PromotionRequest-ove po opadajucem poretku datuma
+	 *	@return: Collection
+	 */
+	public static function getAllDesc()
+	{
+		return parent::$_em->createQuery('SELECT pr FROM PromotionRequest pr ORDER BY pr.submittedon DESC')
+							->getResult();
+	}	
+	
+	/*
+	 * getAwaitingRequest() - dohvata PromotionRequest od Actor-a sa zadatim actorid koji jos uvek nije prihvacen/odbijen
+	 *	@param int $actorid: id aktora
+	 *	@return: Collection
+	 */
+	public static function getAwaitingRequest($actorid)
+	{
+		return parent::$_em->createQuery('SELECT pr FROM PromotionRequest pr WHERE pr.actor = :actorid AND pr.accepted IS NULL')
+								->setParameter('actorid', $actorid)
+								->getResult();
+	}
+	
+	/* ================ INSTANCE ================ */
+	
     /**
      * @var integer
      *

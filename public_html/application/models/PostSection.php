@@ -8,6 +8,22 @@
  */
 class PostSection extends Proxy
 {
+	/* ================= STATIC ================= */
+	
+	/*
+	 * findBySectionId() - dohvata sve PostSection sa sectionid
+	 *	@param int $id: id oblasti
+	 *	@return: \Doctrine\Common\Collections\Collection
+	 */
+	public static function findBySectionId($id)
+	{
+		return parent::$_em->createQuery('SELECT ps FROM PostSection ps WHERE ps.section = :sectionid')
+							->setParameter('sectionid', $id)
+							->getResult();
+	}
+	
+	/* ================ INSTANCE ================ */
+	
 	/**
 	 * @var integer
 	 *

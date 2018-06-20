@@ -20,11 +20,6 @@ break cancel
 Client --> Profile
 note right : End of SSU
 end
-Client --> Profile : confirm
-Profile -> Profile : checkNewAndOldPass() : correct
-break !correct
-Profile -> Client : error
-end
 deactivate  Profile
 Profile ->> Spage : <<ajax>>input
 activate Spage

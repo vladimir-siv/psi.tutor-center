@@ -8,6 +8,34 @@
  */
 class Post extends Proxy
 {
+	/* ================= STATIC ================= */
+	
+	/*
+	 * getAll() - dohvata sve Post-ove po opadajucem poretku datuma
+	 *	@param bool $withDeleted: indikator da li treba dohvatiti i obrisane postove
+	 *	@return: Collection
+	 */
+	public static function getAll($withDeleted = false)
+	{
+		return parent::$_em->createQuery('SELECT p FROM Post p WHERE p.deleted = :deleted ORDER BY p.postedon DESC')
+							->setParameter('deleted', $withDeleted)
+							->getResult();
+	}
+	
+	/*
+	 * getAllPostSections() - dohvata sve PostSection-e za zadati Post sa postid (kojim sectionima pripada post)
+	 *	@param int $postid: id posta
+	 *	@return: Collection
+	 */
+	public static function getAllPostSections($postid)
+	{
+		return parent::$_em->createQuery('SELECT ps FROM PostSection ps WHERE ps.post = :postid')
+							->setParameter('postid', $postid)
+							->getResult();
+	}
+	
+	/* ================ INSTANCE ================ */
+	
     /**
      * @var integer
      *

@@ -8,6 +8,22 @@
  */
 class Reply extends Proxy
 {
+	/* ================= STATIC ================= */
+	
+	/*
+	 * findByPostId() - dohvata sve reply-eve sa posta
+	 *	@param int $id: id posta
+	 *	@return: \Doctrine\Common\Collections\Collection
+	 */
+	public static function findByPostId($id)
+	{
+		return parent::$_em->createQuery('SELECT r FROM Reply r WHERE r.post = :postid')
+							->setParameter('postid', $id)
+							->getResult();
+	}
+	
+	/* ================ INSTANCE ================ */
+	
     /**
      * @var integer
      *

@@ -11,6 +11,32 @@ class Subject extends Proxy
 	/* ================= STATIC ================= */
 	
 	/*
+	 * getAll() - dohvata sve Subject-e
+	 *	@param bool $withDeleted: indikator da li u rezultatu treba ukljuciti obrisane
+	 *	@return: \Doctrine\Common\Collections\Collection
+	 */
+	public static function getAll($withDeleted = false)
+	{
+		return parent::$_em->createQuery('SELECT s FROM Subject s WHERE s.deleted = :deleted')
+							->setParameter('deleted', $withDeleted)
+							->getResult();
+	}
+	
+	/*
+	 * getAllSections() - dohvata sve Section-e za zadati Subject sa subjectid
+	 *	@param int $subjectid: id kategorije
+	 *	@param bool $withDeleted: indikator da li u rezultatu treba ukljuciti obrisane
+	 *	@return: \Doctrine\Common\Collections\Collection
+	 */
+	public static function getAllSections($subjectid, $withDeleted = false)
+	{
+		return parent::$_em->createQuery('SELECT s FROM Section s WHERE s.subject = :id AND s.deleted = :deleted')
+							->setParameter('id', $subjectid)
+							->setParameter('deleted', $withDeleted)
+							->getResult();
+	}
+	
+	/*
 	 * findByName() - dohvata sve kategorije po nazivu
 	 *	@param string $name: naziv kategorije
 	 *	@return: \Doctrine\Common\Collections\Collection

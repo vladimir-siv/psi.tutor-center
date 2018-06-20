@@ -2,8 +2,14 @@
 	defined('BASEPATH') OR exit('No direct script access allowed');
 	require_once 'application/models/Entities.php';
 	
+	/*
+	 *	Development - used only for development & debugging
+	 */
 	class Development extends CI_Controller
 	{
+		/*
+		 *	Konstruktor
+		 */
 		public function __construct()
 		{
 			parent::__construct();
@@ -15,18 +21,45 @@
 			Proxy::__init__();
 		}
 		
+		/*
+		 *	Index
+		 */
 		public function index()
 		{
 			echo 'Development controller.';
 		}
 		
-		public function initdb()
+		/*
+		 *	testPrivilege() - testira da li ulogovani aktor ima privilegije za datom akcijom
+		 *	@param string $action: akcija za proveru
+		 */
+		public function testPrivilege($action)
 		{
-			echo 'Initializing database . . . ';
-			$this->loader->initializeDatabase();
-			echo 'Database initialized!';
+			if (!isset($this->session->actor))
+			{
+				echo 'Please, log in!';
+				return;
+			}
+			
+			$actor = $this->session->actor;
+			echo Privilege::has($actor->getRawRank(), $action) ? 'has' : 'not'; 
 		}
 		
+		/*
+		 *	initdb() - inicijalizuje bazu podataka sa rankovima,
+		 *	administratorima i akcijama
+		 */
+		public function initdb()
+		{
+			echo 'Initializing database . . .<br/>';
+			$this->loader->initializeDatabase();
+			echo 'Database initialized!<br/>';
+		}
+		
+		/*
+		 *	insertSubjects() - insert-uje kategorije u bazu
+		 *	! NE KREIRA FOLDERE
+		 */
 		public function insertSubjects()
 		{
 			$subjects = array
@@ -38,9 +71,13 @@
 			
 			$this->loader->insertSubjects($subjects);
 			
-			echo 'Ok';
+			echo 'Subjects inserted!<br/>';
 		}
 		
+		/*
+		 *	insertSections() - insert-uje oblasti u bazu
+		 *	! NE KREIRA FOLDERE
+		 */
 		public function insertSections()
 		{
 			$subject = Subject::findByName('Computer Science')[0];
@@ -53,9 +90,12 @@
 			
 			$this->loader->insertSections($subject, $sections);
 			
-			echo 'Ok';
+			echo 'Sections inserted!<br/>';
 		}
 		
+		/*
+		 *	subscribeTutors() - subscribe-uje tutore na sekcije
+		 */
 		public function subscribeTutors()
 		{
 			$sectionCS = Section::findByName('C#')[0];
@@ -83,26 +123,19 @@
 			$this->loader->subscribeTutors($sectionCS, $tutorsCS);
 			$this->loader->subscribeTutors($sectionCPP, $tutorsCPP);
 			
-			echo 'Ok';
+			echo 'Tutors subscribed!<br/>';
 		}
 		
-		public function testPrivilege($action)
-		{
-			if (!isset($this->session->actor))
-			{
-				echo 'Please, log in!';
-				return;
-			}
-			
-			$actor = $this->session->actor;
-			echo Privilege::has($actor->getRawRank(), $action) ? 'has' : 'not'; 
-		}
-
+		/*
+		 *	insertPosts() - insert-uje postove u bazu
+		 *	! NE KREIRA FOLDERE
+		 */
 		public function insertPosts()
 		{
 			$sectionCS = Section::findByName('C#')[0];
 			$sectionCPP = Section::findByName('C++')[0];
 			$sections = array($sectionCS, $sectionCPP);
+			
 			$qapost = array
 			(
 				'type' => 'qapost',
@@ -110,9 +143,10 @@
 				'postedon' => new \DateTime('now'),
 				'originalposter' => 1,
 				'description' => 'SampleDescriptionQApost',
-				'acceptedanswer' => 1,
+				'acceptedanswer' => null,
 				'postsections' => $sections
 			);
+			
 			$workpost = array
 			(
 				'type' => 'workpost',
@@ -125,11 +159,16 @@
 				'workeraccepted' => 1,
 				'postsections' => array($sectionCS)
 			);
+			
 			$posts = array($qapost, $workpost);
 			$this->loader->insertPosts($posts);
 			
-			echo 'Posts inserted.';
+			echo 'Posts inserted!<br/>';
 		}
+		
+		/*
+		 *	insertReplies() - insert-uje reply-eve
+		 */
 		public function insertReplies()
 		{
 			$reply1 = array
@@ -143,8 +182,13 @@
 			$replies = array($reply1);
 			$this->loader->insertReplies($replies);
 			
-			echo 'Replies inserted.';
+			echo 'Replies inserted!<br/>';
 		}
+		
+		/*
+		 *	insertPromotionRequests() - insert-uje zahteve za unapredjenje
+		 *	! NE KREIRA FOLDERE
+		 */
 		public function insertPromotionRequests()
 		{
 			$request1 = array
@@ -158,7 +202,21 @@
 			$requests = array($request1);
 			$this->loader->insertPromotionRequests($requests);
 			
-			echo 'Requests inserted.';
+			echo 'Requests inserted!<br/>';
+		}
+		
+		/*
+		 *	initWholeDb() - inicijalizuje citavu bazu
+		 */
+		public function initWholeDb()
+		{
+			$this->initdb();
+			$this->insertSubjects();
+			$this->insertSections();
+			$this->subscribeTutors();
+			$this->insertPosts();
+			$this->insertReplies();
+			$this->insertPromotionRequests();
 		}
 	}
 ?>

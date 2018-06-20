@@ -12,6 +12,70 @@ class Actor extends Proxy
 	/* ================= STATIC ================= */
 	
 	/*
+	 * get() - dohvata trazenog aktora
+	 *	@param int $id: id
+	 *	@return: Actor
+	 */
+	public static function get($id)
+	{
+		return parent::$_em->find('Actor', $id);
+	}
+	
+	/*
+	 * getAllUsers() - dohvata sve Actor-e sa actorrank = 2
+	 *	@return: Collection
+	 */
+	public static function getAllUsers()
+	{
+		return parent::$_em->createQuery('SELECT a FROM Actor a WHERE a.actorrank = 2')->getResult();
+	}
+	
+	/*
+	 * getAllTutors() - dohvata sve Actor-e sa actorrank > 2
+	 *	@return: Collection
+	 */
+	public static function getAllTutors()
+	{
+		return parent::$_em->createQuery('SELECT a FROM Actor a WHERE a.actorrank > 2')->getResult();
+	}
+	
+	/*
+	 * workpostsCount() - dohvata broj Workpost-ova odradjenih od strane Actor-a sa actorid
+	 *	@param int $actorid: id aktora
+	 *	@return: int
+	 */
+	public static function workpostsCount($actorid)
+	{
+		return parent::$_em->createQuery('SELECT count(w.id) FROM Workpost w WHERE w.worker = :actorid')
+							->setParameter('actorid', $actorid)
+							->getSingleScalarResult();
+	}
+	
+	/*
+	 * getAllSubscriptions() - dohvata sve Subscription-e od Actor-a sa zadatim id
+	 *	@param int $actorid: id aktora
+	 *	@return: Collection
+	 */
+	public static function getAllSubscriptions($actorid)
+	{
+		return parent::$_em->createQuery('SELECT s FROM SectionSubscription s WHERE s.actor = :id')
+							->setParameter('id', $actorid)
+							->getResult();
+	}
+	
+	/*
+	 * getAllReviews() - dohvata Review-ove od Actor-a sa zadatim id
+	 *	@param int $actorid: id aktora
+	 *	@return: Actor
+	 */
+	public static function getAllReviews($actorid)
+	{
+		return parent::$_em->createQuery('SELECT a FROM ActorReview a WHERE a.reviewee = :id')
+							->setParameter('id', $actorid)
+							->getResult();
+	}
+	
+	/*
 	 * findActorByUsernameAndPassword() - dohvata aktora po korisnickom imenu i lozinci
 	 *	@param string $username: korisnicko ime
 	 *	@param string $password: lozinka

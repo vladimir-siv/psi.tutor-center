@@ -5,23 +5,37 @@
 	
 	class User extends Guest
 	{
+		/*
+		 * Konstruktor
+		 */
 		public function __construct()
 		{
 			parent::__construct();
 		}
-		
+
+		/*
+		* create_post() - otvara stranicu create-post.php
+		*/
 		public function create_post()
 		{
 			$this->loader->loadPage('create-post.php', null, 'Create Post', -1, array('assets/js/posts.js', 'assets/ajax/search.ajax.js'));
 		}
+
+		/*
+		* req_promotion() - otvara stranicu reqpromotion.php
+		*/
 		public function req_promotion()
 		{
 			$this->loader->loadPage('reqpromotion.php', null, 'PromotionRequest', -1, null, null);
 		}
+
+		/*
+		* requestPromotion() - obradjuje zahtev za promociju
+		*/
 		public function requestPromotion()
 		{
-			if (isset($this->session->actor)){
-
+			if (isset($this->session->actor))
+			{
 				$this->load->library('form_validation');
 				
 				$this->form_validation->set_rules('position', 'Position', 'required');
@@ -32,26 +46,27 @@
 				if ($this->form_validation->run())
 				{
                     $em = $this->loader->getEntityManager();
-                    if($this->session->actor->getRawRank()==Rank::Administrator)
+                    if ($this->session->actor->getRawRank()==Rank::Administrator)
                     {
                         echo '#Error: You have already acquired maximum rank.';
                         return;
                     }
-                    $existing_request = $em->createQuery('SELECT pr FROM PromotionRequest pr WHERE pr.actor = :actorid AND pr.accepted IS NULL')
-                            ->setParameter('actorid', $this->session->actor->getId())
-                            ->getResult();
-                    if($existing_request != null)
+                    //$existing_request = $em->createQuery('SELECT pr FROM PromotionRequest pr WHERE pr.actor = :actorid AND pr.accepted IS NULL')
+                    //        ->setParameter('actorid', $this->session->actor->getId())
+					//		->getResult();
+					$existing_request = PromotionRequest::getAwaitingRequest($this->session->actor->getId());
+                    if ($existing_request != null)
                     {
                         echo '#Error: You have already posted request which is awaiting review.';
                         return;
                     }
 					$request = array
 					(
-					'title' => $position,
-					'description' => $description,
-					'submittedon' => new \DateTime('now'),
-					'accepted' => null,
-					'actor' => $this->session->actor->getId()
+						'title' => $position,
+						'description' => $description,
+						'submittedon' => new \DateTime('now'),
+						'accepted' => null,
+						'actor' => $this->session->actor->getId()
 					);
 					$insertedrequest = $this->loader->insertPromotionRequests(array($request));
 					$requestid = $insertedrequest[0]->getId();
@@ -63,7 +78,7 @@
 						'max_size'		=> 102400
 					));
 
-					if(!is_dir(FCPATH.'assets/storage/requests/'.$requestid.'/')) mkdir(FCPATH.'assets/storage/requests/'.$requestid.'/', 0777, TRUE);
+					if (!is_dir(FCPATH.'assets/storage/requests/'.$requestid.'/')) mkdir(FCPATH.'assets/storage/requests/'.$requestid.'/', 0777, TRUE);
 
 					$uploadedall = true;
 					
@@ -81,93 +96,106 @@
 				else echo '#Error: Data not valid.';
 			}
 		}
-                
+
+		/*
+		* changeAbout() - obradjuje zahtev za promenu description-a u okviru profile-a
+		*/
 		public function changeAbout()
 		{
 			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'ChangeAbout'))
 			{
-						$this->load->library('form_validation');
-		
-						$this->form_validation->set_rules('description', 'Description', 'required');
-						
-						if ($this->form_validation->run())
-						{
-								$description = $this->input->post('description');
-								$qb = $this->loader->getEntityManager()->createQueryBuilder();
-								$qb->select('a')->from('Actor', 'a')->where('a.id = :id')->setParameter('id', $this->session->actor->getId());
-								$query = $qb->getQuery();
-								$actor = $query->getSingleResult();
-								$tokens = $actor->getTokens();
-								$em = $this->loader->getEntityManager();
-								$actor->setDescription($description);
-								$em->flush();
-								echo 'Success!';
-						}
-						else echo '#Error: Data is not valid.';
+				$this->load->library('form_validation');
+
+				$this->form_validation->set_rules('description', 'Description', 'required');
+				
+				if ($this->form_validation->run())
+				{
+					$description = $this->input->post('description');
+					//$qb = $this->loader->getEntityManager()->createQueryBuilder();
+					//$qb->select('a')->from('Actor', 'a')->where('a.id = :id')->setParameter('id', $this->session->actor->getId());
+					//$query = $qb->getQuery();
+					//$actor = $query->getSingleResult();
+					$em = $this->loader->getEntityManager();
+					$actor = $em->find('Actor', $this->session->actor->getId());
+					$tokens = $actor->getTokens();
+					$em = $this->loader->getEntityManager();
+					$actor->setDescription($description);
+					$em->flush();
+					echo 'Success!';
+				}
+				else echo '#Error: Data is not valid.';
 			}
 		}
-                
+
+		/*
+		* changeDatails() - obradjuje zahtev za promenu licnih informacija u okviru profila
+		*/
 		public function changeDatails()
 		{
 			if (isset($this->session->actor) && Privilege::has($this->session->actor->getRawRank(), 'ChangeDetails'))
 			{
-						$this->load->library('form_validation');
-		
-						$firstname = $this->input->post('firstname');
-						$lastname = $this->input->post('lastname');
-						$email = $this->input->post('email');
-						$birthdate = $this->input->post('birthdate');
-						
-						if (isset($email) && !empty($email)) $this->form_validation->set_rules('email', 'Email', 'valid_email');
-						
-						if (isset($firstname) && !empty($firstname))
+				$this->load->library('form_validation');
+
+				$firstname = $this->input->post('firstname');
+				$lastname = $this->input->post('lastname');
+				$email = $this->input->post('email');
+				$birthdate = $this->input->post('birthdate');
+				
+				if (isset($email) && !empty($email)) $this->form_validation->set_rules('email', 'Email', 'valid_email');
+				
+				if (isset($firstname) && !empty($firstname))
+				{
+					if (preg_match("/^[a-zA-Z]*$/", $firstname) == false)
+					{
+						echo '#Error: Data is not valid.';
+						return;
+					}
+				}
+				if (isset($lastname) && !empty($lastname))
+				{
+					if (preg_match("/^[a-zA-Z]*$/", $lastname) == false)
+					{
+						echo '#Error: Data is not valid.';
+						return;
+					}
+				}
+				if (isset($birthdate) && !empty($birthdate))
+				{
+					if (preg_match("/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|1[0-9]|2[0-9]|3(0|1))$/", $this->input->post('birthdate')) == false)
+					{
+						echo '#Error: Data is not valid.';
+						return;
+					}
+				}
+				$run = true;
+				if (isset($email) && !empty($email)) $run = $this->form_validation->run();
+				if ($run)
+				{
+						//$qb = $this->loader->getEntityManager()->createQueryBuilder();
+						//$qb->select('a')->from('Actor', 'a')->where('a.id = :id')->setParameter('id', $this->session->actor->getId());
+						//$query = $qb->getQuery();
+						//$actor = $query->getSingleResult();
+						$em = $this->loader->getEntityManager();
+						$actor = $em->find('Actor', $this->session->actor->getId());
+						$em = $this->loader->getEntityManager();
+						if ($firstname != "") $actor->setFirstname($firstname);
+						if ($lastname != "") $actor->setLastname($lastname);
+						if ($email != "") $actor->setEmail($email);
+						if ($birthdate != "")
 						{
-							if (preg_match("/^[a-zA-Z]*$/", $firstname) == false)
-							{
-								echo '#Error: Data is not valid.';
-								return;
-							}
+							$birthdate = new \DateTime($birthdate);
+							$actor->setBirthdate($birthdate);
 						}
-						if (isset($lastname) && !empty($lastname))
-						{
-							if (preg_match("/^[a-zA-Z]*$/", $lastname) == false)
-							{
-								echo '#Error: Data is not valid.';
-								return;
-							}
-						}
-						if (isset($birthdate) && !empty($birthdate))
-						{
-							if (preg_match("/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|1[0-9]|2[0-9]|3(0|1))$/", $this->input->post('birthdate')) == false)
-							{
-								echo '#Error: Data is not valid.';
-								return;
-							}
-						}
-						$run = true;
-						if (isset($email) && !empty($email)) $run = $this->form_validation->run();
-						if ($run)
-						{
-								$qb = $this->loader->getEntityManager()->createQueryBuilder();
-								$qb->select('a')->from('Actor', 'a')->where('a.id = :id')->setParameter('id', $this->session->actor->getId());
-								$query = $qb->getQuery();
-								$actor = $query->getSingleResult();
-								$em = $this->loader->getEntityManager();
-								if ($firstname != "") $actor->setFirstname($firstname);
-								if ($lastname != "") $actor->setLastname($lastname);
-								if ($email != "") $actor->setEmail($email);
-								if ($birthdate != "")
-								{
-									$birthdate = new \DateTime($birthdate);
-									$actor->setBirthdate($birthdate);
-								}
-								$em->flush();
-								echo 'Success!';
-						}
-						else echo '#Error: Data is not valid.';
+						$em->flush();
+						echo 'Success!';
+				}
+				else echo '#Error: Data is not valid.';
 			}
 		}
-		
+
+		/*
+		* changeProfilePic() - obradjuje zahtev za promenu profilne slike
+		*/
 		public function changeProfilePic()
 		{
 			if (isset($this->session->actor))
@@ -190,8 +218,11 @@
 				else echo '#Error: <b>Error!</b> Profile picture could not be uploaded!';
 			}
 		}
-                
-                public function changeSubjectPic()
+        
+		/*
+		* changeSubjectPic() - obradjuje zahtev za promenu slike subject-a
+		*/
+        public function changeSubjectPic()
 		{
 			if (isset($this->session->actor) && $this->session->actor->getRawRank() == Rank::Administrator)
 			{
@@ -213,7 +244,10 @@
 				else echo '#Error: <b>Error!</b> Profile picture could not be uploaded!';
 			}
 		}
-                
+        
+		/*
+		* changeSectionPic() - obradjuje zahtev za promenu slike section-a
+		*/          
         public function changeSectionPic()
 		{
 			if (isset($this->session->actor) && $this->session->actor->getRawRank() == Rank::Administrator)
@@ -235,8 +269,12 @@
 				}
 				else echo '#Error: <b>Error!</b> Profile picture could not be uploaded!';
 			}
-                        else echo '#Error: Error';
+            else echo '#Error: Error';
 		}
+		
+		/*
+		* attachWorkerFiles() - obradjuje zahtev za upload-ovanje file-ova od strane tutor-a
+		*/  
 		public function attachWorkerFiles()
 		{
 			if (isset($this->session->actor)){
@@ -245,12 +283,12 @@
 				$workpost = $em->find('Workpost', $workpostid);
 				$post = $em->find('Post', $workpostid);
 				$worker = $em->find('Actor', $workpost->getWorker());
-				if($workpost == null || $post == null)
+				if ($workpost == null || $post == null)
 				{
 					echo '#Error: Data not valid.';
 					return;
 				}
-				if(!$post->getActive())
+				if (!$post->getActive())
 				{
 					echo '#Error: Post is not active anymore.';
 					return;
@@ -274,7 +312,7 @@
 					'max_size'		=> 102400
 				));
 
-				if(!is_dir(FCPATH.'assets/storage/posts/'.$workpostid.'/')) mkdir(FCPATH.'assets/storage/posts/'.$workpostid.'/', 0777, TRUE);
+				if (!is_dir(FCPATH.'assets/storage/posts/'.$workpostid.'/')) mkdir(FCPATH.'assets/storage/posts/'.$workpostid.'/', 0777, TRUE);
 
 				$uploadedall = true;
 				

@@ -11,6 +11,20 @@ class Section extends Proxy
 	/* ================= STATIC ================= */
 	
 	/*
+	 * get() - dohvata Sekciju sa zadatim id
+	 *	@param int $id: naziv oblasti
+	 *	@param bool $ifDeleted: da li da vrati oblast ako je obrisana
+	 *	@return: \Doctrine\Common\Collections\Collection
+	 */
+	public static function get($id, $ifDeleted = false)
+	{
+		return parent::$_em->createQuery('SELECT s FROM Section s WHERE s.id = :sectionid AND s.deleted = :deleted')
+							->setParameter('sectionid', $id)
+							->setParameter('deleted', $ifDeleted)
+							->getSingleResult();
+	}
+	
+	/*
 	 * findByName() - dohvata sve oblasti po nazivu
 	 *	@param string $name: naziv oblasti
 	 *	@return: \Doctrine\Common\Collections\Collection
@@ -21,6 +35,18 @@ class Section extends Proxy
 		(
 			'name' => $name
 		));
+	}
+	
+	/*
+	 * findBySubjectId() - dohvata sve oblasti po id kategorije
+	 *	@param int $id: id kategorije
+	 *	@return: \Doctrine\Common\Collections\Collection
+	 */
+	public static function findBySubjectId($id)
+	{
+		return parent::$_em->createQuery('SELECT s FROM Section s WHERE s.subject = :subjectid')
+						->setParameter('subjectid', $id)
+						->getResult();
 	}
 	
 	/*

@@ -386,7 +386,7 @@
 			
 			$this->em->flush();
 		}
-
+		
 		/*
 		 * insertPosts() - insert-uje postove
 		 *	@param Subject $subject: kategorija
@@ -396,11 +396,13 @@
 		public function insertPosts($posts)
 		{
 			$insertedposts = array();
+			
 			foreach ($posts as $post)
 			{
 				$currentpost = Post::New($post['title'], $post['postedon'], $post['originalposter'], '1', '0');
 				$this->em->persist($currentpost);
 				$this->em->flush();
+				
 				if($post['type']==='qapost')
 				{
 					$qapost = Qapost::New($post['description'], $currentpost->getId(), $post['acceptedanswer']);
@@ -415,6 +417,7 @@
 					$this->em->flush();
 					$insertedposts[] = array($currentpost, $workpost);
 				}
+				
 				foreach($post['postsections'] as $section)
 				{
 					$postsection = PostSection::New($currentpost->getId(), $section->getId());
@@ -422,9 +425,10 @@
 					$this->em->flush();
 				}
 			}
+			
 			return $insertedposts;
 		}
-
+		
 		/*
 		 * inserReplies() - insert-uje odgovore
 		 *	@param array $replies: niz odgovora
@@ -439,7 +443,7 @@
 				$this->em->flush();
 			}
 		}
-
+		
 		/*
 		 * insertRequests() - insert-uje zahteve za promociju
 		 *	@param array $requests: niz zahteva
@@ -457,7 +461,7 @@
 			}
 			return $insertedrequests;
 		}
-
+		
 		/*
 		 * insertNotification() - insert-uje notifikaciju
 		 *	@param string $title: naslov notifikacije
